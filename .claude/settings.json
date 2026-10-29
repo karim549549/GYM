@@ -1,0 +1,14 @@
+{
+  "permissions": {
+    "ask": [
+      "Read(.env)",
+      "Read(.env.*)",
+      "Read(**/.env)",
+      "Read(**/.env.*)",
+      "Bash(cat .env*)",
+      "Bash(grep * .env*)",
+      "Bash(printenv*)",
+      "PowerShell(Get-Content .env*)"
+    ]
+  }
+}
