@@ -1,0 +1,61 @@
+import {
+  IsInt,
+  IsNotEmpty,
+  IsOptional,
+  IsString,
+  IsUUID,
+  Max,
+  MaxLength,
+  Min,
+} from 'class-validator';
+import { Trimmed } from '../../common/decorators/trimmed.decorator';
+
+export class CreateMealPlanDto {
+  @Trimmed()
+  @IsString()
+  @IsNotEmpty()
+  @MaxLength(120)
+  name: string;
+
+  /** The day's calorie target. */
+  @IsOptional()
+  @IsInt()
+  @Min(0)
+  @Max(10_000)
+  kcalTarget?: number;
+
+  @IsOptional()
+  @IsInt()
+  @Min(0)
+  @Max(1000)
+  proteinTargetG?: number;
+
+  @IsOptional()
+  @IsInt()
+  @Min(0)
+  @Max(2000)
+  carbTargetG?: number;
+
+  @IsOptional()
+  @IsInt()
+  @Min(0)
+  @Max(1000)
+  fatTargetG?: number;
+
+  @Trimmed()
+  @IsOptional()
+  @IsString()
+  @IsNotEmpty()
+  @MaxLength(2000)
+  notes?: string;
+
+  /** The client the plan is for. Left out, it is a template. */
+  @IsOptional()
+  @IsUUID()
+  clientId?: string;
+
+  /** Start from a copy of this plan or template, the usual way to begin. */
+  @IsOptional()
+  @IsUUID()
+  fromPlanId?: string;
+}
