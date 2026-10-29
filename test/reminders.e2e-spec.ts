@@ -176,13 +176,14 @@ describe('Reminders over HTTP and the database', () => {
     it('does not plan a second set when the end date is saved again', async () => {
       const { session, workspaceId, subscription } = await ready(30);
 
-      for (let i = 0; i < 2; i += 1) {
+      await Array.from({ length: 2 }).reduce(async (previous) => {
+        await previous;
         await harness
           .as(session)
           .patch(`/subscriptions/${subscription.id}`)
           .send({ endsOn: daysFromToday(45) })
           .expect(200);
-      }
+      }, Promise.resolve());
 
       expect(await rowsOf(workspaceId, subscription.id)).toHaveLength(2);
     });
@@ -285,7 +286,11 @@ describe('Reminders over HTTP and the database', () => {
       expect(delivered).toBeGreaterThanOrEqual(2);
       const messages = sentTo(client.phone);
       expect(messages).toHaveLength(2);
-      expect(messages.map((m) => m.template).sort()).toEqual([
+      expect(
+        messages
+          .map((m) => m.template)
+          .sort((a, b) => String(a).localeCompare(String(b))),
+      ).toEqual([
         WhatsAppTemplate.SUBSCRIPTION_EXPIRED,
         WhatsAppTemplate.SUBSCRIPTION_EXPIRING,
       ]);

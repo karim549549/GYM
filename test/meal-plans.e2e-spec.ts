@@ -150,8 +150,14 @@ describe('Meal plans over HTTP', () => {
 
       const templates = await templatesOf(session);
 
-      expect(templates.map((t) => t.name).sort()).toEqual(
-        ['تنشيف - حوالي 1500 سعر', 'تضخيم - حوالي 2800 سعر'].sort(),
+      expect(
+        templates
+          .map((t) => t.name)
+          .sort((a, b) => String(a).localeCompare(String(b))),
+      ).toEqual(
+        ['تنشيف - حوالي 1500 سعر', 'تضخيم - حوالي 2800 سعر'].sort((a, b) =>
+          String(a).localeCompare(String(b)),
+        ),
       );
     });
 
@@ -951,7 +957,7 @@ describe('Meal plans over HTTP', () => {
       expect(list.body.total).toBe(2);
       expect(list.body.items.every((p: Plan) => p.isTemplate)).toBe(true);
 
-      for (const call of [
+      await [
         () => harness.as(mine.session).post(`/meal-plans/${plan.id}/activate`),
         () => harness.as(mine.session).post(`/meal-plans/${plan.id}/end`),
         () =>
@@ -965,9 +971,11 @@ describe('Meal plans over HTTP', () => {
             .as(mine.session)
             .post(`/meal-plans/${plan.id}/save-as-template`)
             .send({ name: 'x' }),
-      ]) {
+      ].reduce(async (previous, call) => {
+        await previous;
+
         await call().expect(404);
-      }
+      }, Promise.resolve());
     });
   });
 });

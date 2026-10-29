@@ -31,29 +31,33 @@ export class ReminderDispatchOrchestrator {
     private readonly transactions: TransactionManager,
   ) {}
 
-  async execute(): Promise<number> {
+  async execute(signal?: AbortSignal): Promise<number> {
+    signal?.throwIfAborted();
     const claimed = await this.transactions.run(
       () => this.remindersQuery.claimDue(ReminderDispatchOrchestrator.BATCH),
       { system: true },
     );
 
-    let delivered = 0;
-    for (const reminder of claimed) {
-      const failure = await this.deliver(reminder);
+    return claimed.reduce(async (pendingCount, reminder) => {
+      const delivered = await pendingCount;
+      signal?.throwIfAborted();
+      const failure = await this.deliver(reminder, signal);
       if (failure) {
         await this.transactions.run(
           () => this.remindersQuery.markFailed(reminder.id, failure),
           { system: true },
         );
-      } else {
-        delivered += 1;
+        return delivered;
       }
-    }
-    return delivered;
+      return delivered + 1;
+    }, Promise.resolve(0));
   }
 
   /** The reason it could not be delivered, or nothing when it was. */
-  private async deliver(reminder: ClaimedReminder): Promise<string | null> {
+  private async deliver(
+    reminder: ClaimedReminder,
+    signal?: AbortSignal,
+  ): Promise<string | null> {
     let details;
     try {
       details = await this.transactions.run(
@@ -79,6 +83,7 @@ export class ReminderDispatchOrchestrator {
       throw error;
     }
 
+    signal?.throwIfAborted();
     // a message is sent only to a client who agreed to receive them, and never again once they withdraw
     if (!details.agreed) {
       return 'no_consent';

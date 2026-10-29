@@ -38,11 +38,12 @@ describe('Billing: what coaches pay the platform', () => {
 
   const addClients = async (session: TestSession, total: number) => {
     const added: { id: string; phone: string }[] = [];
-    for (let i = 0; i < total; i += 1) {
+    await Array.from({ length: total }).reduce(async (previous) => {
+      await previous;
       const phone = harness.uniquePhone();
       const response = await addClient(session, phone).expect(201);
       added.push({ id: response.body.id, phone });
-    }
+    }, Promise.resolve());
     return added;
   };
 
@@ -232,7 +233,9 @@ describe('Billing: what coaches pay the platform', () => {
         addClient(session),
       ]);
 
-      expect(results.map((r) => r.status).sort()).toEqual([201, 409]);
+      expect(results.map((r) => r.status).sort((a, b) => a - b)).toEqual([
+        201, 409,
+      ]);
       expect((await overview(session)).usage.clients).toBe(5);
     });
 
@@ -360,7 +363,7 @@ describe('Billing: what coaches pay the platform', () => {
       const { session } = await newCoach();
       const invoice = await requested(session, 'basic');
 
-      for (const call of [
+      await [
         () => harness.as(session).get('/admin/billing/invoices'),
         () =>
           harness
@@ -371,10 +374,12 @@ describe('Billing: what coaches pay the platform', () => {
           harness
             .as(session)
             .post(`/admin/billing/invoices/${invoice.id}/void`),
-      ]) {
+      ].reduce(async (previous, call) => {
+        await previous;
+
         const response = await call().expect(403);
         expect(response.body.code).toBe('PLATFORM_ADMIN_ONLY');
-      }
+      }, Promise.resolve());
       expect((await overview(session)).plan.id).toBe('free');
     });
 
@@ -498,7 +503,9 @@ describe('Billing: what coaches pay the platform', () => {
       const results = await Promise.all([pay(invoice.id), pay(invoice.id)]);
       const again = await pay(invoice.id).expect(409);
 
-      expect(results.map((r) => r.status).sort()).toEqual([201, 409]);
+      expect(results.map((r) => r.status).sort((a, b) => a - b)).toEqual([
+        201, 409,
+      ]);
       expect(again.body.code).toBe('INVOICE_NOT_OPEN');
     });
 

@@ -307,7 +307,9 @@ describe('Analytics over HTTP', () => {
       const months = response.body.revenue.map(
         (m: { month: string }) => m.month,
       );
-      expect(months).toEqual([...months].sort());
+      expect(months).toEqual(
+        [...months].sort((a, b) => String(a).localeCompare(String(b))),
+      );
       expect(months[5]).toBe(cairoToday().slice(0, 7));
       expect(
         response.body.activeClients.map((m: { month: string }) => m.month),
@@ -331,17 +333,21 @@ describe('Analytics over HTTP', () => {
           .send({ packageId: pkg.id })
           .expect(201)
       ).body;
-      for (const [paidOn, amountMinor] of [
-        [daysFromToday(0), 50_000],
-        [daysFromToday(0), 20_000],
-        [daysFromToday(-45), 30_000],
-      ] as const) {
+      await (
+        [
+          [daysFromToday(0), 50_000],
+          [daysFromToday(0), 20_000],
+          [daysFromToday(-45), 30_000],
+        ] as const
+      ).reduce(async (previous, [paidOn, amountMinor]) => {
+        await previous;
+
         await harness
           .as(session)
           .post(`/subscriptions/${subscription.id}/payments`)
           .send({ amountMinor, method: 'cash', paidOn })
           .expect(201);
-      }
+      }, Promise.resolve());
 
       const response = await business(session).expect(200);
 
@@ -369,14 +375,15 @@ describe('Analytics over HTTP', () => {
           .send({ name: 'Monthly', durationDays: 30, priceMinor: 100_000 })
           .expect(201)
       ).body;
-      for (let i = 0; i < 2; i += 1) {
+      await Array.from({ length: 2 }).reduce(async (previous) => {
+        await previous;
         const client = await addClient(session);
         await harness
           .as(session)
           .post(`/clients/${client.id}/subscriptions`)
           .send({ packageId: pkg.id })
           .expect(201);
-      }
+      }, Promise.resolve());
 
       const response = await business(session).expect(200);
 
@@ -430,15 +437,19 @@ describe('Analytics over HTTP', () => {
       ).body.items as { id: string }[];
       await harness.tx.run(
         async () => {
-          for (const [item, days] of [
-            [items[0], -2],
-            [items[1], -5],
-          ] as const) {
+          await (
+            [
+              [items[0], -2],
+              [items[1], -5],
+            ] as const
+          ).reduce(async (previous, [item, days]) => {
+            await previous;
+
             await harness.tx.db
               .update(checkins)
               .set({ dueOn: daysFromToday(days) })
               .where(eq(checkins.id, item.id));
-          }
+          }, Promise.resolve());
         },
         { workspaceId },
       );

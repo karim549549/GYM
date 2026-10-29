@@ -42,13 +42,13 @@ export class SubscriptionStatisticsOrchestrator {
   private async coveredOn(
     days: string[],
   ): Promise<{ day: string; clients: number }[]> {
-    const counted: { day: string; clients: number }[] = [];
-    for (const day of days) {
+    return days.reduce(async (pending, day) => {
+      const counted = await pending;
       counted.push({
         day,
         clients: await this.subscriptionsQuery.countClientsCoveredOn(day),
       });
-    }
-    return counted;
+      return counted;
+    }, Promise.resolve<{ day: string; clients: number }[]>([]));
   }
 }

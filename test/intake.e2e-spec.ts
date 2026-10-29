@@ -360,7 +360,9 @@ describe('Intake over HTTP', () => {
         submit(link.token, { answers }),
       ]);
 
-      expect([first.status, second.status].sort()).toEqual([201, 409]);
+      expect([first.status, second.status].sort((a, b) => a - b)).toEqual([
+        201, 409,
+      ]);
       const responses = await inWorkspace(workspaceId, () =>
         harness.tx.db
           .select({ id: intakeResponses.id })

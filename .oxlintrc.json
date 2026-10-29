@@ -2,7 +2,9 @@
   "$schema": "./node_modules/oxlint/configuration_schema.json",
   "rules": {
     "typescript/no-explicit-any": "off",
-    "typescript/no-floating-promises": "error"
+    "typescript/no-floating-promises": "error",
+    "eslint/no-await-in-loop": "error",
+    "typescript/require-array-sort-compare": "error"
   },
   "env": {
     "node": true

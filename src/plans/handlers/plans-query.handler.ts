@@ -358,10 +358,14 @@ export class PlansQueryHandler extends BaseQueryHandler {
     rows: T[],
     insert: (chunk: T[]) => Promise<R[]>,
   ): Promise<R[]> {
-    const done: R[] = [];
+    const chunks: T[][] = [];
     for (let at = 0; at < rows.length; at += CHUNK) {
-      done.push(...(await insert(rows.slice(at, at + CHUNK))));
+      chunks.push(rows.slice(at, at + CHUNK));
     }
-    return done;
+    return chunks.reduce(async (pending, chunk) => {
+      const done = await pending;
+      done.push(...(await insert(chunk)));
+      return done;
+    }, Promise.resolve<R[]>([]));
   }
 }

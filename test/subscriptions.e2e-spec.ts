@@ -300,7 +300,9 @@ describe('Subscriptions and payments over HTTP', () => {
         sell(session, client.id, { packageId: pkg.id }),
       ]);
 
-      expect(results.map((r) => r.status).sort()).toEqual([201, 409]);
+      expect(results.map((r) => r.status).sort((a, b) => a - b)).toEqual([
+        201, 409,
+      ]);
       expect(results.find((r) => r.status === 409)?.body.code).toBe(
         'CLIENT_HAS_ACTIVE_SUBSCRIPTION',
       );
@@ -726,7 +728,9 @@ describe('Subscriptions and payments over HTTP', () => {
         pay(session, subscription.id, { amountMinor: 100_000, method: 'cash' }),
       ]);
 
-      expect(results.map((r) => r.status).sort()).toEqual([201, 422]);
+      expect(results.map((r) => r.status).sort((a, b) => a - b)).toEqual([
+        201, 422,
+      ]);
     });
 
     it('accepts a payment on a subscription that has expired, for a late payer', async () => {

@@ -131,12 +131,16 @@ describe('Workout plans over HTTP', () => {
       const templates = await templatesOf(session);
 
       expect(templates).toHaveLength(3);
-      expect(templates.map((t) => t.name).sort()).toEqual(
+      expect(
+        templates
+          .map((t) => t.name)
+          .sort((a, b) => String(a).localeCompare(String(b))),
+      ).toEqual(
         [
           'جسم كامل - 3 أيام',
           'دفع / سحب / أرجل - 6 أيام',
           'علوي / سفلي - 4 أيام',
-        ].sort(),
+        ].sort((a, b) => String(a).localeCompare(String(b))),
       );
       expect(templates.every((t) => t.weeks === 1)).toBe(true);
     });
@@ -962,7 +966,7 @@ describe('Workout plans over HTTP', () => {
       const theirs = await ready();
       const plan = await clientPlan(theirs.session, theirs.client.id);
 
-      for (const call of [
+      await [
         () => harness.as(mine.session).post(`/plans/${plan.id}/activate`),
         () => harness.as(mine.session).post(`/plans/${plan.id}/end`),
         () =>
@@ -976,9 +980,11 @@ describe('Workout plans over HTTP', () => {
             .as(mine.session)
             .post(`/plans/${plan.id}/save-as-template`)
             .send({ name: 'x' }),
-      ]) {
+      ].reduce(async (previous, call) => {
+        await previous;
+
         await call().expect(404);
-      }
+      }, Promise.resolve());
     });
   });
 });

@@ -95,14 +95,16 @@ describe('MeasurementsService against the database', () => {
   });
 
   afterAll(async () => {
-    for (const id of [workspaceId, otherWorkspaceId]) {
+    await [workspaceId, otherWorkspaceId].reduce(async (previous, id) => {
+      await previous;
+
       await tx.run(
         () => tx.db.delete(workspaces).where(eq(workspaces.id, id)),
         {
           workspaceId: id,
         },
       );
-    }
+    }, Promise.resolve());
     await tx.db.delete(people).where(inArray(people.id, personIds));
     await moduleRef.close();
   });
