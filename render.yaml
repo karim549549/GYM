@@ -1,0 +1,46 @@
+services:
+  - type: web
+    name: gym-api
+    runtime: docker
+    dockerfilePath: ./Dockerfile
+    dockerContext: .
+    # Free staging sleeps after 15 idle minutes and cold-starts on requests.
+    # Move to starter for always-on service and timely reminder/check-in jobs.
+    plan: free
+    # Before creating: set region to the Render region nearest your Supabase project.
+    # Supabase's region is unknown here; omitted region defaults to Oregon.
+    # Choices: oregon, ohio, virginia, frankfurt, singapore. Region cannot change later.
+    healthCheckPath: /health
+    autoDeployTrigger: commit
+    envVars:
+      # STAGING: production rejects mock; the real Meta client does not exist yet.
+      # Once implemented, use NODE_ENV=production and WHATSAPP_PROVIDER=meta.
+      - key: NODE_ENV
+        value: development
+      # Render normally injects PORT; explicitly listing it also documents the schema.
+      - key: PORT
+        value: "10000"
+      - key: LOG_LEVEL
+        value: info
+      - key: SUPABASE_URL
+        sync: false
+      - key: SUPABASE_PUBLISHABLE_KEY
+        sync: false
+      - key: DATABASE_URL
+        sync: false
+      - key: DATABASE_POOL_MAX
+        value: "5"
+      - key: DATABASE_SSL_CA
+        value: certs/supabase-ca.crt
+      - key: SUPABASE_SECRET_KEY
+        sync: false
+      - key: WHATSAPP_PROVIDER
+        value: mock
+      - key: SUPABASE_HOOK_SECRET
+        sync: false
+      - key: REMINDER_POLL_SECONDS
+        value: "60"
+      - key: CHECKIN_TOPUP_SECONDS
+        value: "3600"
+      - key: PUBLIC_APP_URL
+        sync: false
