@@ -48,29 +48,31 @@ export class WorkspaceCreationOrchestrator {
     }
   }
 
-  private async createWithFreeHandle(
-    brandName: string,
-  ): Promise<CreatedWorkspace> {
-    const handles = this.handleCandidates(brandName);
+  private createWithFreeHandle(brandName: string): Promise<CreatedWorkspace> {
+    return this.tryHandle(brandName, this.handleCandidates(brandName));
+  }
 
-    for (const [index, slug] of handles.entries()) {
-      try {
-        // each candidate is a savepoint: a taken handle must not poison the caller's transaction
-        const created = await this.transactions.attempt(() =>
-          this.workspacesQuery.create({ brandName, slug }),
-        );
-        return { ...created, brandName };
-      } catch (error) {
-        const isLastCandidate = index === handles.length - 1;
-        if (
-          !this.violatesUnique(error, 'workspaces_slug_unique') ||
-          isLastCandidate
-        ) {
-          throw error;
-        }
+  private async tryHandle(
+    brandName: string,
+    handles: string[],
+    index = 0,
+  ): Promise<CreatedWorkspace> {
+    const slug = handles[index];
+    try {
+      // Each candidate is a savepoint: a collision must not poison the caller's transaction.
+      const created = await this.transactions.attempt(() =>
+        this.workspacesQuery.create({ brandName, slug }),
+      );
+      return { ...created, brandName };
+    } catch (error) {
+      if (
+        !this.violatesUnique(error, 'workspaces_slug_unique') ||
+        index === handles.length - 1
+      ) {
+        throw error;
       }
+      return this.tryHandle(brandName, handles, index + 1);
     }
-    throw new Error('No workspace handle candidates were tried');
   }
 
   /** The clean handle first, then suffixed variants in case it is taken. */

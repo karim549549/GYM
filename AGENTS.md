@@ -39,6 +39,7 @@ src/
   storage/                               infra module: StorageModule, the Supabase Storage client
   whatsapp/                              infra module: WhatsAppModule, WhatsAppClient and its mock
   logging/                               infra module: LoggingModule, logger options
+  scheduling/                            infra module: SchedulingModule, SchedulingService
   <feature>/                             a feature module, layout below
 ```
 
@@ -69,6 +70,8 @@ Approved kinds beyond the list above: `*.schema.ts` in `database/schema/` (Drizz
 tables, they replace BRJ's `*.entity.ts`), `env.schema.ts` in `config/`,
 `*.options.ts` (library option builders), and `database.constants.ts` (provider
 tokens; kept as a file because putting them in the module causes a circular import).
+`database/postgres-lock.store.ts` is the approved `*.store.ts` infrastructure adapter
+implementing `@nestjs/locks`'s `LockStore`; it is not a feature handler.
 
 Bootstrap and tooling files, each with one defined role:
 
@@ -605,6 +608,34 @@ owns nothing and only adds the two together.
 
 ## Reminders
 
+### Background scheduling
+
+- Feature jobs stay in their module's `jobs/` folder, call only their module's service,
+  and register through `SchedulingService.every`. Nest's `SchedulerRegistry` owns the timers;
+  the shared service handles registration, shutdown and sanitized failure logging. Do not add
+  private timer loops or local `running` flags to feature jobs, or a base job/cron handler.
+- `SchedulingModule` configures `@nestjs/schedule` and `@nestjs/locks` once. Each job uses
+  an explicit stable key with `@OnOneInstance` and `@WithoutOverlapping`. Renaming a class
+  must not change the key. The current keys are `reminders:dispatch` and `checkins:top-up`.
+- `DatabaseModule` registers `PostgresLockStore`. Its global `locks` table and fencing
+  sequence are infrastructure, not tenant records, and grant no access to API roles.
+  Lease SQL statements autocommit through the injected database independently of
+  `TransactionManager`: this is an explicit infrastructure exception so lock renewals
+  cannot join or wait for business transactions. Never hold a transaction for a whole job.
+- A lease lasts 30 seconds, renews while held, and store calls time out after 5 seconds.
+  Jobs pass `LocksContext.signal` through the service; orchestration checks it between
+  units of work and before delivery/creation. An already-running external request is not
+  forcibly cancelled. Existing row claims and uniqueness constraints remain necessary;
+  a lease alone is not exactly-once delivery or write fencing.
+- `REMINDER_POLL_SECONDS` (default 60) and `CHECKIN_TOPUP_SECONDS` (default 3600) keep their
+  existing meaning; zero disables registration completely. Only check-in top-up runs at
+  startup. Both jobs currently have one active runner across instances, so reminder
+  dispatch has one batch of 50 per poll. Locks wait for active runs during graceful shutdown;
+  the database pool closes later in `onApplicationShutdown`.
+- Store concurrency, expiry and stale ownership are covered by the package contract suite
+  in `test/postgres-lock-store.e2e-spec.ts` against real PostgreSQL. Scheduling coordination
+  uses a shared in-memory store in unit tests; it must never be the deployed store.
+
 `reminders` owns the `reminders` table. Messages are **created ahead of time**, not discovered each
 morning, which leaves a record of what went out and makes a retry or a second worker harmless:
 `unique (subject_type, subject_id, kind, audience)` stops a client being told twice.
@@ -900,6 +931,8 @@ adapt, don't obey blindly: entities become Drizzle schema, and the
 this file wins; propose the skill change instead of quietly diverging.
 
 ## Style
+
+Never disable lint rules to resolve a warning; fix the implementation instead.
 
 Follow the `code-comments` skill: comments only where the code cannot say it.
 Match the surrounding naming and structure.

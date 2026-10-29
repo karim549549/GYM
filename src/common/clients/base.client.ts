@@ -94,28 +94,37 @@ export abstract class BaseClient {
       Date.now() +
       (this.options.totalTimeoutMs ?? BaseClient.DEFAULT_TOTAL_TIMEOUT_MS);
 
-    for (let attempt = 1; ; attempt++) {
-      const reply = await this.attempt(request, deadline - Date.now());
-      const retriable =
-        reply === undefined || BaseClient.RETRIABLE_STATUSES.has(reply.status);
-      if (!retriable) {
-        return reply;
-      }
+    return this.sendAttempt(request, retry, attempts, deadline, 1);
+  }
 
-      // out of attempts, or the wait would eat the time left: give up now
-      const wait = this.backoff(attempt, retry);
-      if (attempt >= attempts || Date.now() + wait >= deadline) {
-        if (reply === undefined) {
-          throw this.unavailable();
-        }
-        return reply;
-      }
-
-      this.logger.warn(
-        `${request.method} ${request.path} failed (${reply?.status ?? 'no reply'}), attempt ${attempt} of ${attempts}`,
-      );
-      await new Promise((resolve) => setTimeout(resolve, wait));
+  private async sendAttempt(
+    request: ClientRequest,
+    retry: RetryOptions,
+    attempts: number,
+    deadline: number,
+    attempt: number,
+  ): Promise<ClientReply> {
+    const reply = await this.attempt(request, deadline - Date.now());
+    const retriable =
+      reply === undefined || BaseClient.RETRIABLE_STATUSES.has(reply.status);
+    if (!retriable) {
+      return reply;
     }
+
+    // Out of attempts, or the wait would eat the time left: give up now.
+    const wait = this.backoff(attempt, retry);
+    if (attempt >= attempts || Date.now() + wait >= deadline) {
+      if (reply === undefined) {
+        throw this.unavailable();
+      }
+      return reply;
+    }
+
+    this.logger.warn(
+      `${request.method} ${request.path} failed (${reply?.status ?? 'no reply'}), attempt ${attempt} of ${attempts}`,
+    );
+    await new Promise((resolve) => setTimeout(resolve, wait));
+    return this.sendAttempt(request, retry, attempts, deadline, attempt + 1);
   }
 
   /** One try. Undefined means nothing came back: refused, reset or timed out. */

@@ -182,8 +182,14 @@ describe('Check-ins over HTTP and the database', () => {
       await schedule(session, client.id, body).expect(200);
       const second = await checkinsOf(session, client.id);
 
-      expect(second.map((i) => i.dueOn).sort()).toEqual(
-        first.map((i) => i.dueOn).sort(),
+      expect(
+        second
+          .map((i) => i.dueOn)
+          .sort((a, b) => String(a).localeCompare(String(b))),
+      ).toEqual(
+        first
+          .map((i) => i.dueOn)
+          .sort((a, b) => String(a).localeCompare(String(b))),
       );
     });
 
@@ -226,8 +232,14 @@ describe('Check-ins over HTTP and the database', () => {
         { workspaceId },
       );
 
-      expect(planned.map((r) => r.subjectId).sort()).toEqual(
-        items.map((i) => i.id).sort(),
+      expect(
+        planned
+          .map((r) => r.subjectId)
+          .sort((a, b) => String(a).localeCompare(String(b))),
+      ).toEqual(
+        items
+          .map((i) => i.id)
+          .sort((a, b) => String(a).localeCompare(String(b))),
       );
       expect(planned.every((r) => r.kind === 'checkin_due')).toBe(true);
     });
@@ -510,7 +522,9 @@ describe('Check-ins over HTTP and the database', () => {
         submit(token, { answers }),
       ]);
 
-      expect(results.map((r) => r.status).sort()).toEqual([201, 409]);
+      expect(results.map((r) => r.status).sort((a, b) => a - b)).toEqual([
+        201, 409,
+      ]);
     });
 
     it('is refused before its day', async () => {
@@ -640,15 +654,19 @@ describe('Check-ins over HTTP and the database', () => {
       const [a, b, c] = items;
       await harness.tx.run(
         async () => {
-          for (const [item, days] of [
-            [a, -2],
-            [b, -5],
-          ] as const) {
+          await (
+            [
+              [a, -2],
+              [b, -5],
+            ] as const
+          ).reduce(async (previous, [item, days]) => {
+            await previous;
+
             await harness.tx.db
               .update(checkins)
               .set({ dueOn: daysFromToday(days) })
               .where(eq(checkins.id, item.id));
-          }
+          }, Promise.resolve());
         },
         { workspaceId },
       );
@@ -774,8 +792,14 @@ describe('Check-ins over HTTP and the database', () => {
       await checkinsService.topUp();
       const after = await checkinsOf(session, client.id);
 
-      expect(after.map((i) => i.dueOn).sort()).toEqual(
-        before.map((i) => i.dueOn).sort(),
+      expect(
+        after
+          .map((i) => i.dueOn)
+          .sort((a, b) => String(a).localeCompare(String(b))),
+      ).toEqual(
+        before
+          .map((i) => i.dueOn)
+          .sort((a, b) => String(a).localeCompare(String(b))),
       );
     });
 

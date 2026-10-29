@@ -47,7 +47,7 @@ export class RemindersService {
   }
 
   /** Delivers what is due, for the background job. Returns how many were delivered. */
-  dispatchDue(): Promise<number> {
-    return this.dispatch.execute();
+  dispatchDue(signal?: AbortSignal): Promise<number> {
+    return this.dispatch.execute(signal);
   }
 }

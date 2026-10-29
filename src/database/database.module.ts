@@ -6,11 +6,14 @@ import { Pool } from 'pg';
 import { DRIZZLE, PG_POOL } from './database.constants';
 import * as schema from './schema';
 import { TransactionManager } from './transaction.manager';
+import { PostgresLockStore } from './postgres-lock.store';
+import { SchedulingModule } from '../scheduling/scheduling.module';
 
 export type Database = NodePgDatabase<typeof schema>;
 
 @Global()
 @Module({
+  imports: [SchedulingModule],
   providers: [
     {
       provide: PG_POOL,
@@ -32,6 +35,7 @@ export type Database = NodePgDatabase<typeof schema>;
       useFactory: (pool: Pool): Database => drizzle(pool, { schema }),
     },
     TransactionManager,
+    PostgresLockStore,
   ],
   exports: [DRIZZLE, TransactionManager],
 })

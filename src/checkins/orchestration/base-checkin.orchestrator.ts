@@ -48,16 +48,20 @@ export abstract class BaseCheckinOrchestrator {
     workspaceId: string,
     records: CheckinRecord[],
   ): Promise<CheckinRecord[]> {
-    const allowed = new Map<string, boolean>();
-    for (const clientId of new Set(records.map((r) => r.clientId))) {
-      allowed.set(
-        clientId,
-        await consents.isGranted(workspaceId, clientId, [
-          ClientConsentType.DATA_PROCESSING,
-          ClientConsentType.HEALTH_DATA,
-        ]),
-      );
-    }
+    const allowed = await [...new Set(records.map((r) => r.clientId))].reduce(
+      async (pending, clientId) => {
+        const permissions = await pending;
+        permissions.set(
+          clientId,
+          await consents.isGranted(workspaceId, clientId, [
+            ClientConsentType.DATA_PROCESSING,
+            ClientConsentType.HEALTH_DATA,
+          ]),
+        );
+        return permissions;
+      },
+      Promise.resolve(new Map<string, boolean>()),
+    );
     return records.map((record) =>
       allowed.get(record.clientId)
         ? record

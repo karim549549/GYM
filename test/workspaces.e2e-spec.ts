@@ -57,12 +57,14 @@ describe('WorkspacesService against the database', () => {
   });
 
   afterAll(async () => {
-    for (const workspaceId of workspaceIds) {
+    await workspaceIds.reduce(async (previous, workspaceId) => {
+      await previous;
+
       await tx.run(
         () => tx.db.delete(workspaces).where(eq(workspaces.id, workspaceId)),
         { workspaceId },
       );
-    }
+    }, Promise.resolve());
     await tx.db.delete(people).where(inArray(people.id, personIds));
     await moduleRef.close();
   });

@@ -106,7 +106,7 @@ describe('The food database over HTTP', () => {
       const { session } = await newCoach();
       const policy = new FoodMacrosPolicy();
       const all: Food[] = [];
-      for (let page = 1; ; page += 1) {
+      const readPage = async (page = 1): Promise<void> => {
         const body = (
           await harness
             .as(session)
@@ -114,8 +114,11 @@ describe('The food database over HTTP', () => {
             .expect(200)
         ).body;
         all.push(...body.items);
-        if (!body.hasNext) break;
-      }
+        if (body.hasNext) {
+          await readPage(page + 1);
+        }
+      };
+      await readPage();
 
       const library = all.filter((f) => !f.isCustom);
       expect(library.length).toBeGreaterThanOrEqual(63);
@@ -170,10 +173,11 @@ describe('The food database over HTTP', () => {
       expect(arabic.items.map((f) => f.slug)).toEqual(
         expect.arrayContaining(['chicken-breast-grilled']),
       );
-      expect(english.items.map((f) => f.slug).sort()).toEqual([
-        'rice-brown-cooked',
-        'rice-white-cooked',
-      ]);
+      expect(
+        english.items
+          .map((f) => f.slug)
+          .sort((a, b) => String(a).localeCompare(String(b))),
+      ).toEqual(['rice-brown-cooked', 'rice-white-cooked']);
     });
 
     it('takes the characters of a search literally, not as a pattern', async () => {

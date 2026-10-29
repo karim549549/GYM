@@ -79,12 +79,14 @@ describe('Principal resolution against the database', () => {
   });
 
   afterAll(async () => {
-    for (const workspaceId of created.workspaceIds) {
+    await created.workspaceIds.reduce(async (previous, workspaceId) => {
+      await previous;
+
       await tx.run(
         () => tx.db.delete(workspaces).where(eq(workspaces.id, workspaceId)),
         { workspaceId },
       );
-    }
+    }, Promise.resolve());
     await tx.db.delete(people).where(inArray(people.id, created.personIds));
     await moduleRef.close();
   });

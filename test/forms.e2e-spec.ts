@@ -306,12 +306,12 @@ describe('The form builder over HTTP', () => {
         saved.questions
           .filter((q) => q.mapsToMetric)
           .map((q) => q.mapsToMetric)
-          .sort(),
+          .sort((a, b) => String(a).localeCompare(String(b))),
       ).toEqual(
         builtIn.questions
           .filter((q) => q.mapsToMetric)
           .map((q) => q.mapsToMetric)
-          .sort(),
+          .sort((a, b) => String(a).localeCompare(String(b))),
       );
     });
 

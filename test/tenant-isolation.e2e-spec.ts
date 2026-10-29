@@ -272,10 +272,11 @@ describe('Tenant isolation against the database', () => {
   });
 
   it('does not leak a scope into later queries on a reused connection', async () => {
-    for (let round = 0; round < 5; round += 1) {
+    await Array.from({ length: 5 }).reduce(async (previous) => {
+      await previous;
       await tx.run(async () => tx.db.select().from(workspaces), scopeA());
       expect(await tx.db.select().from(workspaces)).toEqual([]);
-    }
+    }, Promise.resolve());
 
     const leftover = await tx.db.execute(
       sql`select current_setting('app.workspace_id', true) as workspace`,
@@ -1759,14 +1760,16 @@ describe('Tenant isolation against the database', () => {
       });
 
       it('opens nothing for a token that is not one, or an empty one', async () => {
-        for (const checkinToken of ['nope-nope', '']) {
+        await ['nope-nope', ''].reduce(async (previous, checkinToken) => {
+          await previous;
+
           expect(
             await tx.run(
               () => tx.db.select({ id: checkins.id }).from(checkins),
               { checkinToken },
             ),
           ).toEqual([]);
-        }
+        }, Promise.resolve());
       });
 
       it('only reads: it cannot change or remove the check-in', async () => {

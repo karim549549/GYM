@@ -288,6 +288,13 @@
       "when": 1793038899995,
       "tag": "0040_workspace_invitations_rls",
       "breakpoints": true
+    },
+    {
+      "idx": 41,
+      "version": "7",
+      "when": 1793269061610,
+      "tag": "0041_distributed_locks",
+      "breakpoints": true
     }
   ]
 }

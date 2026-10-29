@@ -81,10 +81,10 @@ docker build --target migrate -t gym-migrate .
 docker run --rm --env-file .env gym-migrate
 ```
 
-Before creating the service, set `region` in `render.yaml` to the Render region closest to your
-Supabase project (omitting it defaults to Oregon). When these files are available in your Git remote,
-choose **New > Blueprint** in Render, connect the repository, and use `render.yaml`. Fill all
-`sync: false` values in Render; use the Supabase pooler URL for `DATABASE_URL`. The free plan has idle
+Create a Docker web service in Render, connect the backend repository, and select the region closest
+to your Supabase project. Configure environment variables manually in Render, including
+`NODE_ENV=development` and `WHATSAPP_PROVIDER=mock`; use the Supabase pooler URL for `DATABASE_URL`.
+Set the Health Check Path to `/health`. The free plan has idle
 cold starts and pauses jobs while asleep; change to `starter` when you need always-on service.
 Commits trigger deployments; migrations remain a separate step.
 

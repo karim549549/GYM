@@ -128,9 +128,10 @@ describe('Assistants and teams over HTTP and the database', () => {
 
     it('limits how many invitations can wait at once', async () => {
       const owner = await newOwner();
-      for (let i = 0; i < 20; i += 1) {
+      await Array.from({ length: 20 }).reduce(async (previous) => {
+        await previous;
         await invite(owner.session, harness.uniquePhone()).expect(201);
-      }
+      }, Promise.resolve());
 
       const response = await invite(
         owner.session,
@@ -329,7 +330,9 @@ describe('Assistants and teams over HTTP and the database', () => {
           .post(`/invitations/${invitation.id}/accept`),
       ]);
 
-      expect(results.map((r) => r.status).sort()).toEqual([200, 409]);
+      expect(results.map((r) => r.status).sort((a, b) => a - b)).toEqual([
+        200, 409,
+      ]);
       const members = await harness
         .as(owner.session)
         .get('/members')

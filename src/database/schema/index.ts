@@ -8,6 +8,7 @@ export * from './form-templates.schema';
 export * from './intake-links.schema';
 export * from './intake-responses.schema';
 export * from './meal-plans.schema';
+export * from './locks.schema';
 export * from './measurements.schema';
 export * from './muscles.schema';
 export * from './packages.schema';

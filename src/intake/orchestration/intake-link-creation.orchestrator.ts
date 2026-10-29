@@ -49,20 +49,20 @@ export class IntakeLinkCreationOrchestrator {
   private async createWithFreeToken(
     workspaceId: string,
     clientId: string,
+    attempt = 1,
   ): Promise<{ token: string; expiresAt: Date }> {
-    for (let attempt = 1; ; attempt++) {
-      try {
-        return await this.transactions.attempt(() =>
-          this.intakeQuery.createLink(workspaceId, clientId, this.newToken()),
-        );
-      } catch (error) {
-        if (
-          !this.isTokenTaken(error) ||
-          attempt >= IntakeLinkCreationOrchestrator.ATTEMPTS
-        ) {
-          throw error;
-        }
+    try {
+      return await this.transactions.attempt(() =>
+        this.intakeQuery.createLink(workspaceId, clientId, this.newToken()),
+      );
+    } catch (error) {
+      if (
+        !this.isTokenTaken(error) ||
+        attempt >= IntakeLinkCreationOrchestrator.ATTEMPTS
+      ) {
+        throw error;
       }
+      return this.createWithFreeToken(workspaceId, clientId, attempt + 1);
     }
   }
 

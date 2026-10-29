@@ -44,7 +44,11 @@ describe('workspace_members against the database', () => {
     const allowed = [...rows[0].definition.matchAll(/'(\w+)'/g)].map(
       (match) => match[1],
     );
-    expect(allowed.sort()).toEqual(Object.values(WorkspaceRole).sort());
+    expect(allowed.sort((a, b) => String(a).localeCompare(String(b)))).toEqual(
+      Object.values(WorkspaceRole).sort((a, b) =>
+        String(a).localeCompare(String(b)),
+      ),
+    );
   });
 
   it('does not treat owner as a role: ownership is its own flag', async () => {

@@ -78,8 +78,8 @@ export class CheckinsService {
   }
 
   /** For the background job: makes the check-ins that have come into the month ahead. */
-  topUp(): Promise<number> {
-    return this.topUpOrchestrator.execute();
+  topUp(signal?: AbortSignal): Promise<number> {
+    return this.topUpOrchestrator.execute(signal);
   }
 
   list(

@@ -44,20 +44,24 @@ export class CheckinTopUpOrchestrator extends BaseCheckinCreationOrchestrator {
     );
   }
 
-  async execute(): Promise<number> {
+  async execute(signal?: AbortSignal): Promise<number> {
+    signal?.throwIfAborted();
     const schedules = await this.transactions.run(
       () => this.checkinsQuery.listActiveSchedules(),
       { system: true },
     );
 
-    let made = 0;
-    for (const schedule of schedules) {
-      made += await this.topUp(schedule);
-    }
-    return made;
+    return schedules.reduce(async (pendingCount, schedule) => {
+      const made = await pendingCount;
+      signal?.throwIfAborted();
+      return made + (await this.topUp(schedule, signal));
+    }, Promise.resolve(0));
   }
 
-  private async topUp(schedule: ActiveSchedule): Promise<number> {
+  private async topUp(
+    schedule: ActiveSchedule,
+    signal?: AbortSignal,
+  ): Promise<number> {
     try {
       return await this.transactions.run(
         async () => {
@@ -69,6 +73,7 @@ export class CheckinTopUpOrchestrator extends BaseCheckinCreationOrchestrator {
           const days = last
             ? this.schedulePolicy.dueDatesAfter(schedule, last, horizon)
             : this.schedulePolicy.dueDatesFrom(schedule, today, horizon);
+          signal?.throwIfAborted();
           return this.createFor(schedule.workspaceId, schedule, days);
         },
         { workspaceId: schedule.workspaceId },

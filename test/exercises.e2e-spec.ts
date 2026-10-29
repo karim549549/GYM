@@ -69,8 +69,14 @@ describe('The exercise library over HTTP', () => {
 
       expect(response.body).toHaveLength(20);
       // the table and the enum the API validates against must agree
-      expect(response.body.map((m: { id: string }) => m.id).sort()).toEqual(
-        Object.values(MuscleId).sort(),
+      expect(
+        response.body
+          .map((m: { id: string }) => m.id)
+          .sort((a: string, b: string) => a.localeCompare(b)),
+      ).toEqual(
+        Object.values(MuscleId).sort((a, b) =>
+          String(a).localeCompare(String(b)),
+        ),
       );
       expect(response.body).toContainEqual({
         id: 'chest',
@@ -198,10 +204,11 @@ describe('The exercise library over HTTP', () => {
       expect(advanced.items.every((i) => i.difficulty === 'advanced')).toBe(
         true,
       );
-      expect(cardio.items.map((i) => i.slug).sort()).toEqual([
-        'jump-rope',
-        'treadmill-run',
-      ]);
+      expect(
+        cardio.items
+          .map((i) => i.slug)
+          .sort((a, b) => String(a).localeCompare(String(b))),
+      ).toEqual(['jump-rope', 'treadmill-run']);
     });
 
     it.each([

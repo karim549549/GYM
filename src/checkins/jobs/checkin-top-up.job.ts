@@ -1,59 +1,31 @@
-import {
-  Injectable,
-  Logger,
-  type OnApplicationBootstrap,
-  type OnApplicationShutdown,
-} from '@nestjs/common';
+import { Injectable, type OnApplicationBootstrap } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
+import { LocksContext, OnOneInstance, WithoutOverlapping } from '@nestjs/locks';
 import type { Env } from '../../config/env.schema';
+import { SchedulingService } from '../../scheduling/scheduling.service';
 import { CheckinsService } from '../checkins.service';
 
-/**
- * Keeps the next month of check-ins created: once at start-up and then every
- * `CHECKIN_TOPUP_SECONDS` (0 turns it off). Running it from several instances is harmless, since a
- * day that has a check-in is left alone. The error is logged by name only: it can carry personal data.
- */
 @Injectable()
-export class CheckinTopUpJob
-  implements OnApplicationBootstrap, OnApplicationShutdown
-{
-  private readonly logger = new Logger(CheckinTopUpJob.name);
-  private timer?: NodeJS.Timeout;
-  private running = false;
-
+export class CheckinTopUpJob implements OnApplicationBootstrap {
   constructor(
     private readonly checkins: CheckinsService,
     private readonly config: ConfigService<Env, true>,
+    private readonly scheduling: SchedulingService,
+    private readonly locks: LocksContext,
   ) {}
 
   onApplicationBootstrap(): void {
-    const seconds = this.config.get('CHECKIN_TOPUP_SECONDS', { infer: true });
-    if (seconds === 0) {
-      return;
-    }
-    void this.tick();
-    this.timer = setInterval(() => void this.tick(), seconds * 1000);
-    // the job alone must not keep a process alive
-    this.timer.unref();
+    this.scheduling.every(
+      'checkins:top-up',
+      this.config.get('CHECKIN_TOPUP_SECONDS', { infer: true }),
+      () => this.execute(),
+      true,
+    );
   }
 
-  onApplicationShutdown(): void {
-    clearInterval(this.timer);
-  }
-
-  private async tick(): Promise<void> {
-    if (this.running) {
-      return;
-    }
-    this.running = true;
-    try {
-      await this.checkins.topUp();
-    } catch (error) {
-      this.logger.error(
-        `Topping up check-ins failed: ${(error as Error).name}`,
-      );
-    } finally {
-      this.running = false;
-    }
+  @OnOneInstance({ key: 'checkins:top-up' })
+  @WithoutOverlapping()
+  async execute(): Promise<void> {
+    await this.checkins.topUp(this.locks.signal);
   }
 }
