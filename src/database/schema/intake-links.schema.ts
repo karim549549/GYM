@@ -8,6 +8,7 @@ import {
   uuid,
 } from 'drizzle-orm/pg-core';
 import { clients } from './clients.schema';
+import { namedForms } from './named-forms.schema';
 import { workspaces } from './workspaces.schema';
 
 /**
@@ -24,6 +25,8 @@ export const intakeLinks = pgTable(
       .references(() => workspaces.id, { onDelete: 'cascade' }),
     clientId: uuid('client_id').notNull(),
     token: text('token').notNull().unique(),
+    /** The form this link asks; null means the coach's default form when it is opened. */
+    namedFormId: uuid('named_form_id'),
     expiresAt: timestamp('expires_at', { withTimezone: true })
       .notNull()
       .default(sql`now() + interval '14 days'`),
@@ -40,5 +43,10 @@ export const intakeLinks = pgTable(
       columns: [table.clientId, table.workspaceId],
       foreignColumns: [clients.id, clients.workspaceId],
     }).onDelete('cascade'),
+    foreignKey({
+      name: 'intake_links_named_form_workspace_fk',
+      columns: [table.namedFormId, table.workspaceId],
+      foreignColumns: [namedForms.id, namedForms.workspaceId],
+    }).onDelete('no action'),
   ],
 );

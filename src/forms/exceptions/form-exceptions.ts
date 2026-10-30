@@ -25,6 +25,8 @@ export class FormVersionConflictException extends ConflictException {
   private static readonly CONSTRAINTS = [
     'form_templates_purpose_version_key',
     'form_templates_one_active_idx',
+    'form_templates_named_version_key',
+    'form_templates_named_one_active_idx',
   ];
 
   constructor() {
