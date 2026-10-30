@@ -295,6 +295,20 @@
       "when": 1793269061610,
       "tag": "0041_distributed_locks",
       "breakpoints": true
+    },
+    {
+      "idx": 42,
+      "version": "7",
+      "when": 1793337739802,
+      "tag": "0042_checkin_time_image_question_no_card",
+      "breakpoints": true
+    },
+    {
+      "idx": 43,
+      "version": "7",
+      "when": 1793340832462,
+      "tag": "0043_profile_client_count_package_extras",
+      "breakpoints": true
     }
   ]
 }

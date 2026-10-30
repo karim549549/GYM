@@ -9,17 +9,25 @@ import type { CheckinStatus } from '../enums/checkin-status.enum';
 /** How a client is asked to check in. */
 export interface CheckinScheduleRecord {
   frequency: CheckinFrequency;
-  /** 0 is Sunday; only a weekly or fortnightly check-in has one. */
-  dayOfWeek: number | null;
-  /** The hour in Egypt the link goes out. */
-  sendHour: number;
+  /** 0 is Sunday; only a weekly or fortnightly check-in uses it. */
+  dayOfWeek: number;
+  /** The time in Egypt the link goes out, HH:MM. */
+  sendAt: string;
+  /** The first day check-ins are asked for, YYYY-MM-DD. */
+  startsOn: string;
   isActive: boolean;
+}
+
+/** A client's schedule with whose it is, for the list of all of them. */
+export interface ClientCheckinSchedule extends CheckinScheduleRecord {
+  clientId: string;
 }
 
 export interface CheckinScheduleInput {
   frequency?: CheckinFrequency;
   dayOfWeek?: number;
-  sendHour?: number;
+  sendAt?: string;
+  startsOn?: string;
 }
 
 /** A schedule with where it belongs, for the job that works through all of them. */
@@ -28,8 +36,26 @@ export interface ActiveSchedule {
   workspaceId: string;
   clientId: string;
   frequency: CheckinFrequency;
-  dayOfWeek: number | null;
-  sendHour: number;
+  dayOfWeek: number;
+  sendAt: string;
+  startsOn: string;
+}
+
+/** What the clients list shows of a client's check-ins. */
+export interface ClientCheckinOverview {
+  clientId: string;
+  /** The next check-in still to come, YYYY-MM-DD, or null when none is planned. */
+  nextDueOn: string | null;
+  /** Check-ins missed in the last thirty days. */
+  missedCount: number;
+}
+
+/** The same, with the days until the next one worked out in Egypt's calendar. */
+export interface ClientCheckinDays {
+  clientId: string;
+  /** Days until the next check-in; 0 is today. null when none is planned. */
+  nextInDays: number | null;
+  missedCount: number;
 }
 
 export interface StoredCheckin {
@@ -79,6 +105,10 @@ export interface CheckinFilter {
   status?: CheckinStatus;
   /** Handed in and not yet answered by the coach. */
   needsReply?: boolean;
+  /** Due on or after this day. */
+  dueFrom?: string;
+  /** Due on or before this day. */
+  dueTo?: string;
 }
 
 /** A check-in of a window and what became of it, for a client's progress. */

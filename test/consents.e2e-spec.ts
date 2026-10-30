@@ -374,7 +374,7 @@ describe('Consents over HTTP and the database', () => {
       await harness
         .as(ctx.session)
         .put(`/clients/${ctx.client.id}/checkin-schedule`)
-        .send({ frequency: 'daily', sendHour: 0 })
+        .send({ frequency: 'daily', sendAt: '00:00' })
         .expect(200);
       const list = (
         await harness

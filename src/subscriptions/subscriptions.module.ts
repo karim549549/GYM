@@ -12,6 +12,7 @@ import { SubscriptionDetailsOrchestrator } from './orchestration/subscription-de
 import { SubscriptionFreezeListOrchestrator } from './orchestration/subscription-freeze-list.orchestrator';
 import { SubscriptionFreezeOrchestrator } from './orchestration/subscription-freeze.orchestrator';
 import { SubscriptionListOrchestrator } from './orchestration/subscription-list.orchestrator';
+import { SubscriptionLiveOrchestrator } from './orchestration/subscription-live.orchestrator';
 import { SubscriptionPaymentOrchestrator } from './orchestration/subscription-payment.orchestrator';
 import { SubscriptionResumeOrchestrator } from './orchestration/subscription-resume.orchestrator';
 import { SubscriptionFirstStartOrchestrator } from './orchestration/subscription-first-start.orchestrator';
@@ -38,6 +39,7 @@ import { SubscriptionsService } from './subscriptions.service';
     SubscriptionsQueryHandler,
     SubscriptionCreationOrchestrator,
     SubscriptionListOrchestrator,
+    SubscriptionLiveOrchestrator,
     SubscriptionDetailsOrchestrator,
     SubscriptionUpdateOrchestrator,
     SubscriptionFreezeOrchestrator,

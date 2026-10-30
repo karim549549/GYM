@@ -1,6 +1,7 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { AuthModule } from './auth/auth.module';
+import { ClientOverviewModule } from './client-overview/client-overview.module';
 import { ClientsModule } from './clients/clients.module';
 import { validateEnv } from './config/env.schema';
 import { DatabaseModule } from './database/database.module';
@@ -34,6 +35,7 @@ import { WorkspacesModule } from './workspaces/workspaces.module';
     WorkspacesModule,
     PackagesModule,
     ClientsModule,
+    ClientOverviewModule,
     IntakeModule,
     SubscriptionsModule,
     PaymentsModule,

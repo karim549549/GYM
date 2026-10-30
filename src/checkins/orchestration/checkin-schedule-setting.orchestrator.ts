@@ -24,7 +24,7 @@ import { BaseCheckinCreationOrchestrator } from './base-checkin-creation.orchest
  */
 @Injectable()
 export class CheckinScheduleSettingOrchestrator extends BaseCheckinCreationOrchestrator {
-  private static readonly DEFAULT_SEND_HOUR = 8;
+  private static readonly DEFAULT_SEND_AT = '08:00';
 
   constructor(
     checkinsQuery: CheckinsQueryHandler,
@@ -59,25 +59,23 @@ export class CheckinScheduleSettingOrchestrator extends BaseCheckinCreationOrche
         await this.clients.findOne(workspaceId, clientId);
 
         const frequency = input.frequency ?? CheckinFrequency.WEEKLY;
+        const today = this.dates.today(new Date());
         const cadence = {
           frequency,
-          dayOfWeek: this.schedulePolicy.dayOfWeekFor(
-            frequency,
-            input.dayOfWeek,
-          ),
+          dayOfWeek: this.schedulePolicy.storedDayOfWeek(input.dayOfWeek),
         };
         const saved = await this.checkinsQuery.upsertSchedule(
           workspaceId,
           clientId,
           {
             ...cadence,
-            sendHour:
-              input.sendHour ??
-              CheckinScheduleSettingOrchestrator.DEFAULT_SEND_HOUR,
+            sendAt:
+              input.sendAt ??
+              CheckinScheduleSettingOrchestrator.DEFAULT_SEND_AT,
+            startsOn: input.startsOn ?? today,
           },
         );
 
-        const today = this.dates.today(new Date());
         const dropped = await this.checkinsQuery.deleteOpenAfter(
           clientId,
           today,
@@ -85,10 +83,10 @@ export class CheckinScheduleSettingOrchestrator extends BaseCheckinCreationOrche
         await this.reminders.cancelCheckins(workspaceId, dropped);
         await this.createFor(
           workspaceId,
-          { id: saved.id, clientId, sendHour: saved.sendHour },
+          { id: saved.id, clientId, sendAt: saved.sendAt },
           this.schedulePolicy.dueDatesFrom(
             cadence,
-            today,
+            this.schedulePolicy.startFor(saved.startsOn, today),
             this.horizonFrom(today),
           ),
         );

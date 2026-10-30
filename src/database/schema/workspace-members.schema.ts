@@ -10,11 +10,16 @@ import {
   uniqueIndex,
   uuid,
 } from 'drizzle-orm/pg-core';
+import { ClientCountRange } from '../../members/enums/client-count-range.enum';
 import { WorkspaceRole } from '../../members/enums/workspace-role.enum';
 import { people } from './people.schema';
 import { workspaces } from './workspaces.schema';
 
 // the allowed roles are the enum's values, so the constraint cannot drift from the code
+const COUNT_RANGE_VALUES = Object.values(ClientCountRange)
+  .map((range) => `'${range}'`)
+  .join(', ');
+
 const ROLE_VALUES = Object.values(WorkspaceRole)
   .map((role) => `'${role}'`)
   .join(', ');
@@ -41,6 +46,7 @@ export const workspaceMembers = pgTable(
       .default(sql`'{}'::text[]`),
     bio: text('bio'),
     instagram: text('instagram'),
+    clientCountRange: text('client_count_range').$type<ClientCountRange>(),
     createdAt: timestamp('created_at', { withTimezone: true })
       .notNull()
       .defaultNow(),
@@ -59,6 +65,10 @@ export const workspaceMembers = pgTable(
     uniqueIndex('workspace_members_one_owner_idx')
       .on(table.workspaceId)
       .where(sql`${table.isOwner}`),
+    check(
+      'workspace_members_client_count_range_check',
+      sql`${table.clientCountRange} is null or ${table.clientCountRange} in (${sql.raw(COUNT_RANGE_VALUES)})`,
+    ),
     check(
       'workspace_members_role_check',
       sql`${table.role} in (${sql.raw(ROLE_VALUES)})`,

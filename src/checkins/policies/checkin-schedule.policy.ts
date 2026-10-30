@@ -4,7 +4,7 @@ import { CheckinFrequency } from '../enums/checkin-frequency.enum';
 
 export interface CheckinCadence {
   frequency: CheckinFrequency;
-  dayOfWeek: number | null;
+  dayOfWeek: number;
 }
 
 /**
@@ -39,6 +39,16 @@ export class CheckinSchedulePolicy {
     return chosen ?? CheckinSchedulePolicy.DEFAULT_DAY;
   }
 
+  /** The weekday kept on the schedule: the one chosen, or Friday. It only matters to a weekly or fortnightly rhythm. */
+  storedDayOfWeek(chosen: number | undefined): number {
+    return chosen ?? CheckinSchedulePolicy.DEFAULT_DAY;
+  }
+
+  /** The first day to ask from: the schedule's start, or today when that has already passed. */
+  startFor(startsOn: string, today: string): string {
+    return this.dates.daysBetween(today, startsOn) > 0 ? startsOn : today;
+  }
+
   /** Every due day from `from` (included) to `to` (included), on the chosen weekday where there is one. */
   dueDatesFrom(cadence: CheckinCadence, from: string, to: string): string[] {
     return this.walk(this.firstOnOrAfter(cadence, from), cadence, to);
@@ -57,10 +67,7 @@ export class CheckinSchedulePolicy {
   }
 
   private firstOnOrAfter(cadence: CheckinCadence, from: string): string {
-    const day = this.dayOfWeekFor(
-      cadence.frequency,
-      cadence.dayOfWeek ?? undefined,
-    );
+    const day = this.dayOfWeekFor(cadence.frequency, cadence.dayOfWeek);
     if (day === null) {
       return from;
     }

@@ -14,7 +14,7 @@ import { BaseCheckinOrchestrator } from './base-checkin.orchestrator';
 export interface CheckinSource {
   id: string;
   clientId: string;
-  sendHour: number;
+  sendAt: string;
 }
 
 /**
@@ -63,7 +63,7 @@ export abstract class BaseCheckinCreationOrchestrator extends BaseCheckinOrchest
         clientId: checkin.clientId,
         checkinId: checkin.id,
         dueOn: checkin.dueOn,
-        sendHour: source.sendHour,
+        sendAt: source.sendAt,
         link: this.linkFor(checkin.token),
       })),
     );
