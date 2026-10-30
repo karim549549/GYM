@@ -12,6 +12,8 @@ import { CheckinsService } from './checkins.service';
 import { CheckinsQueryHandler } from './handlers/checkins-query.handler';
 import { CheckinTopUpJob } from './jobs/checkin-top-up.job';
 import { CheckinActivityOrchestrator } from './orchestration/checkin-activity.orchestrator';
+import { CheckinScheduleListOrchestrator } from './orchestration/checkin-schedule-list.orchestrator';
+import { CheckinOverviewOrchestrator } from './orchestration/checkin-overview.orchestrator';
 import { CheckinAtRiskOrchestrator } from './orchestration/checkin-at-risk.orchestrator';
 import { CheckinDetailsOrchestrator } from './orchestration/checkin-details.orchestrator';
 import { CheckinListOrchestrator } from './orchestration/checkin-list.orchestrator';
@@ -50,6 +52,8 @@ import { PublicCheckinController } from './public-checkin.controller';
     CheckinDetailsOrchestrator,
     CheckinReplyOrchestrator,
     CheckinAtRiskOrchestrator,
+    CheckinOverviewOrchestrator,
+    CheckinScheduleListOrchestrator,
     CheckinActivityOrchestrator,
     PublicCheckinFormOrchestrator,
     PublicCheckinConsentsOrchestrator,

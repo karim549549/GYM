@@ -11,6 +11,7 @@ import {
   NotContains,
 } from 'class-validator';
 import { Trimmed } from '../../common/decorators/trimmed.decorator';
+import { ClientCountRange } from '../enums/client-count-range.enum';
 import { Specialty } from '../enums/specialty.enum';
 
 /** What a coach may change about their own profile. null clears a field; leaving it out keeps it. */
@@ -39,4 +40,9 @@ export class UpdateMemberProfileDto {
   @MaxLength(30)
   @NotContains(' ')
   instagram?: string | null;
+
+  /** How many clients the coach has now. null clears it. */
+  @IsOptional()
+  @IsEnum(ClientCountRange)
+  clientCountRange?: ClientCountRange | null;
 }

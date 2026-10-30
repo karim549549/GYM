@@ -1,12 +1,18 @@
 import {
+  ArrayUnique,
+  IsArray,
+  IsEnum,
   IsInt,
   IsNotEmpty,
+  IsOptional,
   IsString,
   Max,
   MaxLength,
   Min,
 } from 'class-validator';
+import { CheckinFrequency } from '../../checkins/enums/checkin-frequency.enum';
 import { Trimmed } from '../../common/decorators/trimmed.decorator';
+import { PackageInclude } from '../enums/package-include.enum';
 
 export class CreatePackageDto {
   @Trimmed()
@@ -25,4 +31,22 @@ export class CreatePackageDto {
   @Min(0)
   @Max(100_000_000)
   priceMinor: number;
+
+  /** How often the coach checks in with the client on this package. */
+  @IsOptional()
+  @IsEnum(CheckinFrequency)
+  checkInFrequency?: CheckinFrequency;
+
+  @IsOptional()
+  @IsArray()
+  @ArrayUnique()
+  @IsEnum(PackageInclude, { each: true })
+  includes?: PackageInclude[];
+
+  @Trimmed()
+  @IsOptional()
+  @IsString()
+  @IsNotEmpty()
+  @MaxLength(300)
+  description?: string;
 }

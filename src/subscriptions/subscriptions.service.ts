@@ -3,6 +3,7 @@ import type { PaginatedResponse } from '../common/handlers/base-query.handler';
 import type { PaymentRecord } from '../payments/interfaces/payment.interface';
 import type {
   FreezeRecord,
+  LiveSubscription,
   SubscriptionListFilter,
   SubscriptionRecord,
   SubscriptionSale,
@@ -15,6 +16,7 @@ import { SubscriptionDetailsOrchestrator } from './orchestration/subscription-de
 import { SubscriptionFreezeListOrchestrator } from './orchestration/subscription-freeze-list.orchestrator';
 import { SubscriptionFreezeOrchestrator } from './orchestration/subscription-freeze.orchestrator';
 import { SubscriptionListOrchestrator } from './orchestration/subscription-list.orchestrator';
+import { SubscriptionLiveOrchestrator } from './orchestration/subscription-live.orchestrator';
 import {
   type PaymentReceived,
   SubscriptionPaymentOrchestrator,
@@ -41,7 +43,13 @@ export class SubscriptionsService {
     private readonly summarizing: SubscriptionSummaryOrchestrator,
     private readonly statisticsOrchestrator: SubscriptionStatisticsOrchestrator,
     private readonly firstStartOrchestrator: SubscriptionFirstStartOrchestrator,
+    private readonly liveOrchestrator: SubscriptionLiveOrchestrator,
   ) {}
+
+  /** The running subscription of each of these clients, for the clients list. */
+  liveFor(workspaceId: string, clientIds: string[]): Promise<LiveSubscription[]> {
+    return this.liveOrchestrator.execute(workspaceId, clientIds);
+  }
 
   sell(
     workspaceId: string,

@@ -34,6 +34,7 @@ describe('A coach’s own profile over HTTP', () => {
         specialties: [],
         bio: null,
         instagram: null,
+        clientCountRange: null,
       });
     });
 
@@ -64,6 +65,7 @@ describe('A coach’s own profile over HTTP', () => {
         specialties: ['fat_loss', 'womens_training'],
         bio: 'Ten years of coaching.',
         instagram: 'sara.fit',
+        clientCountRange: null,
       });
       expect((await read(session)).body).toEqual(response.body);
     });
@@ -109,6 +111,7 @@ describe('A coach’s own profile over HTTP', () => {
         specialties: ['muscle_gain'],
         bio: 'Now with nutrition',
         instagram: 'strong.coach',
+        clientCountRange: null,
       });
     });
 
@@ -130,7 +133,28 @@ describe('A coach’s own profile over HTTP', () => {
         specialties: [],
         bio: null,
         instagram: null,
+        clientCountRange: null,
       });
+    });
+
+    it('keeps how many clients the coach has now, and clears it with null', async () => {
+      const { session } = await newCoach();
+
+      const set = await change(session, { clientCountRange: 'r5_20' }).expect(
+        200,
+      );
+      const cleared = await change(session, { clientCountRange: null }).expect(
+        200,
+      );
+
+      expect(set.body.clientCountRange).toBe('r5_20');
+      expect(cleared.body.clientCountRange).toBeNull();
+    });
+
+    it('refuses a client count nobody offers', async () => {
+      const { session } = await newCoach();
+
+      await change(session, { clientCountRange: 'lots' }).expect(400);
     });
 
     it('changes nothing when nothing is sent', async () => {

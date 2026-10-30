@@ -377,7 +377,7 @@ describe('The form builder over HTTP', () => {
       ],
       [
         'a kind of question nobody offers',
-        { questions: [{ labelAr: 'س', inputType: 'image' }] },
+        { questions: [{ labelAr: 'س', inputType: 'video' }] },
       ],
       [
         'a wording over 400 characters',

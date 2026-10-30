@@ -1,4 +1,4 @@
-/** The kinds of question a form can ask (the product's version one, minus photos, which have their own private storage). */
+/** The kinds of question a form can ask (the product's version one). */
 export enum QuestionType {
   SHORT_TEXT = 'short_text',
   LONG_TEXT = 'long_text',
@@ -13,4 +13,6 @@ export enum QuestionType {
   BOOLEAN = 'boolean',
   /** A whole number on a scale, such as 1 to 10. */
   SCALE = 'scale',
+  /** A photo. Can be asked, but no answer is accepted until photos have their own private storage flow. */
+  IMAGE = 'image',
 }

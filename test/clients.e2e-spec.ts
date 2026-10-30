@@ -209,6 +209,20 @@ describe('Clients over HTTP', () => {
       });
     });
 
+    it('shows what is known of each client: no subscription, plan or check-ins yet for a new one', async () => {
+      const { session } = await newCoach();
+      await added(session, person('Fresh'));
+
+      const response = await list(session).expect(200);
+
+      expect(response.body.items[0].summary).toEqual({
+        subscription: null,
+        hasPlan: false,
+        nextCheckinInDays: null,
+        missedCheckins: 0,
+      });
+    });
+
     it('leaves out clients who were removed', async () => {
       const { session } = await newCoach();
       const kept = await added(session, person('Kept'));

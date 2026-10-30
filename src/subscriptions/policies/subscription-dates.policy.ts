@@ -51,7 +51,13 @@ export class SubscriptionDatesPolicy {
 
   /** The moment the clock in Egypt shows `hour` on that day, whatever the season's offset from UTC. */
   atHour(date: string, hour: number): Date {
-    const guess = this.toMs(date) + hour * 3_600_000;
+    return this.atTime(date, `${hour}:00`);
+  }
+
+  /** The moment the clock in Egypt shows `time` (HH:MM) on that day. */
+  atTime(date: string, time: string): Date {
+    const [hour, minute] = time.split(':').map(Number);
+    const guess = this.toMs(date) + hour * 3_600_000 + minute * 60_000;
     return new Date(guess - this.offsetMs(guess));
   }
 
