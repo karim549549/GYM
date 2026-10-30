@@ -95,6 +95,7 @@ describe('Intake over HTTP', () => {
         token: expect.stringMatching(/^[A-Za-z0-9]{8}$/),
         url: `http://localhost:3001/f/${response.body.token}`,
         expiresAt: expect.any(String),
+        namedFormId: null,
       });
       const days =
         (new Date(response.body.expiresAt).getTime() - Date.now()) / 86_400_000;

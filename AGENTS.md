@@ -776,6 +776,8 @@ from `DefaultFormLabelsPolicy`.
 - Answers are keyed by question id and stored with the form version and, for a custom form, `template_id`
   (on `intake_responses` and `checkins`). A link opened before a new version was saved is answered against the
   current one. The public intake and check-in flows read the form through `FormsService.currentFor`.
+- **Named forms** (`/named-forms`, the `named_forms` table) are the coach's library: each has a `name` (1 to 60 characters), a purpose and versions of its own (`form_templates.named_form_id`). `GET` lists the ones not archived with the version in use and the question count; `POST { purpose, name, questions }` makes one; `GET :id` reads it with its questions; `PUT :id { name?, questions? }` renames it and/or saves the questions as its next version (a new version never changes an old one); `DELETE :id` archives it (never deleted: answers and links refer to it). The default form (`/forms/:purpose`) stays as it is and is what a link asks when it pins nothing.
+- **An intake link can pin a named form**: `POST /clients/:id/intake-link { namedFormId }` (a uuid; `null` goes back to the default form; leaving it out keeps what an open link asks). The public form and the submission read the pinned form's current version, falling back to the default form.
 - `image` can be asked as a question type, but no answer to it is accepted yet (it is refused as invalid): photos need the private photo bucket flow first. Not built: conditional questions.
 
 ## Consent

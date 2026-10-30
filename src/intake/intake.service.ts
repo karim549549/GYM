@@ -20,8 +20,12 @@ export class IntakeService {
     private readonly answers: IntakeAnswersOrchestrator,
   ) {}
 
-  createLink(workspaceId: string, clientId: string): Promise<IntakeLinkView> {
-    return this.linkCreation.execute(workspaceId, clientId);
+  createLink(
+    workspaceId: string,
+    clientId: string,
+    namedFormId?: string | null,
+  ): Promise<IntakeLinkView> {
+    return this.linkCreation.execute(workspaceId, clientId, namedFormId);
   }
 
   openForm(token: string): Promise<PublicIntakeView> {

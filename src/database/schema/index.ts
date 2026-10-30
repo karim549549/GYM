@@ -11,6 +11,7 @@ export * from './meal-plans.schema';
 export * from './locks.schema';
 export * from './measurements.schema';
 export * from './muscles.schema';
+export * from './named-forms.schema';
 export * from './packages.schema';
 export * from './payment-channels.schema';
 export * from './reminder-messages.schema';

@@ -10,12 +10,18 @@ import { FormDetailsOrchestrator } from './orchestration/form-details.orchestrat
 import { FormResetOrchestrator } from './orchestration/form-reset.orchestrator';
 import { FormSavingOrchestrator } from './orchestration/form-saving.orchestrator';
 import { FormTemplateOrchestrator } from './orchestration/form-template.orchestrator';
+import { NamedFormArchiveOrchestrator } from './orchestration/named-form-archive.orchestrator';
+import { NamedFormCreationOrchestrator } from './orchestration/named-form-creation.orchestrator';
+import { NamedFormDetailsOrchestrator } from './orchestration/named-form-details.orchestrator';
+import { NamedFormListOrchestrator } from './orchestration/named-form-list.orchestrator';
+import { NamedFormUpdateOrchestrator } from './orchestration/named-form-update.orchestrator';
+import { NamedFormsController } from './named-forms.controller';
 import { DefaultFormLabelsPolicy } from './policies/default-form-labels.policy';
 import { FormDefinitionPolicy } from './policies/form-definition.policy';
 
 @Module({
   imports: [WorkspacesModule],
-  controllers: [FormsController],
+  controllers: [FormsController, NamedFormsController],
   providers: [
     FormsService,
     FormsQueryHandler,
@@ -24,6 +30,11 @@ import { FormDefinitionPolicy } from './policies/form-definition.policy';
     FormResetOrchestrator,
     FormTemplateOrchestrator,
     CurrentFormOrchestrator,
+    NamedFormListOrchestrator,
+    NamedFormCreationOrchestrator,
+    NamedFormDetailsOrchestrator,
+    NamedFormUpdateOrchestrator,
+    NamedFormArchiveOrchestrator,
     FormDefinitionPolicy,
     DefaultFormLabelsPolicy,
     // the built-in forms are code in the intake and check-ins modules; they are stateless rules, so the
