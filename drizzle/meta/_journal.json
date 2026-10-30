@@ -337,6 +337,20 @@
       "when": 1793376308507,
       "tag": "0047_reminder_messages_rls",
       "breakpoints": true
+    },
+    {
+      "idx": 48,
+      "version": "7",
+      "when": 1793380259932,
+      "tag": "0048_named_forms",
+      "breakpoints": true
+    },
+    {
+      "idx": 49,
+      "version": "7",
+      "when": 1793380262325,
+      "tag": "0049_named_forms_rls",
+      "breakpoints": true
     }
   ]
 }

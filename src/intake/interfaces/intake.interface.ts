@@ -8,6 +8,8 @@ export interface IntakeLinkView {
   /** Where the client opens it, on the web app. */
   url: string;
   expiresAt: Date;
+  /** The coach's named form this link asks; null when it asks their default form. */
+  namedFormId: string | null;
 }
 
 /** A link looked up by its token, with where it leads. */
@@ -17,6 +19,7 @@ export interface IntakeLinkTarget {
   clientId: string;
   expiresAt: Date;
   submittedAt: Date | null;
+  namedFormId: string | null;
 }
 
 /** What the client sees when they open the link: the coach's brand and the form, nothing else. */

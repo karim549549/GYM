@@ -57,6 +57,7 @@ export class IntakeSubmissionOrchestrator extends BasePublicIntakeOrchestrator {
           link.workspaceId,
           FormPurpose.INTAKE,
           workspace.unitSystem,
+          link.namedFormId,
         );
         const checked = this.formPolicy.check(form, answers);
         if (checked.outcome === 'invalid') {

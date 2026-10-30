@@ -29,11 +29,21 @@ export abstract class BaseFormOrchestrator {
     protected readonly transactions: TransactionManager,
   ) {}
 
-  /** The form to ask: the coach's current version, or the built-in one. */
+  /**
+   * The form to ask: the named form the link pins (its current version), else the coach's current
+   * default version, else the built-in one.
+   */
   protected async currentForm(
     purpose: FormPurpose,
     unitSystem: UnitSystem,
+    namedFormId?: string | null,
   ): Promise<IntakeForm> {
+    if (namedFormId) {
+      const named = await this.formsQuery.findActiveOf(namedFormId);
+      if (named) {
+        return this.customForm(named, unitSystem);
+      }
+    }
     const template = await this.formsQuery.findActive(purpose);
     return template
       ? this.customForm(template, unitSystem)

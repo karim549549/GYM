@@ -4,13 +4,17 @@ import { ConfigService } from '@nestjs/config';
 import { ClientsService } from '../../clients/clients.service';
 import type { Env } from '../../config/env.schema';
 import { TransactionManager } from '../../database/transaction.manager';
+import { FormTemplateNotFoundException } from '../../forms/exceptions/form-exceptions';
+import { FormPurpose } from '../../forms/enums/form-purpose.enum';
+import { FormsService } from '../../forms/forms.service';
 import { IntakeQueryHandler } from '../handlers/intake-query.handler';
 import type { IntakeLinkView } from '../interfaces/intake.interface';
 
 /**
  * Takes over `IntakeService.createLink`. One link stays open per client: asking again while
  * it is open returns it, so a coach cannot lose track of what they sent; once it is used or
- * expired, asking makes a new one, which is how a coach reopens the form.
+ * expired, asking makes a new one, which is how a coach reopens the form. A link can pin one of the
+ * coach's named forms (`null` goes back to their default form); leaving it out keeps what the link asks.
  */
 @Injectable()
 export class IntakeLinkCreationOrchestrator {
@@ -26,34 +30,62 @@ export class IntakeLinkCreationOrchestrator {
     private readonly clients: ClientsService,
     private readonly config: ConfigService<Env, true>,
     private readonly transactions: TransactionManager,
+    private readonly forms: FormsService,
   ) {}
 
   async execute(
     workspaceId: string,
     clientId: string,
+    namedFormId?: string | null,
   ): Promise<IntakeLinkView> {
     const link = await this.transactions.run(
       async () => {
         await this.clients.findOne(workspaceId, clientId);
-        return (
-          (await this.intakeQuery.findOpenLinkForClient(clientId)) ??
-          this.createWithFreeToken(workspaceId, clientId)
-        );
+        if (namedFormId) {
+          const named = await this.forms.namedForm(workspaceId, namedFormId);
+          if (named.purpose !== FormPurpose.INTAKE) {
+            throw new FormTemplateNotFoundException();
+          }
+        }
+        const open = await this.intakeQuery.findOpenLinkForClient(clientId);
+        if (!open) {
+          return this.createWithFreeToken(
+            workspaceId,
+            clientId,
+            namedFormId ?? null,
+          );
+        }
+        if (namedFormId !== undefined && namedFormId !== open.namedFormId) {
+          await this.intakeQuery.pinLink(open.id, namedFormId);
+          return { ...open, namedFormId };
+        }
+        return open;
       },
       { workspaceId },
     );
-    return { ...link, url: this.urlFor(link.token) };
+    return {
+      token: link.token,
+      expiresAt: link.expiresAt,
+      namedFormId: link.namedFormId ?? null,
+      url: this.urlFor(link.token),
+    };
   }
 
   /** A token that is taken is retried, each try a savepoint so it cannot spoil the transaction. */
   private async createWithFreeToken(
     workspaceId: string,
     clientId: string,
+    namedFormId: string | null,
     attempt = 1,
-  ): Promise<{ token: string; expiresAt: Date }> {
+  ): Promise<{ token: string; expiresAt: Date; namedFormId: string | null }> {
     try {
       return await this.transactions.attempt(() =>
-        this.intakeQuery.createLink(workspaceId, clientId, this.newToken()),
+        this.intakeQuery.createLink(
+          workspaceId,
+          clientId,
+          this.newToken(),
+          namedFormId,
+        ),
       );
     } catch (error) {
       if (
@@ -62,7 +94,12 @@ export class IntakeLinkCreationOrchestrator {
       ) {
         throw error;
       }
-      return this.createWithFreeToken(workspaceId, clientId, attempt + 1);
+      return this.createWithFreeToken(
+        workspaceId,
+        clientId,
+        namedFormId,
+        attempt + 1,
+      );
     }
   }
 

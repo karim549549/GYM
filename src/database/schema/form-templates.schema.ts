@@ -15,6 +15,7 @@ import {
   uuid,
 } from 'drizzle-orm/pg-core';
 import { FormPurpose } from '../../forms/enums/form-purpose.enum';
+import { namedForms } from './named-forms.schema';
 import { QuestionType } from '../../intake/enums/question-type.enum';
 import { workspaces } from './workspaces.schema';
 
@@ -35,6 +36,8 @@ export const formTemplates = pgTable(
       .notNull()
       .references(() => workspaces.id, { onDelete: 'cascade' }),
     purpose: text('purpose').$type<FormPurpose>().notNull(),
+    /** The named form this is a version of; null for the coach's single default form of a purpose. */
+    namedFormId: uuid('named_form_id'),
     version: integer('version').notNull().default(1),
     /** The version in use: new links and check-ins ask these questions. */
     isActive: boolean('is_active').notNull().default(true),
@@ -44,15 +47,26 @@ export const formTemplates = pgTable(
   },
   (table) => [
     unique('form_templates_id_workspace_key').on(table.id, table.workspaceId),
-    unique('form_templates_purpose_version_key').on(
-      table.workspaceId,
-      table.purpose,
-      table.version,
-    ),
-    // one current form per purpose: the database refuses a second, not a check in code
+    // the default form of a purpose (not a named one) has one row per version
+    uniqueIndex('form_templates_purpose_version_key')
+      .on(table.workspaceId, table.purpose, table.version)
+      .where(sql`${table.namedFormId} is null`),
+    // one current default form per purpose: the database refuses a second, not a check in code
     uniqueIndex('form_templates_one_active_idx')
       .on(table.workspaceId, table.purpose)
-      .where(sql`${table.isActive}`),
+      .where(sql`${table.isActive} and ${table.namedFormId} is null`),
+    // a named form has its own versions, and one current one
+    uniqueIndex('form_templates_named_version_key')
+      .on(table.namedFormId, table.version)
+      .where(sql`${table.namedFormId} is not null`),
+    uniqueIndex('form_templates_named_one_active_idx')
+      .on(table.namedFormId)
+      .where(sql`${table.isActive} and ${table.namedFormId} is not null`),
+    foreignKey({
+      name: 'form_templates_named_form_workspace_fk',
+      columns: [table.namedFormId, table.workspaceId],
+      foreignColumns: [namedForms.id, namedForms.workspaceId],
+    }).onDelete('no action'),
     index('form_templates_workspace_id_idx').on(table.workspaceId),
     check(
       'form_templates_purpose_check',
