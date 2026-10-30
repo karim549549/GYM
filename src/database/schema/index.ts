@@ -12,6 +12,8 @@ export * from './locks.schema';
 export * from './measurements.schema';
 export * from './muscles.schema';
 export * from './packages.schema';
+export * from './payment-channels.schema';
+export * from './reminder-messages.schema';
 export * from './payments.schema';
 export * from './plans.schema';
 export * from './platform-billing.schema';

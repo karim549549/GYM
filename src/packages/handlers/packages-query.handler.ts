@@ -66,6 +66,15 @@ export class PackagesQueryHandler extends BaseQueryHandler {
       .values(list.map((pkg) => ({ workspaceId, currency, ...pkg })));
   }
 
+  /** Removes the package. False when it is not visible, which includes another workspace's. */
+  async remove(id: string): Promise<boolean> {
+    const rows = await this.db
+      .delete(packages)
+      .where(eq(packages.id, id))
+      .returning({ id: packages.id });
+    return rows.length > 0;
+  }
+
   /** Sets only the fields given. Null when the package is not visible, which includes another workspace's. */
   async update(
     id: string,

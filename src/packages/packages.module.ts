@@ -5,10 +5,9 @@ import { PackageCreationOrchestrator } from './orchestration/package-creation.or
 import { PackageDetailsOrchestrator } from './orchestration/package-details.orchestrator';
 import { PackageListOrchestrator } from './orchestration/package-list.orchestrator';
 import { PackageUpdateOrchestrator } from './orchestration/package-update.orchestrator';
-import { StarterPackagesOrchestrator } from './orchestration/starter-packages.orchestrator';
+import { PackageRemovalOrchestrator } from './orchestration/package-removal.orchestrator';
 import { PackagesController } from './packages.controller';
 import { PackagesService } from './packages.service';
-import { StarterPackagesPolicy } from './policies/starter-packages.policy';
 
 @Module({
   imports: [WorkspacesModule],
@@ -20,8 +19,7 @@ import { StarterPackagesPolicy } from './policies/starter-packages.policy';
     PackageDetailsOrchestrator,
     PackageCreationOrchestrator,
     PackageUpdateOrchestrator,
-    StarterPackagesOrchestrator,
-    StarterPackagesPolicy,
+    PackageRemovalOrchestrator,
   ],
   exports: [PackagesService],
 })
