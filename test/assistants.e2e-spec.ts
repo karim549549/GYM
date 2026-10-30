@@ -480,11 +480,16 @@ describe('Assistants and teams over HTTP and the database', () => {
         .patch(`/clients/${added.body.id}`)
         .send({ fullName: 'Renamed by assistant' })
         .expect(200);
+      const made = await asOwner()
+        .post('/packages')
+        .send({ name: 'Monthly', durationDays: 30, priceMinor: 100_000 })
+        .expect(201);
       const packages = (await asAssistant().get('/packages').expect(200))
         .body as { id: string }[];
+      expect(packages.map((p) => p.id)).toContain(made.body.id);
       const sold = await asAssistant()
         .post(`/clients/${clientId}/subscriptions`)
-        .send({ packageId: packages[0].id, priceMinor: 100_000 })
+        .send({ packageId: made.body.id, priceMinor: 100_000 })
         .expect(201);
       subscriptionId = sold.body.id;
       await asAssistant().get('/subscriptions').expect(200);
@@ -525,6 +530,11 @@ describe('Assistants and teams over HTTP and the database', () => {
       ['put', '/workspaces/current/logo'],
       ['post', '/packages'],
       ['patch', `/packages/${id}`],
+      ['delete', `/packages/${id}`],
+      ['post', '/payment-channels'],
+      ['put', '/reminder-messages/expired'],
+      ['patch', `/payment-channels/${id}`],
+      ['delete', `/payment-channels/${id}`],
       ['post', '/invitations'],
       ['get', '/invitations'],
       ['delete', `/invitations/${id}`],

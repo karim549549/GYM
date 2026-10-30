@@ -33,44 +33,23 @@ describe('Packages over HTTP', () => {
     priceMinor: 450_000,
   };
 
-  describe('the packages a new coach starts with', () => {
-    it('are one, three and six months, named in Arabic, with the price left to set', async () => {
+  describe('a new coach', () => {
+    it('starts with no packages', async () => {
       const { session } = await newCoach();
 
       const response = await list(session).expect(200);
 
-      expect(response.body).toEqual([
-        {
-          id: expect.any(String),
-          name: expect.stringMatching(/[؀-ۿ]/),
-          durationDays: 30,
-          priceMinor: 0,
-          currency: 'EGP',
-          isActive: true,
-          checkInFrequency: null,
-          includes: [],
-          description: null,
-        },
-        expect.objectContaining({ durationDays: 90, priceMinor: 0 }),
-        expect.objectContaining({ durationDays: 180, priceMinor: 0 }),
-      ]);
+      expect(response.body).toEqual([]);
     });
 
-    it('belong to that coach alone', async () => {
+    it('sees only their own packages', async () => {
       const first = await newCoach();
       const second = await newCoach();
-      const firstIds = (await list(first.session)).body.map(
-        (p: { id: string }) => p.id,
-      );
+      await create(first.session, quarterly).expect(201);
 
-      const secondIds = (await list(second.session)).body.map(
-        (p: { id: string }) => p.id,
-      );
+      const secondList = (await list(second.session)).body;
 
-      expect(secondIds).toHaveLength(3);
-      expect(secondIds.filter((id: string) => firstIds.includes(id))).toEqual(
-        [],
-      );
+      expect(secondList).toEqual([]);
     });
   });
 
@@ -83,11 +62,13 @@ describe('Packages over HTTP', () => {
         priceMinor: 100_000,
       }).expect(201);
 
+      await create(session, quarterly).expect(201);
+
       const days = (await list(session)).body.map(
         (p: { durationDays: number }) => p.durationDays,
       );
 
-      expect(days).toEqual([14, 30, 90, 180]);
+      expect(days).toEqual([14, 90]);
     });
 
     it('leaves out packages that are no longer sold, unless asked', async () => {
@@ -393,17 +374,63 @@ describe('Packages over HTTP', () => {
       expect(response.body.code).toBe('VALIDATION_FAILED');
     });
 
-    it('has no delete: a package is deactivated, never removed', async () => {
+  });
+
+  describe('DELETE /packages/:id', () => {
+    it('removes a package nobody bought', async () => {
       const { session } = await newCoach();
       const made = (await create(session, quarterly).expect(201)).body;
 
-      await harness.as(session).delete(`/packages/${made.id}`).expect(404);
+      await harness.as(session).delete(`/packages/${made.id}`).expect(204);
 
       expect(
         (await list(session, '?includeInactive=true')).body.map(
           (p: { id: string }) => p.id,
         ),
-      ).toContain(made.id);
+      ).not.toContain(made.id);
+    });
+
+    it('keeps a package a subscription was sold on, and says why', async () => {
+      const { session } = await newCoach();
+      const made = (await create(session, quarterly).expect(201)).body;
+      const client = await harness
+        .as(session)
+        .post('/clients')
+        .send({ fullName: 'Sold Client', phone: '+201001234567' })
+        .expect(201);
+      await harness
+        .as(session)
+        .post(`/clients/${client.body.id}/subscriptions`)
+        .send({ packageId: made.id })
+        .expect(201);
+
+      const response = await harness
+        .as(session)
+        .delete(`/packages/${made.id}`)
+        .expect(409);
+
+      expect(response.body.code).toBe('PACKAGE_IN_USE');
+    });
+
+    it('is not found for a package that does not exist', async () => {
+      const { session } = await newCoach();
+
+      await harness
+        .as(session)
+        .delete(`/packages/${randomUUID()}`)
+        .expect(404);
+    });
+
+    it('cannot remove another coach\'s package', async () => {
+      const mine = await newCoach();
+      const theirs = await newCoach('Other Gym');
+      const theirPackage = (await create(theirs.session, quarterly).expect(201))
+        .body;
+
+      await harness
+        .as(mine.session)
+        .delete(`/packages/${theirPackage.id}`)
+        .expect(404);
     });
   });
 });

@@ -3,7 +3,9 @@ import { WorkspaceAction } from '../members/enums/workspace-action.enum';
 import {
   Body,
   Controller,
+  Delete,
   Get,
+  HttpCode,
   Param,
   Patch,
   Post,
@@ -47,5 +49,16 @@ export class PackagesController {
     @Body() dto: UpdatePackageDto,
   ): Promise<PackageRecord> {
     return this.packages.update(workspaceId, params.id, dto);
+  }
+
+  /** Only a package nobody bought. Otherwise `PACKAGE_IN_USE`: set `isActive: false` instead. */
+  @RequireAction(WorkspaceAction.PACKAGES_WRITE)
+  @Delete(':id')
+  @HttpCode(204)
+  remove(
+    @CurrentWorkspaceId() workspaceId: string,
+    @Param() params: PackageParamsDto,
+  ): Promise<void> {
+    return this.packages.remove(workspaceId, params.id);
   }
 }
