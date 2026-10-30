@@ -4,6 +4,7 @@ import { ExercisesModule } from '../exercises/exercises.module';
 import { SubscriptionDatesPolicy } from '../subscriptions/policies/subscription-dates.policy';
 import { PlansQueryHandler } from './handlers/plans-query.handler';
 import { PlanActivationOrchestrator } from './orchestration/plan-activation.orchestrator';
+import { PlanActiveClientsOrchestrator } from './orchestration/plan-active-clients.orchestrator';
 import { PlanCreationOrchestrator } from './orchestration/plan-creation.orchestrator';
 import { PlanDetailsOrchestrator } from './orchestration/plan-details.orchestrator';
 import { PlanEndingOrchestrator } from './orchestration/plan-ending.orchestrator';
@@ -30,6 +31,7 @@ import { PlansService } from './plans.service';
     PlanUpdateOrchestrator,
     PlanStructureOrchestrator,
     PlanActivationOrchestrator,
+    PlanActiveClientsOrchestrator,
     PlanEndingOrchestrator,
     PlanTemplateSavingOrchestrator,
     PlanRemovalOrchestrator,

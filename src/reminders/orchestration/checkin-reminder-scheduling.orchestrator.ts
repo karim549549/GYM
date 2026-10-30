@@ -35,7 +35,7 @@ export class CheckinReminderSchedulingOrchestrator {
             audience: ReminderAudience.CLIENT,
             scheduledFor: this.schedulePolicy.forCheckin(
               subject.dueOn,
-              subject.sendHour,
+              subject.sendAt,
               new Date(),
             ),
             payload: { link: subject.link },

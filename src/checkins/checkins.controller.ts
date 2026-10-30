@@ -24,6 +24,7 @@ import { SetCheckinScheduleDto } from './dto/set-checkin-schedule.dto';
 import type {
   CheckinRecord,
   CheckinScheduleRecord,
+  ClientCheckinSchedule,
   QuietClient,
 } from './interfaces/checkin.interface';
 
@@ -59,6 +60,15 @@ export class CheckinsController {
     @Param() params: CheckinParamsDto,
   ): Promise<void> {
     return this.checkins.stopSchedule(workspaceId, params.id);
+  }
+
+  @RequireAction(WorkspaceAction.CHECKIN_SCHEDULES_MANAGE)
+  @Get('checkin-schedules')
+  listSchedules(
+    @CurrentWorkspaceId() workspaceId: string,
+    @Query() query: PaginationQueryDto,
+  ): Promise<PaginatedResponse<ClientCheckinSchedule>> {
+    return this.checkins.listSchedules(workspaceId, query.page, query.limit);
   }
 
   @RequireAction(WorkspaceAction.HEALTH_DATA_READ)

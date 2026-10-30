@@ -39,6 +39,23 @@ const CHUNK = 1500;
 /** Data access for the four tables of a workout plan. Row level security keeps it to one workspace. */
 @Injectable()
 export class PlansQueryHandler extends BaseQueryHandler {
+  /** Which of these clients follow an active plan right now. */
+  async clientIdsWithActivePlan(clientIds: string[]): Promise<string[]> {
+    if (clientIds.length === 0) {
+      return [];
+    }
+    const rows = await this.db
+      .selectDistinct({ clientId: plans.clientId })
+      .from(plans)
+      .where(
+        and(
+          inArray(plans.clientId, clientIds),
+          eq(plans.status, PlanStatus.ACTIVE),
+        ),
+      );
+    return rows.flatMap((row) => (row.clientId ? [row.clientId] : []));
+  }
+
   async create(
     workspaceId: string,
     createdBy: string | null,

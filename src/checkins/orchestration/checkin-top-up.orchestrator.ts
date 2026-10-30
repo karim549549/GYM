@@ -72,7 +72,11 @@ export class CheckinTopUpOrchestrator extends BaseCheckinCreationOrchestrator {
           const last = await this.checkinsQuery.lastDueOn(schedule.clientId);
           const days = last
             ? this.schedulePolicy.dueDatesAfter(schedule, last, horizon)
-            : this.schedulePolicy.dueDatesFrom(schedule, today, horizon);
+            : this.schedulePolicy.dueDatesFrom(
+                schedule,
+                this.schedulePolicy.startFor(schedule.startsOn, today),
+                horizon,
+              );
           signal?.throwIfAborted();
           return this.createFor(schedule.workspaceId, schedule, days);
         },

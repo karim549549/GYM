@@ -47,6 +47,9 @@ describe('Packages over HTTP', () => {
           priceMinor: 0,
           currency: 'EGP',
           isActive: true,
+          checkInFrequency: null,
+          includes: [],
+          description: null,
         },
         expect.objectContaining({ durationDays: 90, priceMinor: 0 }),
         expect.objectContaining({ durationDays: 180, priceMinor: 0 }),
@@ -143,10 +146,51 @@ describe('Packages over HTTP', () => {
         priceMinor: 450_000,
         currency: 'EGP',
         isActive: true,
+        checkInFrequency: null,
+        includes: [],
+        description: null,
       });
       expect(
         (await list(session)).body.map((p: { id: string }) => p.id),
       ).toContain(response.body.id);
+    });
+
+    it('keeps how it is run: check-in rhythm, what it includes and a description', async () => {
+      const { session } = await newCoach();
+
+      const response = await create(session, {
+        ...quarterly,
+        checkInFrequency: 'weekly',
+        includes: ['workout', 'nutrition'],
+        description: '  Plan, food and a weekly check-in  ',
+      }).expect(201);
+      const cleared = await harness
+        .as(session)
+        .patch(`/packages/${response.body.id}`)
+        .send({ checkInFrequency: null, description: null, includes: [] })
+        .expect(200);
+
+      expect(response.body).toMatchObject({
+        checkInFrequency: 'weekly',
+        includes: ['workout', 'nutrition'],
+        description: 'Plan, food and a weekly check-in',
+      });
+      expect(cleared.body).toMatchObject({
+        checkInFrequency: null,
+        includes: [],
+        description: null,
+      });
+    });
+
+    it.each([
+      ['a check-in rhythm nobody offers', { checkInFrequency: 'hourly' }],
+      ['something it cannot include', { includes: ['massage'] }],
+      ['the same thing included twice', { includes: ['workout', 'workout'] }],
+      ['a description over 300 characters', { description: 'x'.repeat(301) }],
+    ])('refuses %s', async (_label, extra) => {
+      const { session } = await newCoach();
+
+      await create(session, { ...quarterly, ...extra }).expect(400);
     });
 
     it('prices it in the workspace’s currency', async () => {

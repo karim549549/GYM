@@ -26,8 +26,18 @@
 - [ ] Billing: invoices generated automatically as a period ends, an admin screen, and what happens to a coach who stays past due.
 - [ ] Renewing a subscription ahead of its end date.
 - [ ] Moving workspace ownership; inviting a second coach (shared clients between coaches is a different design); per-assistant limits; a WhatsApp message for an invitation.
-- [ ] Image questions and conditional questions in the form builder.
-- [ ] Profile fields the schema has no place for: where the coach works, how many clients, and TikTok.
+- [ ] Answers to image questions (a form can ask one, but no answer is accepted until photos have their own private storage flow) and conditional questions in the form builder.
+- [ ] Profile fields the schema has no place for: where the coach works, and TikTok.
+
+## Used by the frontend but with no backend yet
+
+- [ ] Payment accounts a client can pay into (InstaPay, wallet, bank) and the coach's own renewal and reminder message wording: the frontend keeps them in the browser.
+- [ ] Payment-request links (`/pay/<token>`): a public page where a client pays outside the app and uploads the screenshot. The frontend keeps the requests in the browser, so they only work on the coach's own device.
+- [ ] Payment receipt upload on `POST /subscriptions/:id/payments`, and a transfer screenshot for platform invoices (private bucket flow).
+- [ ] An endpoint for the coach to fill the intake form on behalf of a client (`submitted_by = coach`); the frontend hides the action.
+- [ ] A client photo, and a way to list reminders.
+- [ ] `GET /auth/me` answers `WORKSPACE_REQUIRED` for a person with several workspaces who sends no `x-workspace-id`, so the frontend cannot learn the workspaces to choose from; it needs a response that lists them.
+- [ ] The public check-in view carries no coach reply, so a client opening an answered check-in cannot read it.
 
 ## Needs a decision or a review from the owner
 

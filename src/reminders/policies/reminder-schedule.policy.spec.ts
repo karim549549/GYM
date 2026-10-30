@@ -11,14 +11,14 @@ describe('ReminderSchedulePolicy', () => {
   describe('forCheckin', () => {
     it('goes out at the chosen hour on the day it is due', () => {
       expect(
-        policy.forCheckin('2027-01-15', 8, new Date('2027-01-10T00:00:00Z')),
+        policy.forCheckin('2027-01-15', '08:00', new Date('2027-01-10T00:00:00Z')),
       ).toEqual(new Date('2027-01-15T06:00:00Z'));
     });
 
     it('goes out straight away when that hour has already passed on the day', () => {
       const now = new Date('2027-01-15T09:30:00Z');
 
-      expect(policy.forCheckin('2027-01-15', 8, now)).toEqual(now);
+      expect(policy.forCheckin('2027-01-15', '08:00', now)).toEqual(now);
     });
   });
 

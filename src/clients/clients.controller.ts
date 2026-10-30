@@ -9,14 +9,11 @@ import {
   Param,
   Patch,
   Post,
-  Query,
 } from '@nestjs/common';
 import { CurrentWorkspaceId } from '../common/decorators/current-workspace-id.decorator';
-import type { PaginatedResponse } from '../common/handlers/base-query.handler';
 import { ClientsService } from './clients.service';
 import { ClientParamsDto } from './dto/client-params.dto';
 import { CreateClientDto } from './dto/create-client.dto';
-import { ListClientsQueryDto } from './dto/list-clients.query.dto';
 import { UpdateClientDto } from './dto/update-client.dto';
 import type { ClientRecord } from './interfaces/client.interface';
 
@@ -31,16 +28,6 @@ export class ClientsController {
     @Body() dto: CreateClientDto,
   ): Promise<ClientRecord> {
     return this.clients.create(workspaceId, dto);
-  }
-
-  @RequireAction(WorkspaceAction.CLIENTS_READ)
-  @Get()
-  list(
-    @CurrentWorkspaceId() workspaceId: string,
-    @Query() query: ListClientsQueryDto,
-  ): Promise<PaginatedResponse<ClientRecord>> {
-    const { page, limit, ...filter } = query;
-    return this.clients.list(workspaceId, filter, page, limit);
   }
 
   @RequireAction(WorkspaceAction.CLIENTS_READ)

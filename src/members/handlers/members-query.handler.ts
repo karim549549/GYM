@@ -3,6 +3,7 @@ import { and, asc, desc, eq } from 'drizzle-orm';
 import { BaseQueryHandler } from '../../common/handlers/base-query.handler';
 import { workspaceMembers } from '../../database/schema';
 import { WorkspaceRole } from '../enums/workspace-role.enum';
+import type { ClientCountRange } from '../enums/client-count-range.enum';
 import type { Specialty } from '../enums/specialty.enum';
 import type {
   MemberProfile,
@@ -15,6 +16,7 @@ const PROFILE = {
   specialties: workspaceMembers.specialties,
   bio: workspaceMembers.bio,
   instagram: workspaceMembers.instagram,
+  clientCountRange: workspaceMembers.clientCountRange,
 };
 
 /** Data access for the `workspace_members` table: who belongs to which workspace, as what, and whether they own it. */
@@ -72,6 +74,9 @@ export class MembersQueryHandler extends BaseQueryHandler {
         ...(changes.bio !== undefined && { bio: changes.bio }),
         ...(changes.instagram !== undefined && {
           instagram: changes.instagram,
+        }),
+        ...(changes.clientCountRange !== undefined && {
+          clientCountRange: changes.clientCountRange,
         }),
       })
       .where(this.membership(workspaceId, personId))
@@ -135,8 +140,15 @@ export class MembersQueryHandler extends BaseQueryHandler {
       specialties: string[];
       bio: string | null;
       instagram: string | null;
+      clientCountRange: string | null;
     } | null,
   ): MemberProfile | null {
-    return row ? { ...row, specialties: row.specialties as Specialty[] } : null;
+    return row
+      ? {
+          ...row,
+          specialties: row.specialties as Specialty[],
+          clientCountRange: row.clientCountRange as ClientCountRange | null,
+        }
+      : null;
   }
 }

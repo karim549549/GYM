@@ -247,6 +247,10 @@ export class IntakeFormPolicy {
       case QuestionType.SHORT_TEXT:
       case QuestionType.LONG_TEXT:
         return this.acceptText(question, value);
+      case QuestionType.IMAGE:
+        // TODO: Implement
+        // photos need their own private bucket flow (own endpoint, signed links); a bare value is never trusted
+        return undefined;
     }
   }
 

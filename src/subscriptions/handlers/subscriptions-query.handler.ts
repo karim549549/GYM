@@ -100,6 +100,22 @@ export class SubscriptionsQueryHandler extends BaseQueryHandler {
     return this.firstOrNull(rows);
   }
 
+  /** The running subscription (active or frozen) of each of these clients; there is at most one each. */
+  findLiveByClientIds(clientIds: string[]): Promise<StoredSubscription[]> {
+    if (clientIds.length === 0) {
+      return Promise.resolve([]);
+    }
+    return this.db
+      .select(RECORD)
+      .from(subscriptions)
+      .where(
+        and(
+          inArray(subscriptions.clientId, clientIds),
+          inArray(subscriptions.status, LIVE),
+        ),
+      );
+  }
+
   list(
     filter: StoredSubscriptionFilter,
     page?: number,
