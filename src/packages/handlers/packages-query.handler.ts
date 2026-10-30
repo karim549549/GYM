@@ -15,6 +15,9 @@ const RECORD = {
   priceMinor: packages.priceMinor,
   currency: packages.currency,
   isActive: packages.isActive,
+  checkInFrequency: packages.checkInFrequency,
+  includes: packages.includes,
+  description: packages.description,
 };
 
 /** Data access for the `packages` table. Row level security keeps it to one workspace. */
@@ -79,6 +82,13 @@ export class PackagesQueryHandler extends BaseQueryHandler {
           priceMinor: changes.priceMinor,
         }),
         ...(changes.isActive !== undefined && { isActive: changes.isActive }),
+        ...(changes.checkInFrequency !== undefined && {
+          checkInFrequency: changes.checkInFrequency,
+        }),
+        ...(changes.includes !== undefined && { includes: changes.includes }),
+        ...(changes.description !== undefined && {
+          description: changes.description,
+        }),
       })
       .where(and(eq(packages.id, id)))
       .returning(RECORD);

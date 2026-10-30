@@ -7,11 +7,13 @@ import {
   eq,
   gt,
   gte,
+  inArray,
   isNotNull,
   isNull,
   lt,
   lte,
   max,
+  min,
   sql,
 } from 'drizzle-orm';
 import {
@@ -26,6 +28,8 @@ import type {
   CheckinFilter,
   CheckinLinkTarget,
   CheckinScheduleRecord,
+  ClientCheckinOverview,
+  ClientCheckinSchedule,
   NewCheckin,
   QuietClient,
   StoredCheckin,
@@ -34,7 +38,8 @@ import type {
 const SCHEDULE = {
   frequency: checkinSchedules.frequency,
   dayOfWeek: checkinSchedules.dayOfWeek,
-  sendHour: checkinSchedules.sendHour,
+  sendAt: sql<string>`to_char(${checkinSchedules.sendAt}, 'HH24:MI')`,
+  startsOn: checkinSchedules.startsOn,
   isActive: checkinSchedules.isActive,
 };
 
@@ -71,6 +76,32 @@ export class CheckinsQueryHandler extends BaseQueryHandler {
     return saved;
   }
 
+  /** Every client's schedule, on or off, in the order they were set up. */
+  listSchedules(
+    page?: number,
+    limit?: number,
+  ): Promise<PaginatedResponse<ClientCheckinSchedule>> {
+    return this.executePageQuery(
+      {
+        fetchItems: (take, skip) =>
+          this.db
+            .select({ clientId: checkinSchedules.clientId, ...SCHEDULE })
+            .from(checkinSchedules)
+            .orderBy(asc(checkinSchedules.createdAt), asc(checkinSchedules.id))
+            .limit(take)
+            .offset(skip),
+        count: async () => {
+          const [row] = await this.db
+            .select({ total: count() })
+            .from(checkinSchedules);
+          return row.total;
+        },
+      },
+      page,
+      limit,
+    );
+  }
+
   async findSchedule(
     clientId: string,
   ): Promise<(CheckinScheduleRecord & { id: string }) | null> {
@@ -101,7 +132,8 @@ export class CheckinsQueryHandler extends BaseQueryHandler {
         clientId: checkinSchedules.clientId,
         frequency: checkinSchedules.frequency,
         dayOfWeek: checkinSchedules.dayOfWeek,
-        sendHour: checkinSchedules.sendHour,
+        sendAt: sql<string>`to_char(${checkinSchedules.sendAt}, 'HH24:MI')`,
+        startsOn: checkinSchedules.startsOn,
       })
       .from(checkinSchedules)
       .where(eq(checkinSchedules.isActive, true));
@@ -165,6 +197,8 @@ export class CheckinsQueryHandler extends BaseQueryHandler {
       filter.needsReply
         ? and(isNotNull(checkins.submittedAt), isNull(checkins.coachReply))
         : undefined,
+      filter.dueFrom ? gte(checkins.dueOn, filter.dueFrom) : undefined,
+      filter.dueTo ? lte(checkins.dueOn, filter.dueTo) : undefined,
     );
     return this.executePageQuery(
       {
@@ -245,6 +279,58 @@ export class CheckinsQueryHandler extends BaseQueryHandler {
       .where(and(eq(checkins.id, id), isNotNull(checkins.submittedAt)))
       .returning(CHECKIN);
     return this.firstOrNull(rows);
+  }
+
+  /** For each of these clients: the next check-in still to come (today included) and how many were missed since `since`. */
+  async overviewFor(
+    clientIds: string[],
+    today: string,
+    since: string,
+  ): Promise<ClientCheckinOverview[]> {
+    if (clientIds.length === 0) {
+      return [];
+    }
+    const next = await this.db
+      .select({ clientId: checkins.clientId, nextDueOn: min(checkins.dueOn) })
+      .from(checkins)
+      .where(
+        and(
+          inArray(checkins.clientId, clientIds),
+          isNull(checkins.submittedAt),
+          gte(checkins.dueOn, today),
+        ),
+      )
+      .groupBy(checkins.clientId);
+    const missed = await this.db
+      .select({ clientId: checkins.clientId, missedCount: count() })
+      .from(checkins)
+      .where(
+        and(
+          inArray(checkins.clientId, clientIds),
+          isNull(checkins.submittedAt),
+          lt(checkins.dueOn, today),
+          gt(checkins.dueOn, since),
+        ),
+      )
+      .groupBy(checkins.clientId);
+
+    const byClient = new Map<string, ClientCheckinOverview>();
+    for (const row of next) {
+      byClient.set(row.clientId, {
+        clientId: row.clientId,
+        nextDueOn: row.nextDueOn,
+        missedCount: 0,
+      });
+    }
+    for (const row of missed) {
+      const entry = byClient.get(row.clientId);
+      byClient.set(row.clientId, {
+        clientId: row.clientId,
+        nextDueOn: entry?.nextDueOn ?? null,
+        missedCount: row.missedCount,
+      });
+    }
+    return [...byClient.values()];
   }
 
   /** Clients with two or more check-ins missed in the 30 days before `today`, most missed first. */

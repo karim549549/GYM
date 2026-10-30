@@ -4,6 +4,5 @@ export enum PaymentMethod {
   WALLET = 'wallet',
   CASH = 'cash',
   BANK = 'bank',
-  CARD = 'card',
   OTHER = 'other',
 }

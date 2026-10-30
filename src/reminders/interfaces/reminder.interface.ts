@@ -16,8 +16,8 @@ export interface CheckinReminderSubject {
   checkinId: string;
   /** The day it is due, YYYY-MM-DD. */
   dueOn: string;
-  /** The hour in Egypt the link goes out. */
-  sendHour: number;
+  /** The time in Egypt the link goes out, HH:MM. */
+  sendAt: string;
   /** Where the client fills it in. */
   link: string;
 }

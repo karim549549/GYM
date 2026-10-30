@@ -2,10 +2,12 @@ import { sql } from 'drizzle-orm';
 import {
   boolean,
   check,
+  date,
   foreignKey,
   integer,
   pgTable,
   text,
+  time,
   timestamp,
   unique,
   uuid,
@@ -32,9 +34,15 @@ export const checkinSchedules = pgTable(
       .$type<CheckinFrequency>()
       .notNull()
       .default(CheckinFrequency.WEEKLY),
-    /** 0 is Sunday. Only a weekly or fortnightly check-in has one. */
-    dayOfWeek: integer('day_of_week'),
-    /** The hour in Egypt that the client is sent the link. */
+    /** 0 is Sunday. Always kept; only a weekly or fortnightly check-in uses it. */
+    dayOfWeek: integer('day_of_week').notNull().default(5),
+    /** The time of day in Egypt that the client is sent the link. */
+    sendAt: time('send_at').notNull().default('08:00'),
+    /** The first day check-ins are asked for. */
+    startsOn: date('starts_on', { mode: 'string' })
+      .notNull()
+      .default(sql`current_date`),
+    /** Legacy: replaced by `sendAt`. Nothing reads it; dropped in a later migration. */
     sendHour: integer('send_hour').notNull().default(8),
     isActive: boolean('is_active').notNull().default(true),
     createdAt: timestamp('created_at', { withTimezone: true })

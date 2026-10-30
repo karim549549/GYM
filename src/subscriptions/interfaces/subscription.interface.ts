@@ -18,6 +18,11 @@ export interface StoredSubscription {
   createdAt: Date;
 }
 
+/** A running subscription with how many calendar days (in Egypt) are left; negative once it is over. */
+export interface LiveSubscription extends SubscriptionRecord {
+  daysLeft: number;
+}
+
 /** A subscription as a coach sees it: what is stored, plus what is worked out from it today. */
 export interface SubscriptionRecord extends StoredSubscription {
   state: SubscriptionState;

@@ -40,9 +40,9 @@ export class ReminderSchedulePolicy {
     return planned.filter((reminder) => reminder.scheduledFor > now);
   }
 
-  /** When the link goes out: the chosen hour on the due day, or right away if that hour has passed. */
-  forCheckin(dueOn: string, sendHour: number, now: Date): Date {
-    const planned = this.dates.atHour(dueOn, sendHour);
+  /** When the link goes out: the chosen time on the due day, or right away if that time has passed. */
+  forCheckin(dueOn: string, sendAt: string, now: Date): Date {
+    const planned = this.dates.atTime(dueOn, sendAt);
     return planned > now ? planned : now;
   }
 

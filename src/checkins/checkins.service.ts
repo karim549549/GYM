@@ -8,6 +8,8 @@ import type {
   CheckinRecord,
   CheckinScheduleInput,
   CheckinScheduleRecord,
+  ClientCheckinDays,
+  ClientCheckinSchedule,
   PublicCheckinView,
   QuietClient,
 } from './interfaces/checkin.interface';
@@ -15,7 +17,9 @@ import { CheckinActivityOrchestrator } from './orchestration/checkin-activity.or
 import { CheckinAtRiskOrchestrator } from './orchestration/checkin-at-risk.orchestrator';
 import { CheckinDetailsOrchestrator } from './orchestration/checkin-details.orchestrator';
 import { CheckinListOrchestrator } from './orchestration/checkin-list.orchestrator';
+import { CheckinOverviewOrchestrator } from './orchestration/checkin-overview.orchestrator';
 import { CheckinReplyOrchestrator } from './orchestration/checkin-reply.orchestrator';
+import { CheckinScheduleListOrchestrator } from './orchestration/checkin-schedule-list.orchestrator';
 import { CheckinScheduleDetailsOrchestrator } from './orchestration/checkin-schedule-details.orchestrator';
 import { CheckinScheduleSettingOrchestrator } from './orchestration/checkin-schedule-setting.orchestrator';
 import { CheckinScheduleStoppingOrchestrator } from './orchestration/checkin-schedule-stopping.orchestrator';
@@ -37,6 +41,8 @@ export class CheckinsService {
     private readonly details: CheckinDetailsOrchestrator,
     private readonly replying: CheckinReplyOrchestrator,
     private readonly atRiskOrchestrator: CheckinAtRiskOrchestrator,
+    private readonly overviewOrchestrator: CheckinOverviewOrchestrator,
+    private readonly scheduleListing: CheckinScheduleListOrchestrator,
     private readonly publicForm: PublicCheckinFormOrchestrator,
     private readonly submission: CheckinSubmissionOrchestrator,
     private readonly activityOrchestrator: CheckinActivityOrchestrator,
@@ -102,6 +108,23 @@ export class CheckinsService {
     text: string,
   ): Promise<CheckinRecord> {
     return this.replying.execute(workspaceId, repliedBy, checkinId, text);
+  }
+
+  /** How every client is asked to check in. */
+  listSchedules(
+    workspaceId: string,
+    page?: number,
+    limit?: number,
+  ): Promise<PaginatedResponse<ClientCheckinSchedule>> {
+    return this.scheduleListing.execute(workspaceId, page, limit);
+  }
+
+  /** For each of these clients, the days to the next check-in and the ones missed lately. */
+  overviewFor(
+    workspaceId: string,
+    clientIds: string[],
+  ): Promise<ClientCheckinDays[]> {
+    return this.overviewOrchestrator.execute(workspaceId, clientIds);
   }
 
   atRisk(

@@ -91,11 +91,11 @@ describe('Check-ins over HTTP and the database', () => {
   };
 
   /** A coach with a client asked for a check-in every day, so one is due today. */
-  const withDueToday = async (brandName?: string, sendHour?: number) => {
+  const withDueToday = async (brandName?: string, sendAt?: string) => {
     const base = await ready(brandName);
     await schedule(base.session, base.client.id, {
       frequency: 'daily',
-      sendHour,
+      sendAt,
     }).expect(200);
     const items = await checkinsOf(base.session, base.client.id);
     const today = items.find((item) => item.dueOn === daysFromToday(0))!;
@@ -116,14 +116,15 @@ describe('Check-ins over HTTP and the database', () => {
       const response = await schedule(session, client.id, {
         frequency: 'weekly',
         dayOfWeek: 5,
-        sendHour: 9,
+        sendAt: '09:30',
       }).expect(200);
       const items = await checkinsOf(session, client.id);
 
       expect(response.body).toEqual({
         frequency: 'weekly',
         dayOfWeek: 5,
-        sendHour: 9,
+        sendAt: '09:30',
+        startsOn: daysFromToday(0),
         isActive: true,
       });
       expect(items.length).toBeGreaterThanOrEqual(4);
@@ -145,7 +146,8 @@ describe('Check-ins over HTTP and the database', () => {
       expect(response.body).toEqual({
         frequency: 'weekly',
         dayOfWeek: 5,
-        sendHour: 8,
+        sendAt: '08:00',
+        startsOn: daysFromToday(0),
         isActive: true,
       });
     });
@@ -162,15 +164,17 @@ describe('Check-ins over HTTP and the database', () => {
       );
     });
 
-    it('keeps no weekday for a check-in that is not weekly', async () => {
+    it('ignores the weekday for a check-in that is not weekly', async () => {
       const { session, client } = await ready();
 
       const response = await schedule(session, client.id, {
         frequency: 'every_2_days',
         dayOfWeek: 3,
       }).expect(200);
+      const items = await checkinsOf(session, client.id);
 
-      expect(response.body.dayOfWeek).toBeNull();
+      expect(response.body.dayOfWeek).toBe(3);
+      expect(items.map((item) => item.dueOn)).toContain(daysFromToday(0));
     });
 
     it('does not make a second set of days when saved again', async () => {
@@ -251,8 +255,10 @@ describe('Check-ins over HTTP and the database', () => {
         { frequency: 'weekly', dayOfWeek: 7 },
       ],
       ['a negative day of the week', { frequency: 'weekly', dayOfWeek: -1 }],
-      ['an hour of 24', { sendHour: 24 }],
-      ['a fractional hour', { sendHour: 8.5 }],
+      ['an hour of 24', { sendAt: '24:00' }],
+      ['a fractional hour', { sendAt: '8.5' }],
+      ['minutes past 59', { sendAt: '08:60' }],
+      ['a start that is not a day', { startsOn: '2027-02-30' }],
     ])('refuses %s', async (_label, body) => {
       const { session, client } = await ready();
 
@@ -290,7 +296,7 @@ describe('Check-ins over HTTP and the database', () => {
       await schedule(session, client.id, {
         frequency: 'fortnightly',
         dayOfWeek: 0,
-        sendHour: 18,
+        sendAt: '18:00',
       }).expect(200);
 
       const response = await harness
@@ -301,7 +307,8 @@ describe('Check-ins over HTTP and the database', () => {
       expect(response.body).toEqual({
         frequency: 'fortnightly',
         dayOfWeek: 0,
-        sendHour: 18,
+        sendAt: '18:00',
+        startsOn: daysFromToday(0),
         isActive: true,
       });
     });

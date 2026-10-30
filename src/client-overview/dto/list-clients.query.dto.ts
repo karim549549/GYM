@@ -1,7 +1,7 @@
 import { IsEnum, IsOptional, IsString, MaxLength } from 'class-validator';
 import { Trimmed } from '../../common/decorators/trimmed.decorator';
 import { PaginationQueryDto } from '../../common/dto/pagination-query.dto';
-import { IntakeStatus } from '../enums/intake-status.enum';
+import { IntakeStatus } from '../../clients/enums/intake-status.enum';
 
 export class ListClientsQueryDto extends PaginationQueryDto {
   @IsOptional()

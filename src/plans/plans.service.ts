@@ -9,6 +9,7 @@ import type {
   PlanSummary,
 } from './interfaces/plan.interface';
 import { PlanActivationOrchestrator } from './orchestration/plan-activation.orchestrator';
+import { PlanActiveClientsOrchestrator } from './orchestration/plan-active-clients.orchestrator';
 import { PlanCreationOrchestrator } from './orchestration/plan-creation.orchestrator';
 import { PlanDetailsOrchestrator } from './orchestration/plan-details.orchestrator';
 import { PlanEndingOrchestrator } from './orchestration/plan-ending.orchestrator';
@@ -33,7 +34,13 @@ export class PlansService {
     private readonly templateSaving: PlanTemplateSavingOrchestrator,
     private readonly removal: PlanRemovalOrchestrator,
     private readonly starterPlans: StarterPlansOrchestrator,
+    private readonly activeClients: PlanActiveClientsOrchestrator,
   ) {}
+
+  /** Which of these clients follow an active plan, for the clients list. */
+  clientsWithActivePlan(workspaceId: string, clientIds: string[]): Promise<string[]> {
+    return this.activeClients.execute(workspaceId, clientIds);
+  }
 
   create(
     workspaceId: string,
