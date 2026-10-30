@@ -8,7 +8,7 @@ import { PackageDetailsOrchestrator } from './orchestration/package-details.orch
 import { PackageCreationOrchestrator } from './orchestration/package-creation.orchestrator';
 import { PackageListOrchestrator } from './orchestration/package-list.orchestrator';
 import { PackageUpdateOrchestrator } from './orchestration/package-update.orchestrator';
-import { StarterPackagesOrchestrator } from './orchestration/starter-packages.orchestrator';
+import { PackageRemovalOrchestrator } from './orchestration/package-removal.orchestrator';
 
 /** The packages module's interface: what a coach sells. */
 @Injectable()
@@ -18,7 +18,7 @@ export class PackagesService {
     private readonly packageDetails: PackageDetailsOrchestrator,
     private readonly packageCreation: PackageCreationOrchestrator,
     private readonly packageUpdate: PackageUpdateOrchestrator,
-    private readonly starterPackages: StarterPackagesOrchestrator,
+    private readonly packageRemoval: PackageRemovalOrchestrator,
   ) {}
 
   list(
@@ -44,8 +44,8 @@ export class PackagesService {
     return this.packageUpdate.execute(workspaceId, packageId, changes);
   }
 
-  /** For a workspace that has just been created, inside the transaction that created it. */
-  seedStarterPackages(workspaceId: string, currency: string): Promise<void> {
-    return this.starterPackages.execute(workspaceId, currency);
+  /** Deletes a package nobody bought; `PACKAGE_IN_USE` when subscriptions were sold on it. */
+  remove(workspaceId: string, packageId: string): Promise<void> {
+    return this.packageRemoval.execute(workspaceId, packageId);
   }
 }

@@ -309,6 +309,34 @@
       "when": 1793340832462,
       "tag": "0043_profile_client_count_package_extras",
       "breakpoints": true
+    },
+    {
+      "idx": 44,
+      "version": "7",
+      "when": 1793376099965,
+      "tag": "0044_payment_channels",
+      "breakpoints": true
+    },
+    {
+      "idx": 45,
+      "version": "7",
+      "when": 1793376105601,
+      "tag": "0045_payment_channels_rls",
+      "breakpoints": true
+    },
+    {
+      "idx": 46,
+      "version": "7",
+      "when": 1793376305989,
+      "tag": "0046_reminder_messages",
+      "breakpoints": true
+    },
+    {
+      "idx": 47,
+      "version": "7",
+      "when": 1793376308507,
+      "tag": "0047_reminder_messages_rls",
+      "breakpoints": true
     }
   ]
 }

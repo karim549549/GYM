@@ -23,6 +23,8 @@ import { MealPlansModule } from './meal-plans/meal-plans.module';
 import { LoggingModule } from './logging/logging.module';
 import { OnboardingModule } from './onboarding/onboarding.module';
 import { PackagesModule } from './packages/packages.module';
+import { PaymentChannelsModule } from './payment-channels/payment-channels.module';
+import { ReminderMessagesModule } from './reminder-messages/reminder-messages.module';
 import { WorkspacesModule } from './workspaces/workspaces.module';
 
 @Module({
@@ -34,6 +36,8 @@ import { WorkspacesModule } from './workspaces/workspaces.module';
     HealthModule,
     WorkspacesModule,
     PackagesModule,
+    PaymentChannelsModule,
+    ReminderMessagesModule,
     ClientsModule,
     ClientOverviewModule,
     IntakeModule,

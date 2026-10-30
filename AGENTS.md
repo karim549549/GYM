@@ -352,8 +352,7 @@ A workspace is a coach's business. These are the rules; the endpoints are under
 
 - **Becoming a coach** is `POST /workspaces` (`onboarding` module). The body may carry
   `brandName`; when it does not, the person's own name is used. One transaction creates
-  the workspace with a free handle, makes the person its one owner and a coach in it, and
-  gives it the starter packages. A person owns **at most one** workspace (the database's
+  the workspace with a free handle and makes the person its one owner and a coach in it. A person owns **at most one** workspace (the database's
   `workspace_members_one_owned_workspace_idx`), so a double tap cannot make two: a second
   attempt is `WORKSPACE_ALREADY_EXISTS`. The handle (slug) never changes after creation.
   `onboarding` exists because creating a workspace needs `workspaces` and `packages` and
@@ -369,9 +368,12 @@ A workspace is a coach's business. These are the rules; the endpoints are under
 - **Packages** (`/packages`) are what a coach sells: name, length in days, price in
   minor units (piastres). They are listed shortest first, only the active ones unless
   `?includeInactive=true`. They are **never deleted**, only set `isActive: false`, because
-  subscriptions already sold point at them; there is no delete route on purpose. A package
+  subscriptions already sold point at them. `DELETE /packages/:id` removes one nobody bought
+  and answers `PACKAGE_IN_USE` (409) once a subscription was sold on it. A package
   is priced in the workspace's currency, which the caller cannot choose. A new workspace
-  starts with one, three and six months (named in Arabic, price 0 for the coach to set). A package also keeps how often the coach checks in with someone on it (`checkInFrequency`, one of the check-in rhythms), what it `includes` (`workout`, `nutrition`) and a short `description` (300 characters at most); all three are optional and `null` clears one.
+  starts with no packages: the coach adds their own. A package also keeps how often the coach checks in with someone on it (`checkInFrequency`, one of the check-in rhythms), what it `includes` (`workout`, `nutrition`) and a short `description` (300 characters at most); all three are optional and `null` clears one.
+- **Payment channels** (`/payment-channels`, the `payment-channels` module and table) are where a coach's clients send money: `method` (`instapay`, `wallet`, `bank`), an `account` (an InstaPay `name@instapay` or phone number, a wallet number, a bank account) and an optional https `url` that opens the app. `GET` is for every member; `POST`, `PATCH` and `DELETE` are for the owner and coaches (`WORKSPACE_SETTINGS`). Nothing points at a channel, so a delete removes it. No money moves through the app.
+- **Reminder messages** (`/reminder-messages`, the `reminder-messages` module and table) are the wording a coach chose for the three reminders: `expiring`, `expired` and `payment_due`, up to 500 characters, with `{name}`, `{days}`, `{date}` and (money only) `{amount}`. `GET` lists only the kinds the coach has written (the app shows its own default for the others); `PUT /reminder-messages/:kind { body }` writes or replaces one, for the owner and coaches (`WORKSPACE_SETTINGS`).
 - **The logo** is `PUT /workspaces/current/logo` (multipart, field `file`, 2 MB at most)
   and `DELETE` on the same path. The column stores a **key**, never a URL; the public
   address is built when the workspace is read. Each upload is a new key, so a replaced logo
