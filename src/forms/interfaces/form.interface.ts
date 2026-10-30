@@ -47,6 +47,28 @@ export interface FormQuestionRecord {
   maxLength: number | null;
 }
 
+/** A named form in the coach's list. */
+export interface NamedFormSummary {
+  id: string;
+  purpose: FormPurpose;
+  name: string;
+  /** The version in use. */
+  version: number;
+  questionCount: number;
+}
+
+/** A named form with its questions, to edit. */
+export interface NamedFormRecord extends FormRecord {
+  id: string;
+  name: string;
+}
+
+export interface StoredNamedForm {
+  id: string;
+  purpose: FormPurpose;
+  name: string;
+}
+
 export interface FormRecord {
   purpose: FormPurpose;
   /** False while the coach is on the built-in form. */

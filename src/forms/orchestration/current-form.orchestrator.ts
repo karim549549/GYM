@@ -30,9 +30,11 @@ export class CurrentFormOrchestrator extends BaseFormOrchestrator {
     workspaceId: string,
     purpose: FormPurpose,
     unitSystem: UnitSystem,
+    namedFormId?: string | null,
   ): Promise<IntakeForm> {
-    return this.transactions.run(() => this.currentForm(purpose, unitSystem), {
-      workspaceId,
-    });
+    return this.transactions.run(
+      () => this.currentForm(purpose, unitSystem, namedFormId),
+      { workspaceId },
+    );
   }
 }

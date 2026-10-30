@@ -12,11 +12,19 @@ import type {
 @Injectable()
 export class IntakeQueryHandler extends BaseQueryHandler {
   /** The newest link of this client that can still be used. */
-  async findOpenLinkForClient(
-    clientId: string,
-  ): Promise<{ token: string; expiresAt: Date } | null> {
+  async findOpenLinkForClient(clientId: string): Promise<{
+    id: string;
+    token: string;
+    expiresAt: Date;
+    namedFormId: string | null;
+  } | null> {
     const rows = await this.db
-      .select({ token: intakeLinks.token, expiresAt: intakeLinks.expiresAt })
+      .select({
+        id: intakeLinks.id,
+        token: intakeLinks.token,
+        expiresAt: intakeLinks.expiresAt,
+        namedFormId: intakeLinks.namedFormId,
+      })
       .from(intakeLinks)
       .where(
         and(
@@ -34,15 +42,25 @@ export class IntakeQueryHandler extends BaseQueryHandler {
     workspaceId: string,
     clientId: string,
     token: string,
-  ): Promise<{ token: string; expiresAt: Date }> {
+    namedFormId: string | null = null,
+  ): Promise<{ token: string; expiresAt: Date; namedFormId: string | null }> {
     const [created] = await this.db
       .insert(intakeLinks)
-      .values({ workspaceId, clientId, token })
+      .values({ workspaceId, clientId, token, namedFormId })
       .returning({
         token: intakeLinks.token,
         expiresAt: intakeLinks.expiresAt,
+        namedFormId: intakeLinks.namedFormId,
       });
     return created;
+  }
+
+  /** Changes which form an open link asks. The address stays the same. */
+  async pinLink(id: string, namedFormId: string | null): Promise<void> {
+    await this.db
+      .update(intakeLinks)
+      .set({ namedFormId })
+      .where(and(eq(intakeLinks.id, id), isNull(intakeLinks.submittedAt)));
   }
 
   /** Only visible while acting under that token (see the `intakeToken` scope): no workspace is needed to find it. */
@@ -54,6 +72,7 @@ export class IntakeQueryHandler extends BaseQueryHandler {
         clientId: intakeLinks.clientId,
         expiresAt: intakeLinks.expiresAt,
         submittedAt: intakeLinks.submittedAt,
+        namedFormId: intakeLinks.namedFormId,
       })
       .from(intakeLinks)
       .where(eq(intakeLinks.token, token))

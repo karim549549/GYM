@@ -2,6 +2,7 @@ import type { ConfigService } from '@nestjs/config';
 import type { ClientsService } from '../../clients/clients.service';
 import type { Env } from '../../config/env.schema';
 import type { TransactionManager } from '../../database/transaction.manager';
+import type { FormsService } from '../../forms/forms.service';
 import type { IntakeQueryHandler } from '../handlers/intake-query.handler';
 import { IntakeLinkCreationOrchestrator } from './intake-link-creation.orchestrator';
 
@@ -25,6 +26,9 @@ function setup() {
       true
     >,
     transactions as unknown as TransactionManager,
+    {
+      namedForm: jest.fn().mockResolvedValue({ purpose: 'intake' }),
+    } as unknown as FormsService,
   );
   return { orchestrator, query, transactions, link };
 }
