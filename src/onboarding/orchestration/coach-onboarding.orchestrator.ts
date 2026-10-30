@@ -2,7 +2,6 @@ import { Injectable } from '@nestjs/common';
 import { BillingService } from '../../billing/billing.service';
 import { TransactionManager } from '../../database/transaction.manager';
 import { MealPlansService } from '../../meal-plans/meal-plans.service';
-import { PackagesService } from '../../packages/packages.service';
 import { PlansService } from '../../plans/plans.service';
 import type {
   CreatedWorkspace,
@@ -12,15 +11,13 @@ import { WorkspacesService } from '../../workspaces/workspaces.service';
 
 /**
  * Takes over `OnboardingService.becomeCoach`. This flow owns no data: it asks the workspaces
- * module for the workspace (and its owner), the packages module for the packages a coach
- * starts with and the plans and meal plans modules for the workout and nutrition templates, and the billing module
+ * module for the workspace (and its owner), the plans and meal plans modules for the workout and nutrition templates, and the billing module
  * for the free plan every coach begins on, in one transaction so a coach never has half of them.
  */
 @Injectable()
 export class CoachOnboardingOrchestrator {
   constructor(
     private readonly workspaces: WorkspacesService,
-    private readonly packages: PackagesService,
     private readonly plans: PlansService,
     private readonly mealPlans: MealPlansService,
     private readonly billing: BillingService,
@@ -30,7 +27,6 @@ export class CoachOnboardingOrchestrator {
   execute(coach: NewWorkspace): Promise<CreatedWorkspace> {
     return this.transactions.run(async () => {
       const workspace = await this.workspaces.create(coach);
-      await this.packages.seedStarterPackages(workspace.id, workspace.currency);
       await this.plans.seedStarterTemplates(workspace.id);
       await this.mealPlans.seedStarterTemplates(workspace.id);
       await this.billing.startFreePlan(workspace.id);

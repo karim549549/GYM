@@ -31,7 +31,6 @@
 
 ## Used by the frontend but with no backend yet
 
-- [ ] Payment accounts a client can pay into (InstaPay, wallet, bank) and the coach's own renewal and reminder message wording: the frontend keeps them in the browser.
 - [ ] Payment-request links (`/pay/<token>`): a public page where a client pays outside the app and uploads the screenshot. The frontend keeps the requests in the browser, so they only work on the coach's own device.
 - [ ] Payment receipt upload on `POST /subscriptions/:id/payments`, and a transfer screenshot for platform invoices (private bucket flow).
 - [ ] An endpoint for the coach to fill the intake form on behalf of a client (`submitted_by = coach`); the frontend hides the action.
