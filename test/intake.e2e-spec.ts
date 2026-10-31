@@ -225,9 +225,7 @@ describe('Intake over HTTP', () => {
 
       const response = await open(link.token).expect(200);
 
-      expect(response.body.coach.logoUrl).toContain(
-        '/object/public/gym-public/',
-      );
+      expect(response.body.coach.logoUrl).toContain('/api/v1/storage/public/');
     });
 
     it('tells the client nothing they do not need: no phone, no ids', async () => {

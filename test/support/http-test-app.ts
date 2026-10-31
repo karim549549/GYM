@@ -1,8 +1,9 @@
-import { HOOK_SECRET_BASE64, SECRET_KEY } from './test-env';
+import { HOOK_SECRET_BASE64 } from './test-env';
 import { randomInt, randomUUID } from 'node:crypto';
 import { INestApplication } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { Test } from '@nestjs/testing';
+import { InMemoryDisk, STORAGE_MODULE_OPTIONS } from '@nestjs/storage';
 import { eq, inArray } from 'drizzle-orm';
 import { exportJWK, generateKeyPair } from 'jose';
 import { Webhook } from 'standardwebhooks';
@@ -14,10 +15,10 @@ import { ClientConsentType } from '../../src/consents/enums/client-consent-type.
 import { ConsentSource } from '../../src/consents/enums/consent-source.enum';
 import { clientConsents, people, workspaces } from '../../src/database/schema';
 import { TransactionManager } from '../../src/database/transaction.manager';
+import { StorageBucket } from '../../src/storage/enums/storage-bucket.enum';
 import { MockWhatsAppClient } from '../../src/whatsapp/integrations/mock-whatsapp.client';
 import { WhatsAppClient } from '../../src/whatsapp/whatsapp.client';
 import { FakeSupabaseAuth } from './fake-supabase-auth';
-import { FakeSupabaseStorage } from './fake-supabase-storage';
 
 export interface TestSession {
   accessToken: string;
@@ -39,7 +40,7 @@ export class HttpTestApp {
   private constructor(
     readonly app: INestApplication,
     readonly supabase: FakeSupabaseAuth,
-    readonly storage: FakeSupabaseStorage,
+    readonly storage: Record<StorageBucket, InMemoryDisk>,
     readonly whatsapp: MockWhatsAppClient,
     readonly tx: TransactionManager,
   ) {}
@@ -53,9 +54,32 @@ export class HttpTestApp {
       use: 'sig',
     };
 
+    const storage = Object.fromEntries(
+      Object.values(StorageBucket).map((bucket) => [
+        bucket,
+        new InMemoryDisk({
+          ...(bucket === StorageBucket.PUBLIC && {
+            publicUrl: 'http://storage.example/api/v1/storage/public',
+          }),
+          signedUrls: {
+            baseUrl: `http://storage.example/api/v1/storage/${
+              {
+                [StorageBucket.PUBLIC]: 'public-download',
+                [StorageBucket.FILES]: 'files',
+                [StorageBucket.PHOTOS]: 'photos',
+              }[bucket]
+            }`,
+            keys: ['storage-tests-only-signing-key-0123456789'],
+          },
+        }),
+      ]),
+    ) as Record<StorageBucket, InMemoryDisk>;
     const moduleRef = await Test.createTestingModule({
       imports: [AppModule],
-    }).compile();
+    })
+      .overrideProvider(STORAGE_MODULE_OPTIONS)
+      .useValue({ default: StorageBucket.FILES, disks: storage })
+      .compile();
 
     // the app builds its own Supabase client from the configuration; only the network is faked
     const config = moduleRef.get<ConfigService<Env, true>>(ConfigService);
@@ -64,7 +88,6 @@ export class HttpTestApp {
       `${config.get('SUPABASE_URL', { infer: true })}/auth/v1`,
       config.get('SUPABASE_PUBLISHABLE_KEY', { infer: true }),
     );
-    const storage = new FakeSupabaseStorage(SECRET_KEY);
     jest.spyOn(globalThis, 'fetch').mockImplementation(async (input, init) => {
       const { pathname } = new URL(
         input instanceof Request ? input.url : input,
@@ -72,9 +95,7 @@ export class HttpTestApp {
       if (pathname.endsWith('/.well-known/jwks.json')) {
         return Response.json({ keys: [jwk] });
       }
-      return pathname.startsWith('/storage/v1/')
-        ? storage.fetch(input, init)
-        : supabase.fetch(input, init);
+      return supabase.fetch(input, init);
     });
 
     const app = moduleRef.createNestApplication({ rawBody: true });

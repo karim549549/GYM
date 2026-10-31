@@ -14,8 +14,27 @@ const envSchema = z
     DATABASE_URL: z.url(),
     DATABASE_POOL_MAX: z.coerce.number().int().positive().default(10),
     DATABASE_SSL_CA: z.string().min(1).default('certs/supabase-ca.crt'),
-    // Server-side key that bypasses Supabase's access rules. Never leaves the backend.
-    SUPABASE_SECRET_KEY: z.string().min(1),
+    STORAGE_DRIVER: z.enum(['local', 's3']).default('local'),
+    STORAGE_LOCAL_ROOT: z.string().min(1).default('./storage-data'),
+    // Base of our local download routes, including /api/v1/storage.
+    STORAGE_BASE_URL: z
+      .url()
+      .transform((url) => url.replace(/\/+$/, ''))
+      .optional(),
+    STORAGE_SIGNING_KEY: z.string().min(32).optional(),
+    STORAGE_PUBLIC_URL: z
+      .url()
+      .transform((url) => url.replace(/\/+$/, ''))
+      .optional(),
+    STORAGE_S3_ENDPOINT: z.url().optional(),
+    STORAGE_S3_REGION: z.string().min(1).default('us-east-1'),
+    STORAGE_S3_FORCE_PATH_STYLE: z.stringbool().default(false),
+    STORAGE_S3_ACCESS_KEY_ID: z.string().min(1).optional(),
+    STORAGE_S3_SECRET_ACCESS_KEY: z.string().min(1).optional(),
+    STORAGE_S3_SESSION_TOKEN: z.string().min(1).optional(),
+    STORAGE_S3_PUBLIC_BUCKET: z.string().min(1).default('gym-public'),
+    STORAGE_S3_FILES_BUCKET: z.string().min(1).default('gym-files'),
+    STORAGE_S3_PHOTOS_BUCKET: z.string().min(1).default('gym-photos'),
     // 'mock' records messages instead of sending them (development and tests only).
     WHATSAPP_PROVIDER: z.enum(['mock', 'meta']).default('mock'),
     // Signs the calls Supabase makes to our Send SMS hook (dashboard: Auth > Hooks), as v1,whsec_<base64>.
@@ -32,6 +51,41 @@ const envSchema = z
       .optional(),
     // Signs the sessions a client gets from their program link (HMAC). Long and random; changing it signs every client out.
     PROGRAM_SESSION_SECRET: z.string().min(32).optional(),
+  })
+  .superRefine((env, context) => {
+    if (env.NODE_ENV === 'production' && env.STORAGE_DRIVER !== 's3') {
+      context.addIssue({
+        code: 'custom',
+        path: ['STORAGE_DRIVER'],
+        message: 'use s3 in production: local container files are not durable',
+      });
+    }
+    if (env.STORAGE_DRIVER === 's3') {
+      for (const name of [
+        'STORAGE_S3_ACCESS_KEY_ID',
+        'STORAGE_S3_SECRET_ACCESS_KEY',
+        'STORAGE_PUBLIC_URL',
+      ] as const) {
+        if (!env[name])
+          context.addIssue({
+            code: 'custom',
+            path: [name],
+            message: 'required when STORAGE_DRIVER=s3',
+          });
+      }
+      const buckets = [
+        env.STORAGE_S3_PUBLIC_BUCKET,
+        env.STORAGE_S3_FILES_BUCKET,
+        env.STORAGE_S3_PHOTOS_BUCKET,
+      ];
+      if (new Set(buckets).size !== buckets.length)
+        context.addIssue({
+          code: 'custom',
+          path: ['STORAGE_S3_PHOTOS_BUCKET'],
+          message:
+            'public files, private files and photos must use separate buckets',
+        });
+    }
   })
   .refine(
     (env) =>
@@ -70,9 +124,13 @@ const DEVELOPMENT_APP_URL = 'http://localhost:3001';
 const DEVELOPMENT_PROGRAM_SECRET = 'development-only-program-session-secret';
 
 type ParsedEnv = z.infer<typeof envSchema>;
-export type Env = Omit<ParsedEnv, 'PUBLIC_APP_URL' | 'PROGRAM_SESSION_SECRET'> & {
+export type Env = Omit<
+  ParsedEnv,
+  'PUBLIC_APP_URL' | 'PROGRAM_SESSION_SECRET' | 'STORAGE_BASE_URL'
+> & {
   PUBLIC_APP_URL: string;
   PROGRAM_SESSION_SECRET: string;
+  STORAGE_BASE_URL: string;
 };
 
 export function validateEnv(raw: Record<string, unknown>): Env {
@@ -88,5 +146,8 @@ export function validateEnv(raw: Record<string, unknown>): Env {
     PUBLIC_APP_URL: result.data.PUBLIC_APP_URL ?? DEVELOPMENT_APP_URL,
     PROGRAM_SESSION_SECRET:
       result.data.PROGRAM_SESSION_SECRET ?? DEVELOPMENT_PROGRAM_SECRET,
+    STORAGE_BASE_URL:
+      result.data.STORAGE_BASE_URL ??
+      `http://localhost:${result.data.PORT}/api/v1/storage`,
   };
 }

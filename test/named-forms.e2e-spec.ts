@@ -140,13 +140,15 @@ describe('Named forms over HTTP', () => {
     const theirs = await newCoach('Other Gym');
     const theirForm = (await create(theirs.session, 'Theirs').expect(201)).body;
 
-    for (const id of [randomUUID(), theirForm.id]) {
-      const response = await harness
-        .as(mine.session)
-        .get(`/named-forms/${id}`)
-        .expect(404);
-      expect(response.body.code).toBe('FORM_NOT_FOUND');
-    }
+    await Promise.all(
+      [randomUUID(), theirForm.id].map(async (id) => {
+        const response = await harness
+          .as(mine.session)
+          .get(`/named-forms/${id}`)
+          .expect(404);
+        expect(response.body.code).toBe('FORM_NOT_FOUND');
+      }),
+    );
     expect((await list(mine.session)).body).toEqual([]);
   });
 

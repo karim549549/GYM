@@ -4,7 +4,14 @@ const validEnv = {
   DATABASE_URL: 'postgresql://user:pass@host.example.com:6543/postgres',
   SUPABASE_URL: 'https://abcd1234.supabase.co',
   SUPABASE_PUBLISHABLE_KEY: 'sb_publishable_example',
-  SUPABASE_SECRET_KEY: 'sb_secret_example',
+  PROGRAM_SESSION_SECRET: 'program-session-tests-only-secret-123456',
+};
+
+const s3Env = {
+  STORAGE_DRIVER: 's3',
+  STORAGE_S3_ACCESS_KEY_ID: 'test-access-key',
+  STORAGE_S3_SECRET_ACCESS_KEY: 'test-secret-key',
+  STORAGE_PUBLIC_URL: 'https://files.example.com',
 };
 
 describe('validateEnv', () => {
@@ -99,10 +106,65 @@ describe('validateEnv', () => {
     );
   });
 
-  it('names the missing variable when SUPABASE_SECRET_KEY is absent', () => {
-    const { SUPABASE_SECRET_KEY: _omitted, ...without } = validEnv;
+  it('does not require the old Supabase Storage key', () => {
+    expect(validateEnv(validEnv)).not.toHaveProperty('SUPABASE_SECRET_KEY');
+  });
 
-    expect(() => validateEnv(without)).toThrow(/SUPABASE_SECRET_KEY/);
+  describe('storage', () => {
+    it('defaults to local storage and derives download URLs from PORT', () => {
+      const env = validateEnv({ ...validEnv, PORT: '8080' });
+      expect(env.STORAGE_DRIVER).toBe('local');
+      expect(env.STORAGE_BASE_URL).toBe('http://localhost:8080/api/v1/storage');
+    });
+
+    it('requires S3 credentials and a public bucket URL only for the S3 driver', () => {
+      expect(() => validateEnv({ ...validEnv, STORAGE_DRIVER: 's3' })).toThrow(
+        /STORAGE_S3_ACCESS_KEY_ID/,
+      );
+      expect(() => validateEnv({ ...validEnv, ...s3Env })).not.toThrow();
+    });
+
+    it('does not treat the string false as true for path-style S3', () => {
+      expect(
+        validateEnv({ ...validEnv, STORAGE_S3_FORCE_PATH_STYLE: 'false' })
+          .STORAGE_S3_FORCE_PATH_STYLE,
+      ).toBe(false);
+      expect(
+        validateEnv({ ...validEnv, STORAGE_S3_FORCE_PATH_STYLE: 'true' })
+          .STORAGE_S3_FORCE_PATH_STYLE,
+      ).toBe(true);
+    });
+
+    it('refuses to combine public files, private files and photos in one bucket', () => {
+      expect(() =>
+        validateEnv({
+          ...validEnv,
+          ...s3Env,
+          STORAGE_S3_PHOTOS_BUCKET: 'gym-public',
+        }),
+      ).toThrow(/separate buckets/);
+    });
+
+    it('refuses local storage in production', () => {
+      expect(() =>
+        validateEnv({
+          ...validEnv,
+          NODE_ENV: 'production',
+          WHATSAPP_PROVIDER: 'meta',
+          SUPABASE_HOOK_SECRET: 'test',
+          PUBLIC_APP_URL: 'https://app.example.com',
+        }),
+      ).toThrow(/STORAGE_DRIVER/);
+    });
+
+    it('refuses an unknown driver and short signing keys', () => {
+      expect(() =>
+        validateEnv({ ...validEnv, STORAGE_DRIVER: 'memory' }),
+      ).toThrow(/STORAGE_DRIVER/);
+      expect(() =>
+        validateEnv({ ...validEnv, STORAGE_SIGNING_KEY: 'short' }),
+      ).toThrow(/STORAGE_SIGNING_KEY/);
+    });
   });
 
   describe('WHATSAPP_PROVIDER', () => {
@@ -128,6 +190,7 @@ describe('validateEnv', () => {
         validateEnv({
           ...validEnv,
           NODE_ENV: 'production',
+          ...s3Env,
           WHATSAPP_PROVIDER: 'mock',
         }),
       ).toThrow(/WHATSAPP_PROVIDER/);
@@ -146,6 +209,7 @@ describe('validateEnv', () => {
         validateEnv({
           ...validEnv,
           NODE_ENV: 'production',
+          ...s3Env,
           WHATSAPP_PROVIDER: 'meta',
           SUPABASE_HOOK_SECRET: 'v1,whsec_abc=',
           PUBLIC_APP_URL: 'https://app.example.com',
@@ -178,6 +242,7 @@ describe('validateEnv', () => {
       const production = {
         ...validEnv,
         NODE_ENV: 'production',
+        ...s3Env,
         WHATSAPP_PROVIDER: 'meta',
         SUPABASE_HOOK_SECRET: 'v1,whsec_abc=',
       };
@@ -196,6 +261,7 @@ describe('validateEnv', () => {
     const production = {
       ...validEnv,
       NODE_ENV: 'production',
+      ...s3Env,
       WHATSAPP_PROVIDER: 'meta',
       PUBLIC_APP_URL: 'https://app.example.com',
     };

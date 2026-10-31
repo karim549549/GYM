@@ -1,5 +1,8 @@
 import { randomUUID } from 'node:crypto';
+import { StorageServiceError } from '@nestjs/storage';
 import sharp from 'sharp';
+import { StorageBucket } from '../src/storage/enums/storage-bucket.enum';
+import { StorageService } from '../src/storage/storage.service';
 import { HttpTestApp } from './support/http-test-app';
 
 describe('Managing a workspace over HTTP', () => {
@@ -360,7 +363,9 @@ describe('Managing a workspace over HTTP', () => {
         });
 
     const logoKeysOf = (workspaceId: string) =>
-      harness.storage.keysUnder('gym-public', `workspaces/${workspaceId}/`);
+      harness.storage[StorageBucket.PUBLIC]
+        .keys()
+        .filter((key) => key.startsWith(`workspaces/${workspaceId}/`));
 
     it('is stored as a fresh WebP in the public bucket, and shown on the workspace', async () => {
       const { session, workspace } = await newCoach('Logo Gym');
@@ -372,35 +377,76 @@ describe('Managing a workspace over HTTP', () => {
         new RegExp(`^workspaces/${workspace.id}/logo-[0-9a-f]{12}\\.webp$`),
       );
       expect(response.body).toEqual({
-        logoUrl: expect.stringContaining(
-          `/storage/v1/object/public/gym-public/${key}`,
-        ),
+        logoUrl: expect.stringContaining(`/api/v1/storage/public/${key}`),
       });
-      const stored = harness.storage.get('gym-public', key)!;
+      const stored = await harness.storage[StorageBucket.PUBLIC].stat(key);
       expect(stored.contentType).toBe('image/webp');
-      expect((await sharp(stored.bytes).metadata()).format).toBe('webp');
+      expect(
+        (
+          await sharp(
+            await harness.storage[StorageBucket.PUBLIC].getBuffer(key),
+          ).metadata()
+        ).format,
+      ).toBe('webp');
+
+      const download = await harness
+        .server()
+        .get(new URL(response.body.logoUrl).pathname)
+        .expect(200);
+      expect(download.body).toEqual(
+        await harness.storage[StorageBucket.PUBLIC].getBuffer(key),
+      );
 
       const current = await harness.as(session).get('/workspaces/current');
       expect(current.body.logoUrl).toBe(response.body.logoUrl);
     });
 
+    it('serves signed private downloads without a login token but rejects unsigned or cross-bucket access', async () => {
+      const key = `workspaces/${randomUUID()}/private.webp`;
+      const bytes = await picture();
+      const disk = harness.storage[StorageBucket.FILES];
+      await disk.put(key, bytes, { contentType: 'image/webp' });
+      try {
+        const url = new URL(
+          await harness.app
+            .get(StorageService)
+            .signedUrl(StorageBucket.FILES, key, 60),
+        );
+        const downloaded = await harness
+          .server()
+          .get(url.pathname + url.search)
+          .expect(200);
+        expect(downloaded.body).toEqual(bytes);
+        const unsigned = await harness
+          .server()
+          .get(`/api/v1/storage/files?key=${encodeURIComponent(key)}`)
+          .expect(403);
+        expect(unsigned.body.code).toBe('FILE_LINK_INVALID');
+        url.pathname = '/api/v1/storage/photos';
+        await harness
+          .server()
+          .get(url.pathname + url.search)
+          .expect(403);
+      } finally {
+        await disk.delete(key);
+      }
+    });
+
     it('is shrunk to fit 512 pixels, never enlarged', async () => {
       const { session, workspace } = await newCoach();
       await upload(session, await picture(3000, 1500)).expect(200);
-      const big = harness.storage.get(
-        'gym-public',
+      const big = await harness.storage[StorageBucket.PUBLIC].getBuffer(
         logoKeysOf(workspace.id)[0],
-      )!;
+      );
 
       await upload(session, await picture(60, 40)).expect(200);
-      const small = harness.storage.get(
-        'gym-public',
+      const small = await harness.storage[StorageBucket.PUBLIC].getBuffer(
         logoKeysOf(workspace.id)[0],
-      )!;
+      );
 
-      const bigMeta = await sharp(big.bytes).metadata();
+      const bigMeta = await sharp(big).metadata();
       expect([bigMeta.width, bigMeta.height]).toEqual([512, 256]);
-      const smallMeta = await sharp(small.bytes).metadata();
+      const smallMeta = await sharp(small).metadata();
       expect([smallMeta.width, smallMeta.height]).toEqual([60, 40]);
     });
 
@@ -419,11 +465,10 @@ describe('Managing a workspace over HTTP', () => {
         contentType: 'image/jpeg',
       }).expect(200);
 
-      const stored = harness.storage.get(
-        'gym-public',
+      const stored = await harness.storage[StorageBucket.PUBLIC].getBuffer(
         logoKeysOf(workspace.id)[0],
-      )!;
-      expect(stored.bytes.includes('GPS-SECRET-LOCATION')).toBe(false);
+      );
+      expect(stored.includes('GPS-SECRET-LOCATION')).toBe(false);
     });
 
     it.each(['png', 'jpeg', 'webp'] as const)(
@@ -590,14 +635,21 @@ describe('Managing a workspace over HTTP', () => {
       const { session, workspace } = await newCoach();
       const kept = await upload(session, await picture()).expect(200);
 
-      harness.storage.down = true;
+      const failedUpload = jest
+        .spyOn(harness.storage[StorageBucket.PUBLIC], 'put')
+        .mockRejectedValue(
+          new StorageServiceError({
+            operation: 'put',
+            code: 'NetworkError',
+          }),
+        );
       try {
         const response = await upload(session, await picture(90, 90)).expect(
           503,
         );
         expect(response.body.code).toBe('FILE_STORAGE_UNAVAILABLE');
       } finally {
-        harness.storage.down = false;
+        failedUpload.mockRestore();
       }
 
       expect(logoKeysOf(workspace.id)).toHaveLength(1);
@@ -648,7 +700,9 @@ describe('Managing a workspace over HTTP', () => {
         (await harness.as(session).get('/workspaces/current')).body.logoUrl,
       ).toBeNull();
       expect(
-        harness.storage.keysUnder('gym-public', `workspaces/${workspace.id}/`),
+        harness.storage[StorageBucket.PUBLIC]
+          .keys()
+          .filter((key) => key.startsWith(`workspaces/${workspace.id}/`)),
       ).toEqual([]);
     });
 

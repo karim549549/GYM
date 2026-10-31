@@ -1,5 +1,6 @@
 import {
   BadRequestException,
+  ForbiddenException,
   NotFoundException,
   PayloadTooLargeException,
   ServiceUnavailableException,
@@ -28,6 +29,15 @@ export class FileTooLargeException extends PayloadTooLargeException {
 export class FileNotFoundException extends NotFoundException {
   constructor() {
     super({ code: 'FILE_NOT_FOUND', message: 'The file does not exist' });
+  }
+}
+
+export class FileLinkInvalidException extends ForbiddenException {
+  constructor() {
+    super({
+      code: 'FILE_LINK_INVALID',
+      message: 'The file link is invalid or expired',
+    });
   }
 }
 

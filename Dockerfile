@@ -36,6 +36,7 @@ COPY --from=build /app/dist ./dist
 COPY --from=prod-deps /app/node_modules ./node_modules
 COPY package.json ./
 COPY certs ./certs
+RUN mkdir -p storage-data && chown node:node storage-data
 USER node
 EXPOSE 3000
 HEALTHCHECK --interval=30s --timeout=5s --start-period=30s --retries=3 \
