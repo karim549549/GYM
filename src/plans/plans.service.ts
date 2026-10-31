@@ -10,6 +10,7 @@ import type {
 } from './interfaces/plan.interface';
 import { PlanActivationOrchestrator } from './orchestration/plan-activation.orchestrator';
 import { PlanActiveClientsOrchestrator } from './orchestration/plan-active-clients.orchestrator';
+import { PlanActiveOfClientOrchestrator } from './orchestration/plan-active-of-client.orchestrator';
 import { PlanCreationOrchestrator } from './orchestration/plan-creation.orchestrator';
 import { PlanDetailsOrchestrator } from './orchestration/plan-details.orchestrator';
 import { PlanEndingOrchestrator } from './orchestration/plan-ending.orchestrator';
@@ -35,6 +36,7 @@ export class PlansService {
     private readonly removal: PlanRemovalOrchestrator,
     private readonly starterPlans: StarterPlansOrchestrator,
     private readonly activeClients: PlanActiveClientsOrchestrator,
+    private readonly activeOfClient: PlanActiveOfClientOrchestrator,
   ) {}
 
   /** Which of these clients follow an active plan, for the clients list. */
@@ -61,6 +63,14 @@ export class PlansService {
 
   findOne(workspaceId: string, planId: string): Promise<PlanRecord> {
     return this.details.execute(workspaceId, planId);
+  }
+
+  /** The plan this client follows now, or null when they have none. */
+  findActiveOfClient(
+    workspaceId: string,
+    clientId: string,
+  ): Promise<PlanRecord | null> {
+    return this.activeOfClient.execute(workspaceId, clientId);
   }
 
   updateDetails(

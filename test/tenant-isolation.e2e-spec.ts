@@ -46,6 +46,7 @@ import {
   planExercises,
   planSets,
   plans,
+  programLinks,
   platformInvoices,
   platformSubscriptions,
   reminders,
@@ -2121,6 +2122,117 @@ describe('Tenant isolation against the database', () => {
         );
 
         expect(seen).toEqual({ clients: [], responses: [], workspaces: [] });
+      });
+    });
+
+    describe('the secret token of a program link', () => {
+      let programTokenA: string;
+      let programTokenB: string;
+      let programLinkB: string;
+
+      beforeAll(async () => {
+        programTokenA = token();
+        programTokenB = token();
+        await tx.run(
+          () =>
+            tx.db.insert(programLinks).values({
+              workspaceId: workspaceA,
+              clientId: clientA,
+              token: programTokenA,
+            }),
+          scopeA(),
+        );
+        programLinkB = await tx.run(
+          async () =>
+            (
+              await tx.db
+                .insert(programLinks)
+                .values({
+                  workspaceId: workspaceB,
+                  clientId: clientB,
+                  token: programTokenB,
+                })
+                .returning({ id: programLinks.id })
+            )[0].id,
+          scopeB(),
+        );
+      });
+
+      const readByToken = (presented: string) =>
+        tx.run(
+          () =>
+            tx.db
+              .select({
+                id: programLinks.id,
+                workspaceId: programLinks.workspaceId,
+                clientId: programLinks.clientId,
+              })
+              .from(programLinks),
+          { programToken: presented },
+        );
+
+      it('opens exactly that one link, with no workspace at all', async () => {
+        expect(await readByToken(programTokenB)).toEqual([
+          { id: programLinkB, workspaceId: workspaceB, clientId: clientB },
+        ]);
+      });
+
+      it('opens no other link', async () => {
+        const seen = await readByToken(programTokenB);
+
+        expect(seen.map((row) => row.workspaceId)).not.toContain(workspaceA);
+      });
+
+      it('opens nothing for a token that is not one', async () => {
+        expect(await readByToken(token())).toEqual([]);
+      });
+
+      it('opens nothing for an empty token', async () => {
+        expect(await readByToken('')).toEqual([]);
+      });
+
+      it('only reads: it cannot change or remove the link', async () => {
+        const touched = await tx.run(
+          async () => {
+            const updated = await tx.db
+              .update(programLinks)
+              .set({ passwordHash: 'scrypt$x$y' })
+              .where(eq(programLinks.token, programTokenB))
+              .returning({ id: programLinks.id });
+            const deleted = await tx.db
+              .delete(programLinks)
+              .where(eq(programLinks.token, programTokenB))
+              .returning({ id: programLinks.id });
+            return { updated, deleted };
+          },
+          { programToken: programTokenB },
+        );
+
+        expect(touched).toEqual({ updated: [], deleted: [] });
+      });
+
+      it('opens nothing else: the client, the plans and the workspace stay out of reach', async () => {
+        const seen = await tx.run(
+          async () => ({
+            clients: await tx.db.select({ id: clients.id }).from(clients),
+            plans: await tx.db.select({ id: plans.id }).from(plans),
+            workspaces: await tx.db
+              .select({ id: workspaces.id })
+              .from(workspaces),
+          }),
+          { programToken: programTokenB },
+        );
+
+        expect(seen).toEqual({ clients: [], plans: [], workspaces: [] });
+      });
+
+      it("a coach sees only their own workspace's link", async () => {
+        const seen = await tx.run(
+          () => tx.db.select({ id: programLinks.id }).from(programLinks),
+          scopeA(),
+        );
+
+        expect(seen.every((row) => row.id !== programLinkB)).toBe(true);
       });
     });
   });

@@ -7,6 +7,7 @@ import { TransactionManager } from '../../database/transaction.manager';
 import { FormTemplateNotFoundException } from '../../forms/exceptions/form-exceptions';
 import { FormPurpose } from '../../forms/enums/form-purpose.enum';
 import { FormsService } from '../../forms/forms.service';
+import { WorkspacesService } from '../../workspaces/workspaces.service';
 import { IntakeQueryHandler } from '../handlers/intake-query.handler';
 import type { IntakeLinkView } from '../interfaces/intake.interface';
 
@@ -31,6 +32,7 @@ export class IntakeLinkCreationOrchestrator {
     private readonly config: ConfigService<Env, true>,
     private readonly transactions: TransactionManager,
     private readonly forms: FormsService,
+    private readonly workspaces: WorkspacesService,
   ) {}
 
   async execute(
@@ -38,9 +40,10 @@ export class IntakeLinkCreationOrchestrator {
     clientId: string,
     namedFormId?: string | null,
   ): Promise<IntakeLinkView> {
-    const link = await this.transactions.run(
+    const { link, handle } = await this.transactions.run(
       async () => {
         await this.clients.findOne(workspaceId, clientId);
+        const { slug: handle } = await this.workspaces.findCurrent(workspaceId);
         if (namedFormId) {
           const named = await this.forms.namedForm(workspaceId, namedFormId);
           if (named.purpose !== FormPurpose.INTAKE) {
@@ -49,17 +52,20 @@ export class IntakeLinkCreationOrchestrator {
         }
         const open = await this.intakeQuery.findOpenLinkForClient(clientId);
         if (!open) {
-          return this.createWithFreeToken(
-            workspaceId,
-            clientId,
-            namedFormId ?? null,
-          );
+          return {
+            handle,
+            link: await this.createWithFreeToken(
+              workspaceId,
+              clientId,
+              namedFormId ?? null,
+            ),
+          };
         }
         if (namedFormId !== undefined && namedFormId !== open.namedFormId) {
           await this.intakeQuery.pinLink(open.id, namedFormId);
-          return { ...open, namedFormId };
+          return { handle, link: { ...open, namedFormId } };
         }
-        return open;
+        return { handle, link: open };
       },
       { workspaceId },
     );
@@ -67,7 +73,7 @@ export class IntakeLinkCreationOrchestrator {
       token: link.token,
       expiresAt: link.expiresAt,
       namedFormId: link.namedFormId ?? null,
-      url: this.urlFor(link.token),
+      url: this.urlFor(handle, link.token),
     };
   }
 
@@ -111,8 +117,9 @@ export class IntakeLinkCreationOrchestrator {
     ).join('');
   }
 
-  private urlFor(token: string): string {
-    return `${this.config.get('PUBLIC_APP_URL', { infer: true })}/f/${token}`;
+  /** `/intake/<workspace handle>/<token>`: the handle is only for looks, the token is the key. */
+  private urlFor(handle: string, token: string): string {
+    return `${this.config.get('PUBLIC_APP_URL', { infer: true })}/intake/${handle}/${token}`;
   }
 
   private isTokenTaken(error: unknown): boolean {

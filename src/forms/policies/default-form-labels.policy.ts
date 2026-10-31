@@ -49,7 +49,7 @@ export class DefaultFormLabelsPolicy {
       sessionMinutes: { label: 'مدة الحصة بالدقائق' },
       location: {
         label: 'مكان التمرين',
-        options: { gym: 'النادي', home: 'المنزل', both: 'الاثنان' },
+        options: { gym: 'الجيم', home: 'المنزل', both: 'الاثنان' },
       },
       injuries: {
         label: 'إصابات أو أمراض مزمنة',

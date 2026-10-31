@@ -3,6 +3,7 @@ import type { ClientsService } from '../../clients/clients.service';
 import type { Env } from '../../config/env.schema';
 import type { TransactionManager } from '../../database/transaction.manager';
 import type { FormsService } from '../../forms/forms.service';
+import type { WorkspacesService } from '../../workspaces/workspaces.service';
 import type { IntakeQueryHandler } from '../handlers/intake-query.handler';
 import { IntakeLinkCreationOrchestrator } from './intake-link-creation.orchestrator';
 
@@ -29,6 +30,9 @@ function setup() {
     {
       namedForm: jest.fn().mockResolvedValue({ purpose: 'intake' }),
     } as unknown as FormsService,
+    {
+      findCurrent: jest.fn().mockResolvedValue({ slug: 'sara-fit' }),
+    } as unknown as WorkspacesService,
   );
   return { orchestrator, query, transactions, link };
 }
@@ -46,7 +50,7 @@ describe('IntakeLinkCreationOrchestrator retries', () => {
       orchestrator.execute('workspace', 'client'),
     ).resolves.toMatchObject({
       token: link.token,
-      url: `https://app.example.com/f/${link.token}`,
+      url: `https://app.example.com/intake/sara-fit/${link.token}`,
     });
     expect(query.createLink).not.toHaveBeenCalled();
   });

@@ -56,7 +56,7 @@ src/
    `common/clients/base.client.ts` (see "Calling other systems"). Feature modules today: `auth`
    (sign-in, sign-up, the principal), `people`, `workspaces`, `members`, `packages`, `clients`,
    `intake`, `measurements`, `subscriptions`, `payments`, `reminders`, `checkins`, `exercises`, `plans`,
-   `foods`, `meal-plans`, `billing`, `forms`, `analytics`, `consents`, `invitations`, `home`,
+   `foods`, `meal-plans`, `program-links`, `billing`, `forms`, `analytics`, `consents`, `invitations`, `home`,
    `onboarding` and `client-overview` (`analytics`, `home`, `onboarding` and `client-overview` own no table: they only read or coordinate other modules), `health`.
 4. `config/` holds values only. Code that builds a library's options from those
    values lives with the feature that uses the library (`logging/logger.options.ts`).
@@ -555,7 +555,7 @@ Every HTTP call to another system goes through a client that extends
 
 A client hands in their details through a link, with no account (`intake` module).
 
-- The coach asks `POST /clients/:id/intake-link`; the link is `${PUBLIC_APP_URL}/f/<token>`, a
+- The coach asks `POST /clients/:id/intake-link`; the link is `${PUBLIC_APP_URL}/intake/<workspace slug>/<token>` (the slug is only for looks; a check-in link is `/checkin/<slug>/<token>`), a
   CSPRNG 8-character alphanumeric token, valid 14 days. Asking again while one is open returns
   it; once used or expired it makes a new one (that is how a form is reopened). The coach
   shares it by hand: nothing is sent automatically yet.
@@ -686,6 +686,42 @@ is what "gone quiet" and the adherence rate are counted from.
 - Not built: photos (they need their own private bucket flow and the client's right to delete them),
   voice-note replies. The coach-built question set is the form builder (see "Forms").
 - Launch blocker, as for the intake: the public check-in routes need rate limiting.
+
+## Program links: what a client opens to see their plans
+
+`program-links` owns `program_links` (one row per client, `unique (client_id)`). The coach gets the address;
+the client sees their **active workout plan**, and later their nutrition plan, behind a mobile number and a
+password they choose themselves. No account exists for the client: this is a credential of the link only
+(decided with the user on 2026-10-31, who accepted new credential code here despite the rule against rebuilding
+sessions; the real WhatsApp sender does not exist yet, so no code is sent).
+
+- The address is `${PUBLIC_APP_URL}/program/<workspace slug>/<token>` (the slug is for looks). The token is 12
+  alphanumeric characters, **never expires**, and only finds the row. The coach changes it by **rotating** it.
+- Coach, `POST /clients/:id/program-link` (get or create), `.../reset-access` (forget the password, sign every
+  device out, same address) and `.../rotate` (new address, also clears the password). All `COACHING_WRITE`.
+- Client, all `@Public()` under `/program/:token`: `GET /gate` (brand, first name, `hasPassword`; no plan data),
+  `POST /claim` (first visit: the mobile must equal the client's number, then the password is chosen, only while
+  none is set), `POST /login`, and `GET /` with the header `x-program-session`, which returns the program:
+  `{ coach, client: { firstName }, workout | null, nutrition: null }`. The nutrition place is reserved; filling it
+  needs only `MealPlansService.findActiveOfClient` and the mapper in `PublicProgramOrchestrator`.
+- The password is kept as a scrypt hash. A wrong number and a wrong password give the same `401
+  PROGRAM_CREDENTIALS_INVALID`; **five wrong tries lock the link for 15 minutes** (`429 PROGRAM_LOCKED`), counted per
+  link, not per device. The counters are written in their own transaction before the refusal is thrown.
+- A session is `v1.<payload>.<HMAC>` signed with `PROGRAM_SESSION_SECRET` (required in production), good for 30 days,
+  and stored nowhere. Its payload names the link and `session_version`; reset or rotate raises the version and every
+  older session stops matching. The frontend keeps it in an httpOnly cookie per link and sends it as the header.
+- The public view is mapped by hand: no ids, and not the coach's private `notes` on the plan. Day notes and each
+  exercise's coach note **are** shown.
+- Tenancy: `program_links` has RLS enabled and forced, a tenant policy, and a SELECT-only policy `program_links_by_token`
+  under the `programToken` transaction scope, exactly as for intake links. Everything after finding the link runs in
+  the link's workspace.
+- Logging: the path segment after `/program/` (and after `/intake/` and `/checkin/`) is masked in the request log,
+  and the session header is redacted.
+- Weak point, known: without a code to the client's WhatsApp, whoever holds the link and knows the client's number can
+  choose the password first. The coach sees whether one is set and can reset it. Rate limiting beyond the per-link
+  lockout is still a launch blocker, as for the intake.
+- Migrations: the table is generated (`npm run db:generate`); the RLS (policy, function `app_program_token()`) is a custom
+  migration, as `0018` is for intake.
 
 ## Shared libraries: exercises and foods
 
