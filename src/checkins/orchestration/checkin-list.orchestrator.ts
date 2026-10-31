@@ -5,6 +5,7 @@ import type { PaginatedResponse } from '../../common/handlers/base-query.handler
 import { ConsentsService } from '../../consents/consents.service';
 import { TransactionManager } from '../../database/transaction.manager';
 import { SubscriptionDatesPolicy } from '../../subscriptions/policies/subscription-dates.policy';
+import { WorkspacesService } from '../../workspaces/workspaces.service';
 import { CheckinsQueryHandler } from '../handlers/checkins-query.handler';
 import type {
   CheckinFilter,
@@ -22,9 +23,10 @@ export class CheckinListOrchestrator extends BaseCheckinOrchestrator {
     dates: SubscriptionDatesPolicy,
     statePolicy: CheckinStatePolicy,
     transactions: TransactionManager,
+    workspaces: WorkspacesService,
     private readonly consents: ConsentsService,
   ) {
-    super(checkinsQuery, config, dates, statePolicy, transactions);
+    super(checkinsQuery, config, dates, statePolicy, transactions, workspaces);
   }
 
   execute(
@@ -42,12 +44,13 @@ export class CheckinListOrchestrator extends BaseCheckinOrchestrator {
           page,
           limit,
         );
+        const handle = await this.handleOf(workspaceId);
         return {
           ...result,
           items: await this.withVisibleAnswers(
             this.consents,
             workspaceId,
-            result.items.map((row) => this.present(row, today)),
+            result.items.map((row) => this.present(row, today, handle)),
           ),
         };
       },

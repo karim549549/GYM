@@ -4,6 +4,7 @@ import type { Env } from '../../config/env.schema';
 import { TransactionManager } from '../../database/transaction.manager';
 import { RemindersService } from '../../reminders/reminders.service';
 import { SubscriptionDatesPolicy } from '../../subscriptions/policies/subscription-dates.policy';
+import { WorkspacesService } from '../../workspaces/workspaces.service';
 import { CheckinsQueryHandler } from '../handlers/checkins-query.handler';
 import { CheckinFormPolicy } from '../policies/checkin-form.policy';
 import { CheckinSchedulePolicy } from '../policies/checkin-schedule.policy';
@@ -34,11 +35,12 @@ export abstract class BaseCheckinCreationOrchestrator extends BaseCheckinOrchest
     dates: SubscriptionDatesPolicy,
     statePolicy: CheckinStatePolicy,
     transactions: TransactionManager,
+    workspaces: WorkspacesService,
     protected readonly schedulePolicy: CheckinSchedulePolicy,
     protected readonly formPolicy: CheckinFormPolicy,
     protected readonly reminders: RemindersService,
   ) {
-    super(checkinsQuery, config, dates, statePolicy, transactions);
+    super(checkinsQuery, config, dates, statePolicy, transactions, workspaces);
   }
 
   /** Makes the check-ins for these days and plans their links. Returns how many were made. */
@@ -57,6 +59,7 @@ export abstract class BaseCheckinCreationOrchestrator extends BaseCheckinOrchest
         formVersion: CheckinFormPolicy.VERSION,
       })),
     );
+    const handle = await this.handleOf(workspaceId);
     await this.reminders.scheduleCheckins(
       workspaceId,
       created.map((checkin) => ({
@@ -64,7 +67,7 @@ export abstract class BaseCheckinCreationOrchestrator extends BaseCheckinOrchest
         checkinId: checkin.id,
         dueOn: checkin.dueOn,
         sendAt: source.sendAt,
-        link: this.linkFor(checkin.token),
+        link: this.linkFor(handle, checkin.token),
       })),
     );
     return created.length;

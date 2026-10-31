@@ -4,6 +4,7 @@ import type { Env } from '../../config/env.schema';
 import { ConsentsService } from '../../consents/consents.service';
 import { TransactionManager } from '../../database/transaction.manager';
 import { SubscriptionDatesPolicy } from '../../subscriptions/policies/subscription-dates.policy';
+import { WorkspacesService } from '../../workspaces/workspaces.service';
 import {
   CheckinNotFoundException,
   CheckinNotSubmittedException,
@@ -22,9 +23,10 @@ export class CheckinReplyOrchestrator extends BaseCheckinOrchestrator {
     dates: SubscriptionDatesPolicy,
     statePolicy: CheckinStatePolicy,
     transactions: TransactionManager,
+    workspaces: WorkspacesService,
     private readonly consents: ConsentsService,
   ) {
-    super(checkinsQuery, config, dates, statePolicy, transactions);
+    super(checkinsQuery, config, dates, statePolicy, transactions, workspaces);
   }
 
   execute(
@@ -48,10 +50,11 @@ export class CheckinReplyOrchestrator extends BaseCheckinOrchestrator {
           text,
           repliedBy,
         );
+        const handle = await this.handleOf(workspaceId);
         const [visible] = await this.withVisibleAnswers(
           this.consents,
           workspaceId,
-          [this.present(replied ?? found, today)],
+          [this.present(replied ?? found, today, handle)],
         );
         return visible;
       },

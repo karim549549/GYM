@@ -104,6 +104,18 @@ export class PlansQueryHandler extends BaseQueryHandler {
     return this.firstOrNull(rows);
   }
 
+  /** The plan this client follows now. There is at most one: the database refuses a second active plan. */
+  async findActiveOfClient(clientId: string): Promise<PlanSummary | null> {
+    const rows = await this.db
+      .select(SUMMARY)
+      .from(plans)
+      .where(
+        and(eq(plans.clientId, clientId), eq(plans.status, PlanStatus.ACTIVE)),
+      )
+      .limit(1);
+    return this.firstOrNull(rows);
+  }
+
   list(
     filter: PlanListFilter,
     page?: number,

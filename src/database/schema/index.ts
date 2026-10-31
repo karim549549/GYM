@@ -18,6 +18,7 @@ export * from './reminder-messages.schema';
 export * from './payments.schema';
 export * from './plans.schema';
 export * from './platform-billing.schema';
+export * from './program-links.schema';
 export * from './reminders.schema';
 export * from './subscription-freezes.schema';
 export * from './subscriptions.schema';
