@@ -12,6 +12,9 @@ interface LoggerOptions {
 
 const SAFE_REQUEST_ID = /^[\w-]{8,64}$/;
 
+// The address of a public link carries its secret in the path, which the logger would otherwise keep.
+const PUBLIC_LINK_PATH = /^(\/api\/v\d+\/(?:intake|checkin|program)\/)[^/]+/;
+
 const SENSITIVE_FIELDS = [
   'password',
   'token',
@@ -52,7 +55,7 @@ export function createLoggerParams({
       req: (req: IncomingMessage & { id?: unknown }) => ({
         id: req.id,
         method: req.method,
-        url: req.url?.split('?')[0],
+        url: req.url?.split('?')[0].replace(PUBLIC_LINK_PATH, '$1[redacted]'),
       }),
       res: (res: { statusCode: number }) => ({ statusCode: res.statusCode }),
     },
@@ -60,6 +63,7 @@ export function createLoggerParams({
     redact: [
       'req.headers.authorization',
       'req.headers.cookie',
+      'req.headers["x-program-session"]',
       ...SENSITIVE_FIELDS,
       ...SENSITIVE_FIELDS.map((field) => `*.${field}`),
     ],

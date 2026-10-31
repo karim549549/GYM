@@ -6,6 +6,7 @@ import type { Env } from '../../config/env.schema';
 import { TransactionManager } from '../../database/transaction.manager';
 import { RemindersService } from '../../reminders/reminders.service';
 import { SubscriptionDatesPolicy } from '../../subscriptions/policies/subscription-dates.policy';
+import { WorkspacesService } from '../../workspaces/workspaces.service';
 import { CheckinsQueryHandler } from '../handlers/checkins-query.handler';
 import type { ActiveSchedule } from '../interfaces/checkin.interface';
 import { CheckinFormPolicy } from '../policies/checkin-form.policy';
@@ -27,6 +28,7 @@ export class CheckinTopUpOrchestrator extends BaseCheckinCreationOrchestrator {
     dates: SubscriptionDatesPolicy,
     statePolicy: CheckinStatePolicy,
     transactions: TransactionManager,
+    workspaces: WorkspacesService,
     schedulePolicy: CheckinSchedulePolicy,
     formPolicy: CheckinFormPolicy,
     reminders: RemindersService,
@@ -38,6 +40,7 @@ export class CheckinTopUpOrchestrator extends BaseCheckinCreationOrchestrator {
       dates,
       statePolicy,
       transactions,
+      workspaces,
       schedulePolicy,
       formPolicy,
       reminders,

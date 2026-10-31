@@ -19,6 +19,8 @@ export interface TransactionScope {
   intakeToken?: string;
   /** The same for one check-in link. */
   checkinToken?: string;
+  /** The same for one program link (what a client opens to see their plans). */
+  programToken?: string;
   /**
    * The backend acting for itself, not for any workspace. Only the reminders table answers to it,
    * so the sender can take everyone's due reminders; everything else is still read one workspace at a time.
@@ -59,6 +61,7 @@ export class TransactionManager {
           set_config('app.person_id', ${scope.personId ?? ''}, true),
           set_config('app.intake_token', ${scope.intakeToken ?? ''}, true),
           set_config('app.checkin_token', ${scope.checkinToken ?? ''}, true),
+          set_config('app.program_token', ${scope.programToken ?? ''}, true),
           set_config('app.system', ${scope.system ? 'on' : ''}, true)`);
       }
       return this.storage.run({ tx, scope }, work);
@@ -84,6 +87,7 @@ export class TransactionManager {
       (a?.personId ?? '') === (b?.personId ?? '') &&
       (a?.intakeToken ?? '') === (b?.intakeToken ?? '') &&
       (a?.checkinToken ?? '') === (b?.checkinToken ?? '') &&
+      (a?.programToken ?? '') === (b?.programToken ?? '') &&
       Boolean(a?.system) === Boolean(b?.system)
     );
   }

@@ -25,11 +25,13 @@ const envSchema = z
     REMINDER_POLL_SECONDS: z.coerce.number().int().min(0).default(60),
     // How often the next month of check-ins is topped up; 0 turns it off (tests). Safe from several instances.
     CHECKIN_TOPUP_SECONDS: z.coerce.number().int().min(0).default(3600),
-    // Where the web app lives, for the links we hand out (an intake form opens at <this>/f/<token>).
+    // Where the web app lives, for the links we hand out (an intake form opens at <this>/intake/<handle>/<token>).
     PUBLIC_APP_URL: z
       .url()
       .transform((url) => url.replace(/\/+$/, ''))
       .optional(),
+    // Signs the sessions a client gets from their program link (HMAC). Long and random; changing it signs every client out.
+    PROGRAM_SESSION_SECRET: z.string().min(32).optional(),
   })
   .refine(
     (env) =>
@@ -52,14 +54,25 @@ const envSchema = z
     path: ['PUBLIC_APP_URL'],
     message:
       'required in production: every link we hand out would point at localhost',
-  });
+  })
+  .refine(
+    (env) => !(env.NODE_ENV === 'production' && !env.PROGRAM_SESSION_SECRET),
+    {
+      path: ['PROGRAM_SESSION_SECRET'],
+      message:
+        'required in production: without it no client could stay signed in on their program link',
+    },
+  );
 
 // in development the web app runs locally, so the setting can be left out there
 const DEVELOPMENT_APP_URL = 'http://localhost:3001';
+// development and tests only: a known secret would let anyone sign a session
+const DEVELOPMENT_PROGRAM_SECRET = 'development-only-program-session-secret';
 
 type ParsedEnv = z.infer<typeof envSchema>;
-export type Env = Omit<ParsedEnv, 'PUBLIC_APP_URL'> & {
+export type Env = Omit<ParsedEnv, 'PUBLIC_APP_URL' | 'PROGRAM_SESSION_SECRET'> & {
   PUBLIC_APP_URL: string;
+  PROGRAM_SESSION_SECRET: string;
 };
 
 export function validateEnv(raw: Record<string, unknown>): Env {
@@ -73,5 +86,7 @@ export function validateEnv(raw: Record<string, unknown>): Env {
   return {
     ...result.data,
     PUBLIC_APP_URL: result.data.PUBLIC_APP_URL ?? DEVELOPMENT_APP_URL,
+    PROGRAM_SESSION_SECRET:
+      result.data.PROGRAM_SESSION_SECRET ?? DEVELOPMENT_PROGRAM_SECRET,
   };
 }

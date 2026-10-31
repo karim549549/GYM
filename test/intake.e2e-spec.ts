@@ -93,7 +93,11 @@ describe('Intake over HTTP', () => {
 
       expect(response.body).toEqual({
         token: expect.stringMatching(/^[A-Za-z0-9]{8}$/),
-        url: `http://localhost:3001/f/${response.body.token}`,
+        url: expect.stringMatching(
+          new RegExp(
+            `^http://localhost:3001/intake/[a-z0-9-]+/${response.body.token}$`,
+          ),
+        ),
         expiresAt: expect.any(String),
         namedFormId: null,
       });

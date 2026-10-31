@@ -34,6 +34,14 @@ class ProbeController {
   }
 }
 
+@Controller('api/v1/program')
+class ProgramProbeController {
+  @Get(':token')
+  open() {
+    return { ok: true };
+  }
+}
+
 @Controller('health')
 class HealthProbeController {
   @Get()
@@ -68,7 +76,11 @@ async function startApp() {
         }),
       ),
     ],
-    controllers: [ProbeController, HealthProbeController],
+    controllers: [
+      ProbeController,
+      ProgramProbeController,
+      HealthProbeController,
+    ],
   }).compile();
 
   const app: INestApplication = moduleRef.createNestApplication({
@@ -166,6 +178,18 @@ describe('createLoggerParams', () => {
     const completed = lines.find((line) => line.msg === 'request completed');
     expect(completed?.req?.url).toBe('/probe/log');
     expect(output()).not.toContain('abc123secret');
+  });
+
+  it('masks the secret in the address of a public link, and never writes the program session', async () => {
+    await request(app.getHttpServer())
+      .get('/api/v1/program/Pq7xK2mZ9aLd')
+      .set('x-program-session', 'v1.session-payload-value.signature-value')
+      .expect(200);
+
+    const completed = lines.find((line) => line.msg === 'request completed');
+    expect(completed?.req?.url).toBe('/api/v1/program/[redacted]');
+    expect(output()).not.toContain('Pq7xK2mZ9aLd');
+    expect(output()).not.toContain('session-payload-value');
   });
 
   it('does not log health checks', async () => {
