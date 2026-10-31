@@ -126,7 +126,7 @@ describe('TransactionManager', () => {
         scope,
       );
 
-      expect(seenBeforeWork).toEqual([['ws-1', 'person-1', '', '', '']]);
+      expect(seenBeforeWork).toEqual([['ws-1', 'person-1', '', '', '', '']]);
     });
 
     it('sets an empty value for the part of the scope that is missing', async () => {
@@ -134,7 +134,7 @@ describe('TransactionManager', () => {
 
       await manager.run(async () => undefined, { personId: 'person-1' });
 
-      expect(fake.executedParams()).toEqual([['', 'person-1', '', '', '']]);
+      expect(fake.executedParams()).toEqual([['', 'person-1', '', '', '', '']]);
     });
 
     it('sets the intake token context for the one public link being opened', async () => {
@@ -142,7 +142,7 @@ describe('TransactionManager', () => {
 
       await manager.run(async () => undefined, { intakeToken: 'x7k2m9ab' });
 
-      expect(fake.executedParams()).toEqual([['', '', 'x7k2m9ab', '', '']]);
+      expect(fake.executedParams()).toEqual([['', '', 'x7k2m9ab', '', '', '']]);
     });
 
     it('sets the check-in token context for the one public link being opened', async () => {
@@ -150,7 +150,17 @@ describe('TransactionManager', () => {
 
       await manager.run(async () => undefined, { checkinToken: 'k3m9x2qa' });
 
-      expect(fake.executedParams()).toEqual([['', '', '', 'k3m9x2qa', '']]);
+      expect(fake.executedParams()).toEqual([['', '', '', 'k3m9x2qa', '', '']]);
+    });
+
+    it('sets the program token context for the one program link being opened', async () => {
+      const { fake, manager } = setup();
+
+      await manager.run(async () => undefined, { programToken: 'Pq7xK2mZ9aLd' });
+
+      expect(fake.executedParams()).toEqual([
+        ['', '', '', '', 'Pq7xK2mZ9aLd', ''],
+      ]);
     });
 
     it('marks the transaction as the backend’s own, for the sender of reminders', async () => {
@@ -158,7 +168,7 @@ describe('TransactionManager', () => {
 
       await manager.run(async () => undefined, { system: true });
 
-      expect(fake.executedParams()).toEqual([['', '', '', '', 'on']]);
+      expect(fake.executedParams()).toEqual([['', '', '', '', '', 'on']]);
     });
 
     it('refuses a nested run that tries to become the system', async () => {

@@ -4,6 +4,7 @@ import { ConsentsService } from '../../consents/consents.service';
 import { ClientConsentType } from '../../consents/enums/client-consent-type.enum';
 import { TransactionManager } from '../../database/transaction.manager';
 import { SubscriptionDatesPolicy } from '../../subscriptions/policies/subscription-dates.policy';
+import { WorkspacesService } from '../../workspaces/workspaces.service';
 import { CheckinsQueryHandler } from '../handlers/checkins-query.handler';
 import type {
   CheckinRecord,
@@ -14,6 +15,7 @@ import { CheckinStatePolicy } from '../policies/checkin-state.policy';
 /**
  * What every flow that hands a check-in back to a coach shares: the status worked out from today's
  * date, and the link built from the secret, which the coach gets as an address and never as a token.
+ * The link reads `/checkin/<workspace handle>/<token>`; the handle is only for looks.
  */
 export abstract class BaseCheckinOrchestrator {
   constructor(
@@ -22,18 +24,28 @@ export abstract class BaseCheckinOrchestrator {
     protected readonly dates: SubscriptionDatesPolicy,
     protected readonly statePolicy: CheckinStatePolicy,
     protected readonly transactions: TransactionManager,
+    protected readonly workspaces: WorkspacesService,
   ) {}
 
-  protected linkFor(token: string): string {
-    return `${this.config.get('PUBLIC_APP_URL', { infer: true })}/c/${token}`;
+  /** The handle that reads in the workspace's links. Call it inside the workspace's transaction. */
+  protected async handleOf(workspaceId: string): Promise<string> {
+    return (await this.workspaces.findCurrent(workspaceId)).slug;
   }
 
-  protected present(row: StoredCheckin, today: string): CheckinRecord {
+  protected linkFor(handle: string, token: string): string {
+    return `${this.config.get('PUBLIC_APP_URL', { infer: true })}/checkin/${handle}/${token}`;
+  }
+
+  protected present(
+    row: StoredCheckin,
+    today: string,
+    handle: string,
+  ): CheckinRecord {
     const { token, ...rest } = row;
     return {
       ...rest,
       answersHidden: false,
-      link: this.linkFor(token),
+      link: this.linkFor(handle, token),
       status: this.statePolicy.statusOf({
         dueOn: row.dueOn,
         submittedAt: row.submittedAt,

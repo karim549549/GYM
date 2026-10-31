@@ -133,7 +133,7 @@ describe('Check-ins over HTTP and the database', () => {
         expect(new Date(`${item.dueOn}T00:00:00Z`).getUTCDay()).toBe(5);
         expect(item.status).toBe('pending');
         expect(item.link).toMatch(
-          /^http:\/\/localhost:3001\/c\/[A-Za-z0-9]{8}$/,
+          /^http:\/\/localhost:3001\/checkin\/[a-z0-9-]+\/[A-Za-z0-9]{8}$/,
         );
       }
     });
