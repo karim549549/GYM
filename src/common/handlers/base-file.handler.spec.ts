@@ -4,7 +4,7 @@ import {
   InvalidImageException,
 } from '../../storage/exceptions/storage-exceptions';
 import { StorageBucket } from '../../storage/enums/storage-bucket.enum';
-import type { SupabaseStorageClient } from '../../storage/integrations/supabase-storage.client';
+import type { StorageService } from '../../storage/storage.service';
 import { BaseFileHandler } from './base-file.handler';
 
 class LogoFileHandler extends BaseFileHandler {
@@ -58,7 +58,7 @@ function setup(Handler: typeof LogoFileHandler = LogoFileHandler) {
     signedUrl: jest.fn().mockResolvedValue('https://signed.example/x'),
     publicUrl: jest.fn().mockReturnValue('https://public.example/x'),
   };
-  const handler = new Handler(storage as unknown as SupabaseStorageClient);
+  const handler = new Handler(storage as unknown as StorageService);
   return { storage, handler };
 }
 

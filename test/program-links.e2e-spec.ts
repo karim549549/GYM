@@ -49,9 +49,15 @@ describe('Program links over HTTP', () => {
   const gate = (token: string) =>
     harness.server().get(`/api/v1/program/${token}/gate`);
   const claim = (token: string, body: unknown) =>
-    harness.server().post(`/api/v1/program/${token}/claim`).send(body as object);
+    harness
+      .server()
+      .post(`/api/v1/program/${token}/claim`)
+      .send(body as object);
   const login = (token: string, body: unknown) =>
-    harness.server().post(`/api/v1/program/${token}/login`).send(body as object);
+    harness
+      .server()
+      .post(`/api/v1/program/${token}/login`)
+      .send(body as object);
   const program = (token: string, session?: string) => {
     const call = harness.server().get(`/api/v1/program/${token}`);
     return session ? call.set('x-program-session', session) : call;
@@ -159,9 +165,11 @@ describe('Program links over HTTP', () => {
       const response = await gate('AAAAAAAAAAAA').expect(404);
 
       expect(response.body.code).toBe('PROGRAM_LINK_NOT_FOUND');
-      for (const bad of ['short', 'waytoolongtokenvalue', 'bad-char!!!']) {
-        await gate(bad).expect(400);
-      }
+      await Promise.all(
+        ['short', 'waytoolongtokenvalue', 'bad-char!!!'].map((bad) =>
+          gate(bad).expect(400),
+        ),
+      );
     });
   });
 
@@ -196,9 +204,10 @@ describe('Program links over HTTP', () => {
 
     it('refuses a second first visit, and a password that is too short', async () => {
       const { client, link } = await ready();
-      await claim(link.token, { phone: client.phone, password: 'short' }).expect(
-        400,
-      );
+      await claim(link.token, {
+        phone: client.phone,
+        password: 'short',
+      }).expect(400);
       await claim(link.token, {
         phone: client.phone,
         password: PASSWORD,
@@ -244,12 +253,17 @@ describe('Program links over HTTP', () => {
 
     it('stops listening after five wrong tries, even for the right password', async () => {
       const { client, link } = await signedIn();
-      for (let attempt = 0; attempt < 5; attempt += 1) {
-        await login(link.token, {
-          phone: client.phone,
-          password: 'not the password',
-        }).expect(401);
-      }
+      // Attempts must remain sequential to exercise the lockout threshold.
+      await Array.from({ length: 5 }).reduce<Promise<void>>(
+        (previous) =>
+          previous.then(async () => {
+            await login(link.token, {
+              phone: client.phone,
+              password: 'not the password',
+            }).expect(401);
+          }),
+        Promise.resolve(),
+      );
 
       const locked = await login(link.token, {
         phone: client.phone,
@@ -316,7 +330,13 @@ describe('Program links over HTTP', () => {
               {
                 coachNote: 'Slow down',
                 sets: [
-                  { setNo: 1, reps: '8-10', weightKg: 60, restSeconds: 90, rir: 2 },
+                  {
+                    setNo: 1,
+                    reps: '8-10',
+                    weightKg: 60,
+                    restSeconds: 90,
+                    rir: 2,
+                  },
                 ],
               },
             ],

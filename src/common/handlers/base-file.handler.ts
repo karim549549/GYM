@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import sharp from 'sharp';
 import { InvalidImageException } from '../../storage/exceptions/storage-exceptions';
 import { StorageBucket } from '../../storage/enums/storage-bucket.enum';
-import { SupabaseStorageClient } from '../../storage/integrations/supabase-storage.client';
+import { StorageService } from '../../storage/storage.service';
 
 /**
  * Base of every file handler: all file operations, and nothing else. A module's file
@@ -26,7 +26,7 @@ export abstract class BaseFileHandler {
   /** The bucket this handler's files live in. A handler uses exactly one. */
   protected abstract readonly bucket: StorageBucket;
 
-  constructor(private readonly storage: SupabaseStorageClient) {}
+  constructor(private readonly storage: StorageService) {}
 
   /** A small file can still unpack to billions of pixels and exhaust memory; 50 megapixels covers any phone camera. */
   protected get maxInputPixels(): number {

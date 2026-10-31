@@ -1,7 +1,7 @@
 import sharp from 'sharp';
 import { StorageBucket } from '../../storage/enums/storage-bucket.enum';
 import { InvalidImageException } from '../../storage/exceptions/storage-exceptions';
-import type { SupabaseStorageClient } from '../../storage/integrations/supabase-storage.client';
+import type { StorageService } from '../../storage/storage.service';
 import { UnitSystem } from '../enums/unit-system.enum';
 import { WorkspaceFileHandler } from './workspace-file.handler';
 
@@ -14,7 +14,7 @@ function setup() {
     ),
   };
   const handler = new WorkspaceFileHandler(
-    storage as unknown as SupabaseStorageClient,
+    storage as unknown as StorageService,
   );
   return { storage, handler };
 }

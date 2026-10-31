@@ -57,6 +57,36 @@ $ undefined run test:e2e
 $ undefined run test:cov
 ```
 
+## File storage
+
+Files use `@nestjs/storage` through our file handlers. Images still pass through Sharp
+(resize, strip metadata, encode WebP), and database rows still store keys, not URLs.
+
+Development defaults to `STORAGE_DRIVER=local`, under `./storage-data/` (ignored by Git
+and Docker). Public files are served at `/api/v1/storage/public/*key`; private file and
+photo URLs are signed and expire after five minutes by default, capped at one hour.
+`STORAGE_BASE_URL` defaults to `http://localhost:<PORT>/api/v1/storage`; set it to the
+backend's reachable URL when using another host or port. Set `STORAGE_SIGNING_KEY`
+to a random string of at least 32 characters to preserve local links across restarts;
+otherwise development generates a new key at startup. Tests replace all three disks
+with the package's `InMemoryDisk` and make no storage network calls.
+
+**Render, including development-mode staging, needs durable object storage.** Set
+`STORAGE_DRIVER=s3`, `STORAGE_S3_ACCESS_KEY_ID`, `STORAGE_S3_SECRET_ACCESS_KEY`,
+`STORAGE_S3_REGION` and `STORAGE_PUBLIC_URL` (the public bucket/CDN base URL).
+S3-compatible providers also use `STORAGE_S3_ENDPOINT` and, when needed,
+`STORAGE_S3_FORCE_PATH_STYLE=true`. Keep public files, private files and photos in
+separate buckets (`gym-public`, `gym-files`, `gym-photos` by default); only the public
+bucket is publicly readable. See `.env.example` for optional bucket names and temporary
+session credentials. Production refuses local storage; Render's local filesystem is
+ephemeral even when `NODE_ENV=development`.
+
+This change does not transfer existing objects. Before deploying, configure the S3
+driver against their current buckets through a compatible S3 endpoint, or copy objects
+to the new provider preserving their keys and configure the public URL. S3 access keys
+are different from Supabase's API secret key; `SUPABASE_SECRET_KEY` is no longer used
+for storage. Provider upload/download and access policies must be configured separately.
+
 ## Deploy
 
 Build and run locally (supply your own local environment file; it is never copied into the image):
