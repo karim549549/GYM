@@ -15,6 +15,7 @@ const NOT_ABOUT_A_WORKSPACE = [
   'AuthHooksController',
   'HealthController',
   'AdminBillingController',
+  'AdminFoodPublicationController',
   'OnboardingController.becomeCoach',
   'ConsentsController.texts',
   'ConsentsController.mine',

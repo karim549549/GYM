@@ -28,6 +28,7 @@ import { PaymentRequestsModule } from './payment-requests/payment-requests.modul
 import { ProgramLinksModule } from './program-links/program-links.module';
 import { ReminderMessagesModule } from './reminder-messages/reminder-messages.module';
 import { WorkspacesModule } from './workspaces/workspaces.module';
+import { RecipesModule } from './recipes/recipes.module';
 
 @Module({
   imports: [
@@ -59,6 +60,7 @@ import { WorkspacesModule } from './workspaces/workspaces.module';
     ConsentsModule,
     InvitationsModule,
     OnboardingModule,
+    RecipesModule,
   ],
 })
 export class AppModule {}

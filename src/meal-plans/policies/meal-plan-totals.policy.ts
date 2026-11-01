@@ -14,7 +14,7 @@ import type {
 @Injectable()
 export class MealPlanTotalsPolicy {
   private static readonly KCAL_PER_GRAM = { protein: 4, carb: 4, fat: 9 };
-  private static readonly EVERY_DAY = 0;
+  private static readonly EVERY_DAY = null;
   private static readonly WEEKDAYS = [1, 2, 3, 4, 5, 6, 7];
 
   mealTotals(items: MacroTotals[]): MacroTotals {
@@ -23,26 +23,29 @@ export class MealPlanTotalsPolicy {
 
   days(
     targets: MealPlanTargets,
-    meals: { dayNo: number; items: MacroTotals[] }[],
+    meals: { weekday: number | null; items: MacroTotals[] }[],
   ): DayTotals[] {
     const everyDay = MealPlanTotalsPolicy.EVERY_DAY;
-    const pinned = meals.some((meal) => meal.dayNo !== everyDay);
-    const dayNos = pinned ? MealPlanTotalsPolicy.WEEKDAYS : [everyDay];
+    const pinned = meals.some((meal) => meal.weekday !== everyDay);
+    const weekdays = pinned ? MealPlanTotalsPolicy.WEEKDAYS : [everyDay];
 
-    return dayNos.map((dayNo) => {
+    return weekdays.map((weekday) => {
       const items = meals
-        .filter((meal) => meal.dayNo === everyDay || meal.dayNo === dayNo)
+        .filter((meal) => meal.weekday === everyDay || meal.weekday === weekday)
         .flatMap((meal) => meal.items);
       const totals = this.sum(items);
       return {
-        dayNo,
+        weekday,
         ...totals,
         split: this.split(totals),
         gap: {
-          kcal: this.gap(targets.kcalTarget, totals.kcal),
-          proteinG: this.gap(targets.proteinTargetG, totals.proteinG),
-          carbG: this.gap(targets.carbTargetG, totals.carbG),
-          fatG: this.gap(targets.fatTargetG, totals.fatG),
+          caloriesKcal: this.gap(
+            targets.caloriesKcalTarget,
+            totals.caloriesKcal,
+          ),
+          proteinG: this.gap(targets.proteinGTarget, totals.proteinG),
+          carbsG: this.gap(targets.carbsGTarget, totals.carbsG),
+          fatG: this.gap(targets.fatGTarget, totals.fatG),
         },
       };
     });
@@ -50,9 +53,11 @@ export class MealPlanTotalsPolicy {
 
   private sum(items: MacroTotals[]): MacroTotals {
     return {
-      kcal: this.round(items.reduce((sum, i) => sum + i.kcal, 0)),
+      caloriesKcal: this.round(
+        items.reduce((sum, i) => sum + i.caloriesKcal, 0),
+      ),
       proteinG: this.round(items.reduce((sum, i) => sum + i.proteinG, 0)),
-      carbG: this.round(items.reduce((sum, i) => sum + i.carbG, 0)),
+      carbsG: this.round(items.reduce((sum, i) => sum + i.carbsG, 0)),
       fatG: this.round(items.reduce((sum, i) => sum + i.fatG, 0)),
     };
   }
@@ -66,7 +71,7 @@ export class MealPlanTotalsPolicy {
     const { protein, carb, fat } = MealPlanTotalsPolicy.KCAL_PER_GRAM;
     const parts = [
       protein * totals.proteinG,
-      carb * totals.carbG,
+      carb * totals.carbsG,
       fat * totals.fatG,
     ];
     const whole = parts.reduce((sum, part) => sum + part, 0);

@@ -3,55 +3,71 @@ import { MealMacrosPolicy } from './meal-macros.policy';
 const policy = new MealMacrosPolicy();
 
 const chicken = {
-  kcal100g: 165,
-  protein100g: 31,
-  carb100g: 0,
-  fat100g: 3.6,
+  caloriesKcalPer100g: 165,
+  proteinGPer100g: 31,
+  carbsGPer100g: 0,
+  fatGPer100g: 3.6,
 };
 
 describe('MealMacrosPolicy', () => {
   it('works from grams: the amount over a hundred times each macro', () => {
     expect(policy.resolve(chicken, 200)).toEqual({
-      grams: 200,
-      kcal: 330,
+      weightG: 200,
+      caloriesKcal: 330,
       proteinG: 62,
-      carbG: 0,
+      carbsG: 0,
       fatG: 7.2,
     });
   });
 
-  it('turns units into grams first: two pieces of 120 g is 240 g', () => {
-    expect(policy.resolve(chicken, 2, { grams: 120 })).toEqual({
-      grams: 240,
-      kcal: 396,
+  it('turns portions into grams first: two pieces of 120 g is 240 g', () => {
+    expect(policy.resolve(chicken, 2, { weightG: 120 })).toEqual({
+      weightG: 240,
+      caloriesKcal: 396,
       proteinG: 74.4,
-      carbG: 0,
+      carbsG: 0,
       fatG: 8.64,
     });
   });
 
-  it('takes fractions of a unit: half a loaf', () => {
+  it('takes fractions of a portion: half a loaf', () => {
     expect(
       policy.resolve(
-        { kcal100g: 270, protein100g: 9, carb100g: 55, fat100g: 1.5 },
+        {
+          caloriesKcalPer100g: 270,
+          proteinGPer100g: 9,
+          carbsGPer100g: 55,
+          fatGPer100g: 1.5,
+        },
         0.5,
-        { grams: 100 },
+        { weightG: 100 },
       ),
-    ).toEqual({ grams: 50, kcal: 135, proteinG: 4.5, carbG: 27.5, fatG: 0.75 });
+    ).toEqual({
+      weightG: 50,
+      caloriesKcal: 135,
+      proteinG: 4.5,
+      carbsG: 27.5,
+      fatG: 0.75,
+    });
   });
 
   it('rounds to two decimals, so totals never carry noise', () => {
     const resolved = policy.resolve(
-      { kcal100g: 89, protein100g: 1.1, carb100g: 22.8, fat100g: 0.3 },
+      {
+        caloriesKcalPer100g: 89,
+        proteinGPer100g: 1.1,
+        carbsGPer100g: 22.8,
+        fatGPer100g: 0.3,
+      },
       1,
-      { grams: 118 },
+      { weightG: 118 },
     );
 
     expect(resolved).toEqual({
-      grams: 118,
-      kcal: 105.02,
+      weightG: 118,
+      caloriesKcal: 105.02,
       proteinG: 1.3,
-      carbG: 26.9,
+      carbsG: 26.9,
       fatG: 0.35,
     });
   });
@@ -59,10 +75,21 @@ describe('MealMacrosPolicy', () => {
   it('is zero for water', () => {
     expect(
       policy.resolve(
-        { kcal100g: 0, protein100g: 0, carb100g: 0, fat100g: 0 },
+        {
+          caloriesKcalPer100g: 0,
+          proteinGPer100g: 0,
+          carbsGPer100g: 0,
+          fatGPer100g: 0,
+        },
         1,
-        { grams: 240 },
+        { weightG: 240 },
       ),
-    ).toEqual({ grams: 240, kcal: 0, proteinG: 0, carbG: 0, fatG: 0 });
+    ).toEqual({
+      weightG: 240,
+      caloriesKcal: 0,
+      proteinG: 0,
+      carbsG: 0,
+      fatG: 0,
+    });
   });
 });

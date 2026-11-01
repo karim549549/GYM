@@ -1,7 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { TransactionManager } from '../../database/transaction.manager';
 import { FoodsService } from '../../foods/foods.service';
-import type { FoodRecord } from '../../foods/interfaces/food.interface';
+import { RecipesService } from '../../recipes/recipes.service';
+import type { FoodMacros } from '../../foods/interfaces/food.interface';
 import { MealPlanStatus } from '../enums/meal-plan-status.enum';
 import {
   FoodNotAvailableException,
@@ -21,13 +22,7 @@ import { MealPlanStructurePolicy } from '../policies/meal-plan-structure.policy'
 import { MealPlanTotalsPolicy } from '../policies/meal-plan-totals.policy';
 import { BaseMealPlanOrchestrator } from './base-meal-plan.orchestrator';
 
-/**
- * Takes over `MealPlansService.replaceMeals`: the builder saves the whole plan at once, so the meals
- * given become the plan. Each food must be one the coach can use (the library's or their own, and
- * not deactivated unless the plan already holds it), and a unit must be one of that food's. Grams
- * and the four macros are worked out here, once, and saved on the item: totals are then sums, and a
- * food corrected next month does not rewrite a plan a client is following.
- */
+/** Resolves foods and recipes once when the whole meal structure is saved. */
 @Injectable()
 export class MealPlanStructureOrchestrator extends BaseMealPlanOrchestrator {
   constructor(
@@ -37,6 +32,7 @@ export class MealPlanStructureOrchestrator extends BaseMealPlanOrchestrator {
     private readonly foods: FoodsService,
     private readonly structurePolicy: MealPlanStructurePolicy,
     private readonly macrosPolicy: MealMacrosPolicy,
+    private readonly recipes: RecipesService,
   ) {
     super(mealPlansQuery, totalsPolicy, transactions);
   }
@@ -60,43 +56,62 @@ export class MealPlanStructureOrchestrator extends BaseMealPlanOrchestrator {
 
         const stored = await this.resolve(workspaceId, planId, meals);
         await this.mealPlansQuery.replaceMeals(workspaceId, planId, stored);
-        return this.withMeals(plan);
+        return this.withMeals(plan, workspaceId);
       },
       { workspaceId },
     );
   }
 
-  /** The meals with every item worked out, or the reasons a food or unit cannot be used. */
+  /** The meals with every item worked out, or the reasons a food or portion cannot be used. */
   private async resolve(
     workspaceId: string,
     planId: string,
     meals: MealInput[],
   ): Promise<StoredMeal[]> {
-    const wanted = [
-      ...new Set(
-        meals.flatMap((meal) =>
-          meal.items.flatMap((item) => [
-            item.foodId,
-            ...(item.substitutes ?? []).map((sub) => sub.foodId),
-          ]),
-        ),
-      ),
+    const entries = meals.flatMap((meal) =>
+      meal.items.flatMap((item) => [item, ...(item.substitutes ?? [])]),
+    );
+    const foodIds = [
+      ...new Set(entries.flatMap((e) => (e.foodId ? [e.foodId] : []))),
     ];
-    const found = await this.foods.findVisible(workspaceId, wanted);
+    const recipeIds = [
+      ...new Set(entries.flatMap((e) => (e.recipeId ? [e.recipeId] : []))),
+    ];
+    const found = await this.foods.findVisible(workspaceId, foodIds);
+    const foundRecipes = await this.recipes.findVisibleByIds(
+      workspaceId,
+      recipeIds,
+    );
     const alreadyHeld = await this.mealPlansQuery.foodIdsOf(planId);
-    const known = new Map(found.map((food) => [food.id, food]));
+    type NutritionalItem = FoodMacros & {
+      id: string;
+      nameAr: string;
+      isActive: boolean;
+      portions: { id: string; weightG: number }[];
+    };
+    const known = new Map<string, NutritionalItem>([
+      ...found.map((food) => [`food:${food.id}`, food] as const),
+      ...foundRecipes.map((recipe) => [`recipe:${recipe.id}`, recipe] as const),
+    ]);
     const held = new Set(alreadyHeld);
+    const key = (entry: MealSubstituteInput) =>
+      entry.recipeId ? `recipe:${entry.recipeId}` : `food:${entry.foodId}`;
 
     const problems: string[] = [];
     const check = (where: string, entry: MealSubstituteInput) => {
-      const food = known.get(entry.foodId);
-      if (!food || (!food.isActive && !held.has(food.id))) {
-        problems.push(`${where}.foodId: unavailable`);
-      } else if (
-        entry.unitId &&
-        !food.units.some((unit) => unit.id === entry.unitId)
+      const food = known.get(key(entry));
+      if (
+        !food ||
+        (!food.isActive && (entry.recipeId !== undefined || !held.has(food.id)))
       ) {
-        problems.push(`${where}.unitId: not a unit of this food`);
+        problems.push(
+          `${where}.${entry.recipeId ? 'recipeId' : 'foodId'}: unavailable`,
+        );
+      } else if (
+        entry.portionId &&
+        !food.portions.some((portion) => portion.id === entry.portionId)
+      ) {
+        problems.push(`${where}.portionId: not a portion of this item`);
       }
     };
     meals.forEach((meal, m) =>
@@ -112,23 +127,24 @@ export class MealPlanStructureOrchestrator extends BaseMealPlanOrchestrator {
     }
 
     const resolveOne = (entry: MealSubstituteInput): StoredMealSubstitute => {
-      const food = known.get(entry.foodId) as FoodRecord;
-      const unit = entry.unitId
-        ? food.units.find((u) => u.id === entry.unitId)
+      const food = known.get(key(entry)) as NutritionalItem;
+      const portion = entry.portionId
+        ? food.portions.find((u) => u.id === entry.portionId)
         : undefined;
       return {
-        foodId: food.id,
-        foodName: food.nameAr,
+        foodId: entry.foodId ?? null,
+        recipeId: entry.recipeId ?? null,
+        itemName: food.nameAr,
         quantity: entry.quantity,
-        unitId: entry.unitId ?? null,
-        ...this.macrosPolicy.resolve(food, entry.quantity, unit),
+        portionId: entry.portionId ?? null,
+        ...this.macrosPolicy.resolve(food, entry.quantity, portion),
       };
     };
 
     return meals.map((meal) => ({
-      dayNo: meal.dayNo,
+      weekday: meal.weekday,
       name: meal.name,
-      timeHint: meal.timeHint ?? null,
+      suggestedTime: meal.suggestedTime ?? null,
       notes: meal.notes ?? null,
       items: meal.items.map((item) => ({
         ...resolveOne(item),

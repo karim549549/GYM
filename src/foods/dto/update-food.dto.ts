@@ -1,3 +1,4 @@
+import { FoodLabelDto } from './food-label.dto';
 import { Type } from 'class-transformer';
 import {
   ArrayMaxSize,
@@ -6,21 +7,20 @@ import {
   IsEnum,
   IsNotEmpty,
   IsNumber,
-  IsOptional,
+  ValidateIf,
   IsString,
   Max,
   MaxLength,
   Min,
-  ValidateIf,
   ValidateNested,
 } from 'class-validator';
 import { Trimmed } from '../../common/decorators/trimmed.decorator';
 import { FoodCategory } from '../enums/food-category.enum';
-import { FoodUnitDto } from './food-unit.dto';
+import { FoodPortionDto } from './food-portion.dto';
 
-export class UpdateFoodDto {
+export class UpdateFoodDto extends FoodLabelDto {
   @Trimmed()
-  @IsOptional()
+  @ValidateIf((_, value) => value !== undefined)
   @IsString()
   @IsNotEmpty()
   @MaxLength(120)
@@ -34,50 +34,50 @@ export class UpdateFoodDto {
   @MaxLength(120)
   nameEn?: string | null;
 
-  @IsOptional()
+  @ValidateIf((_, value) => value !== undefined)
   @IsEnum(FoodCategory)
   category?: FoodCategory;
 
-  @IsOptional()
+  @ValidateIf((_, value) => value !== undefined)
   @IsNumber({ maxDecimalPlaces: 2 })
   @Min(0)
-  @Max(900)
-  kcal100g?: number;
+  @Max(45000)
+  caloriesKcalPer100g?: number;
 
-  @IsOptional()
+  @ValidateIf((_, value) => value !== undefined)
   @IsNumber({ maxDecimalPlaces: 2 })
   @Min(0)
-  @Max(100)
-  protein100g?: number;
+  @Max(5000)
+  proteinGPer100g?: number;
 
-  @IsOptional()
+  @ValidateIf((_, value) => value !== undefined)
   @IsNumber({ maxDecimalPlaces: 2 })
   @Min(0)
-  @Max(100)
-  carb100g?: number;
+  @Max(5000)
+  carbsGPer100g?: number;
 
-  @IsOptional()
+  @ValidateIf((_, value) => value !== undefined)
   @IsNumber({ maxDecimalPlaces: 2 })
   @Min(0)
-  @Max(100)
-  fat100g?: number;
+  @Max(5000)
+  fatGPer100g?: number;
 
-  @IsOptional()
+  @ValidateIf((_, value) => value !== undefined)
   @IsNumber({ maxDecimalPlaces: 2 })
   @Min(0)
-  @Max(100)
-  fiber100g?: number;
+  @Max(5000)
+  fiberGPer100g?: number;
 
   /** False takes it out of the list; plans that hold it keep showing it. */
-  @IsOptional()
+  @ValidateIf((_, value) => value !== undefined)
   @IsBoolean()
   isActive?: boolean;
 
-  /** The whole list of units: it replaces the old one. */
-  @IsOptional()
+  /** The whole list of portions: it replaces the old one. */
+  @ValidateIf((_, value) => value !== undefined)
   @IsArray()
   @ArrayMaxSize(10)
   @ValidateNested({ each: true })
-  @Type(() => FoodUnitDto)
-  units?: FoodUnitDto[];
+  @Type(() => FoodPortionDto)
+  portions?: FoodPortionDto[];
 }

@@ -16,14 +16,14 @@ export class MealPlanStructurePolicy {
   check(meals: MealInput[]): MealPlanStructureCheck {
     const problems: string[] = [];
 
-    const perDay = new Map<number, number>();
+    const perDay = new Map<number | null, number>();
     for (const meal of meals) {
-      perDay.set(meal.dayNo, (perDay.get(meal.dayNo) ?? 0) + 1);
+      perDay.set(meal.weekday, (perDay.get(meal.weekday) ?? 0) + 1);
     }
-    for (const [dayNo, total] of perDay) {
+    for (const [weekday, total] of perDay) {
       if (total > MealPlanStructurePolicy.MAX_MEALS_PER_DAY) {
         problems.push(
-          `meals: more than ${MealPlanStructurePolicy.MAX_MEALS_PER_DAY} on day ${dayNo}`,
+          `meals: more than ${MealPlanStructurePolicy.MAX_MEALS_PER_DAY} on day ${weekday}`,
         );
       }
     }
@@ -33,12 +33,18 @@ export class MealPlanStructurePolicy {
         const seen = new Set<string>();
         (item.substitutes ?? []).forEach((sub, s) => {
           const where = `meals[${m}].items[${i}].substitutes[${s}]`;
-          if (sub.foodId === item.foodId) {
+          const key = sub.recipeId
+            ? `recipe:${sub.recipeId}`
+            : `food:${sub.foodId}`;
+          const itemKey = item.recipeId
+            ? `recipe:${item.recipeId}`
+            : `food:${item.foodId}`;
+          if (key === itemKey) {
             problems.push(`${where}: same as the item`);
-          } else if (seen.has(sub.foodId)) {
+          } else if (seen.has(key)) {
             problems.push(`${where}: duplicate`);
           }
-          seen.add(sub.foodId);
+          seen.add(key);
         });
       }),
     );

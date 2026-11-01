@@ -33,7 +33,7 @@ export class MealPlanUpdateOrchestrator extends BaseMealPlanOrchestrator {
           throw new MealPlanEndedException();
         }
         const updated = await this.mealPlansQuery.update(planId, changes);
-        return this.withMeals(updated ?? found);
+        return this.withMeals(updated ?? found, workspaceId);
       },
       { workspaceId },
     );

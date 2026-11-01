@@ -12,7 +12,7 @@ interface MappedError {
   status: number;
   code: string;
   message: string;
-  details?: string[];
+  details?: unknown;
 }
 
 @Catch()
@@ -86,7 +86,7 @@ export class AllExceptionsFilter implements ExceptionFilter {
       statusCode: status,
       code,
       message,
-      ...(details && { details }),
+      ...(details !== undefined && { details }),
       path,
       ...(requestId !== undefined && { requestId: String(requestId) }),
     });
@@ -127,9 +127,7 @@ export class AllExceptionsFilter implements ExceptionFilter {
       status,
       code: code ?? fallbackCode,
       message: typeof message === 'string' ? message : exception.message,
-      // a domain exception may say which parts of the request were wrong
-      ...(Array.isArray(details) &&
-        details.every((detail) => typeof detail === 'string') && { details }),
+      ...(details !== undefined && { details }),
     };
   }
 

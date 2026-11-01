@@ -1,3 +1,5 @@
+import { Inject } from '@nestjs/common';
+import { RecipesService } from '../../recipes/recipes.service';
 import { TransactionManager } from '../../database/transaction.manager';
 import { MealPlanNotFoundException } from '../exceptions/meal-plan-exceptions';
 import { MealPlansQueryHandler } from '../handlers/meal-plans-query.handler';
@@ -12,6 +14,7 @@ import { MealPlanTotalsPolicy } from '../policies/meal-plan-totals.policy';
 
 /** What the flows that read or copy a whole meal plan share. Call it inside the flow's transaction. */
 export abstract class BaseMealPlanOrchestrator {
+  @Inject(RecipesService) private readonly recipeLookup: RecipesService;
   constructor(
     protected readonly mealPlansQuery: MealPlansQueryHandler,
     protected readonly totalsPolicy: MealPlanTotalsPolicy,
@@ -27,8 +30,34 @@ export abstract class BaseMealPlanOrchestrator {
   }
 
   /** The plan with its meals and the totals worked out from what was saved on each item. */
-  protected async withMeals(summary: MealPlanSummary): Promise<MealPlanRecord> {
+  protected async withMeals(
+    summary: MealPlanSummary,
+    workspaceId: string,
+  ): Promise<MealPlanRecord> {
     const stored = await this.mealPlansQuery.loadMeals(summary.id);
+    const recipeIds = [
+      ...new Set(
+        stored.flatMap((meal) =>
+          meal.items
+            .flatMap((item) => [item, ...item.substitutes])
+            .flatMap((item) => (item.recipeId ? [item.recipeId] : [])),
+        ),
+      ),
+    ];
+    const recipes = recipeIds.length
+      ? await this.recipeLookup.findVisibleByIds(workspaceId, recipeIds)
+      : [];
+    for (const meal of stored)
+      for (const item of meal.items.flatMap((item) => [
+        item,
+        ...item.substitutes,
+      ])) {
+        if (item.recipeId)
+          item.portionNameAr =
+            recipes
+              .find((r) => r.id === item.recipeId)
+              ?.portions.find((p) => p.id === item.portionId)?.nameAr ?? null;
+      }
     const meals = stored.map((meal) => ({
       ...meal,
       totals: this.totalsPolicy.mealTotals(meal.items),
@@ -44,19 +73,20 @@ export abstract class BaseMealPlanOrchestrator {
   protected asStored(meals: StoredMealRecord[]): StoredMeal[] {
     const keep = (item: MealSubstituteRecord) => ({
       foodId: item.foodId,
-      foodName: item.foodName,
+      recipeId: item.recipeId,
+      itemName: item.itemName,
       quantity: item.quantity,
-      unitId: item.unitId,
-      grams: item.grams,
-      kcal: item.kcal,
+      portionId: item.portionId,
+      weightG: item.weightG,
+      caloriesKcal: item.caloriesKcal,
       proteinG: item.proteinG,
-      carbG: item.carbG,
+      carbsG: item.carbsG,
       fatG: item.fatG,
     });
     return meals.map((meal) => ({
-      dayNo: meal.dayNo,
+      weekday: meal.weekday,
       name: meal.name,
-      timeHint: meal.timeHint,
+      suggestedTime: meal.suggestedTime,
       notes: meal.notes,
       items: meal.items.map((item) => ({
         ...keep(item),

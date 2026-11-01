@@ -7,22 +7,35 @@ describe('Meal plans over HTTP', () => {
   let harness: HttpTestApp;
   let food: Record<
     string,
-    { id: string; units: { id: string; labelAr: string; grams: number }[] }
+    {
+      id: string;
+      nameAr: string;
+      caloriesKcalPer100g: number;
+      proteinGPer100g: number;
+      carbsGPer100g: number;
+      fatGPer100g: number;
+      portions: { id: string; nameAr: string; weightG: number }[];
+    }
   >;
 
   beforeAll(async () => {
     harness = await HttpTestApp.start();
     const { session } = await newCoach();
-    const response = await harness
-      .as(session)
-      .get('/foods?limit=100')
-      .expect(200);
-    food = Object.fromEntries(
-      response.body.items.map((f: { slug: string; id: string; units: [] }) => [
-        f.slug,
-        f,
-      ]),
+    // the library has several hundred foods, so read every page, not just the first
+    type Loaded = { slug: string } & (typeof food)[string];
+    const readPage = async (page: number) =>
+      (
+        await harness
+          .as(session)
+          .get(`/foods?limit=100&page=${page}`)
+          .expect(200)
+      ).body as { items: Loaded[]; totalPages: number };
+    const first = await readPage(1);
+    const rest = await Promise.all(
+      Array.from({ length: first.totalPages - 1 }, (_, n) => readPage(n + 2)),
     );
+    const loaded = [first, ...rest].flatMap((page) => page.items);
+    food = Object.fromEntries(loaded.map((f) => [f.slug, f]));
   });
 
   afterAll(() => harness.stop(), 60_000);
@@ -54,16 +67,16 @@ describe('Meal plans over HTTP', () => {
   };
 
   type Substitute = {
-    position: number;
+    sortOrder: number;
     foodId: string;
-    foodName: string;
+    itemName: string;
     quantity: number;
-    unitId: string | null;
-    unitLabelAr: string | null;
-    grams: number;
-    kcal: number;
+    portionId: string | null;
+    portionNameAr: string | null;
+    weightG: number;
+    caloriesKcal: number;
     proteinG: number;
-    carbG: number;
+    carbsG: number;
     fatG: number;
   };
   type Plan = {
@@ -71,27 +84,32 @@ describe('Meal plans over HTTP', () => {
     clientId: string | null;
     isTemplate: boolean;
     name: string;
-    kcalTarget: number | null;
-    proteinTargetG: number | null;
-    carbTargetG: number | null;
-    fatTargetG: number | null;
+    caloriesKcalTarget: number | null;
+    proteinGTarget: number | null;
+    carbsGTarget: number | null;
+    fatGTarget: number | null;
     status: string;
     startsOn: string | null;
     notes: string | null;
     meals: {
-      dayNo: number;
-      position: number;
+      weekday: number | null;
+      sortOrder: number;
       name: string;
-      timeHint: string | null;
+      suggestedTime: string | null;
       notes: string | null;
-      totals: { kcal: number; proteinG: number; carbG: number; fatG: number };
+      totals: {
+        caloriesKcal: number;
+        proteinG: number;
+        carbsG: number;
+        fatG: number;
+      };
       items: (Substitute & { substitutes: Substitute[] })[];
     }[];
     days: {
-      dayNo: number;
-      kcal: number;
+      weekday: number | null;
+      caloriesKcal: number;
       proteinG: number;
-      carbG: number;
+      carbsG: number;
       fatG: number;
       split: { proteinPct: number; carbPct: number; fatPct: number };
       gap: Record<string, number | null>;
@@ -112,22 +130,48 @@ describe('Meal plans over HTTP', () => {
   const saveMeals = (session: TestSession, planId: string, meals: unknown[]) =>
     harness.as(session).put(`/meal-plans/${planId}/meals`).send({ meals });
 
-  const defaultUnit = (slug: string) => food[slug].units[0];
+  const defaultPortion = (slug: string) => food[slug].portions[0];
+
+  const round2 = (n: number) => Math.round(n * 100) / 100;
+  /** What the server copies onto an item: the food's per 100 g values worked out for the grams. */
+  const macrosOf = (slug: string, grams: number) => ({
+    caloriesKcal: round2((food[slug].caloriesKcalPer100g * grams) / 100),
+    proteinG: round2((food[slug].proteinGPer100g * grams) / 100),
+    carbsG: round2((food[slug].carbsGPer100g * grams) / 100),
+    fatG: round2((food[slug].fatGPer100g * grams) / 100),
+  });
+  const addMacros = (
+    a: ReturnType<typeof macrosOf>,
+    b: ReturnType<typeof macrosOf>,
+  ) => ({
+    caloriesKcal: round2(a.caloriesKcal + b.caloriesKcal),
+    proteinG: round2(a.proteinG + b.proteinG),
+    carbsG: round2(a.carbsG + b.carbsG),
+    fatG: round2(a.fatG + b.fatG),
+  });
+  /** The standard lunch: two portions of grilled chicken and 200 g of rice (the tuna is only a substitute). */
+  const chickenWeight = () =>
+    2 * defaultPortion('chicken-breast-grilled').weightG;
+  const lunchTotals = () =>
+    addMacros(
+      macrosOf('chicken-breast-grilled', chickenWeight()),
+      macrosOf('rice-white-cooked', 200),
+    );
 
   const lunch = (overrides: Record<string, unknown> = {}) => ({
-    dayNo: 0,
+    weekday: null,
     name: 'Lunch',
-    timeHint: '14:00',
+    suggestedTime: '14:00',
     items: [
       {
         foodId: food['chicken-breast-grilled'].id,
         quantity: 2,
-        unitId: defaultUnit('chicken-breast-grilled').id,
+        portionId: defaultPortion('chicken-breast-grilled').id,
         substitutes: [
           {
             foodId: food['tuna-canned-water'].id,
             quantity: 1,
-            unitId: defaultUnit('tuna-canned-water').id,
+            portionId: defaultPortion('tuna-canned-water').id,
           },
         ],
       },
@@ -178,21 +222,23 @@ describe('Meal plans over HTTP', () => {
         expect(plan.isTemplate).toBe(true);
         expect(plan.meals).toHaveLength(4);
         expect(plan.days).toHaveLength(1);
-        expect(plan.days[0].dayNo).toBe(0);
+        expect(plan.days[0].weekday).toBeNull();
         for (const meal of plan.meals) {
-          expect(meal.timeHint).toMatch(/^\d{2}:\d{2}$/);
+          expect(meal.suggestedTime).toMatch(/^\d{2}:\d{2}$/);
           for (const item of meal.items) {
-            expect(item.kcal).toBeGreaterThan(0);
-            expect(item.grams).toBeGreaterThan(0);
-            expect(item.unitLabelAr).not.toBeNull();
+            expect(item.caloriesKcal).toBeGreaterThan(0);
+            expect(item.weightG).toBeGreaterThan(0);
+            expect(item.portionNameAr).not.toBeNull();
           }
         }
       }
-      expect(cut.days[0].kcal).toBeGreaterThan(1200);
-      expect(cut.days[0].kcal).toBeLessThan(1800);
-      expect(bulk.days[0].kcal).toBeGreaterThan(2400);
-      expect(bulk.days[0].kcal).toBeLessThan(3300);
-      expect(Math.abs(cut.days[0].gap.kcal as number)).toBeLessThan(400);
+      expect(cut.days[0].caloriesKcal).toBeGreaterThan(1200);
+      expect(cut.days[0].caloriesKcal).toBeLessThan(1800);
+      expect(bulk.days[0].caloriesKcal).toBeGreaterThan(2400);
+      expect(bulk.days[0].caloriesKcal).toBeLessThan(3300);
+      expect(Math.abs(cut.days[0].gap.caloriesKcal as number)).toBeLessThan(
+        400,
+      );
     });
 
     it('are the coach’s own: another coach cannot read them', async () => {
@@ -214,8 +260,8 @@ describe('Meal plans over HTTP', () => {
       const response = await make(session, {
         name: '  Cutting  ',
         clientId: client.id,
-        kcalTarget: 1800,
-        proteinTargetG: 150,
+        caloriesKcalTarget: 1800,
+        proteinGTarget: 150,
         notes: 'Drink water',
       }).expect(201);
 
@@ -224,10 +270,10 @@ describe('Meal plans over HTTP', () => {
         clientId: client.id,
         isTemplate: false,
         name: 'Cutting',
-        kcalTarget: 1800,
-        proteinTargetG: 150,
-        carbTargetG: null,
-        fatTargetG: null,
+        caloriesKcalTarget: 1800,
+        proteinGTarget: 150,
+        carbsGTarget: null,
+        fatGTarget: null,
         status: 'draft',
         startsOn: null,
         notes: 'Drink water',
@@ -235,9 +281,14 @@ describe('Meal plans over HTTP', () => {
         meals: [],
         days: [
           expect.objectContaining({
-            dayNo: 0,
-            kcal: 0,
-            gap: { kcal: 1800, proteinG: 150, carbG: null, fatG: null },
+            weekday: null,
+            caloriesKcal: 0,
+            gap: {
+              caloriesKcal: 1800,
+              proteinG: 150,
+              carbsG: null,
+              fatG: null,
+            },
           }),
         ],
       });
@@ -271,8 +322,8 @@ describe('Meal plans over HTTP', () => {
         isTemplate: false,
         clientId: client.id,
         status: 'draft',
-        kcalTarget: source.kcalTarget,
-        proteinTargetG: source.proteinTargetG,
+        caloriesKcalTarget: source.caloriesKcalTarget,
+        proteinGTarget: source.proteinGTarget,
       });
       expect(copy.meals).toEqual(source.meals);
       expect(copy.days).toEqual(source.days);
@@ -286,10 +337,10 @@ describe('Meal plans over HTTP', () => {
         name: 'x',
         clientId: client.id,
         fromPlanId: template.id,
-        kcalTarget: 2000,
+        caloriesKcalTarget: 2000,
       }).expect(201);
 
-      expect(copy.body.kcalTarget).toBe(2000);
+      expect(copy.body.caloriesKcalTarget).toBe(2000);
     });
 
     it('does not reach another coach’s client or plan', async () => {
@@ -315,9 +366,9 @@ describe('Meal plans over HTTP', () => {
       ['no name', { name: undefined }],
       ['a blank name', { name: '   ' }],
       ['a name over 120 characters', { name: 'x'.repeat(121) }],
-      ['a negative target', { kcalTarget: -1 }],
-      ['a calorie target over 10000', { kcalTarget: 10_001 }],
-      ['a fractional target', { proteinTargetG: 150.5 }],
+      ['a negative target', { caloriesKcalTarget: -1 }],
+      ['a calorie target over 10000', { caloriesKcalTarget: 10_001 }],
+      ['a fractional target', { proteinGTarget: 150.5 }],
       ['a client that is not an id', { clientId: 'omar' }],
     ])('refuses %s', async (_label, change) => {
       const { session } = await ready();
@@ -327,7 +378,7 @@ describe('Meal plans over HTTP', () => {
   });
 
   describe('PUT /meal-plans/:id/meals', () => {
-    it('works out every item from the food: grams, calories and macros, in units or in grams', async () => {
+    it('works out every item from the food: grams, calories and macros, in portions or in grams', async () => {
       const { session, client } = await ready();
       const plan = await clientPlan(session, client.id);
 
@@ -335,35 +386,29 @@ describe('Meal plans over HTTP', () => {
 
       const meal = (response.body as Plan).meals[0];
       expect(meal).toMatchObject({
-        dayNo: 0,
-        position: 1,
+        weekday: null,
+        sortOrder: 1,
         name: 'Lunch',
-        timeHint: '14:00',
+        suggestedTime: '14:00',
       });
-      // two pieces of 120 g chicken: 240 g
+      // two portions of chicken
       expect(meal.items[0]).toMatchObject({
-        position: 1,
-        foodName: 'صدر فراخ مشوي',
+        sortOrder: 1,
+        itemName: food['chicken-breast-grilled'].nameAr,
         quantity: 2,
-        unitLabelAr: 'قطعة متوسطة',
-        grams: 240,
-        kcal: 396,
-        proteinG: 74.4,
-        carbG: 0,
-        fatG: 8.64,
+        portionNameAr: defaultPortion('chicken-breast-grilled').nameAr,
+        weightG: chickenWeight(),
+        ...macrosOf('chicken-breast-grilled', chickenWeight()),
       });
-      // 200 grams of rice, no unit
+      // 200 grams of rice, no portion
       expect(meal.items[1]).toMatchObject({
-        position: 2,
-        foodName: 'أرز أبيض مطبوخ',
+        sortOrder: 2,
+        itemName: food['rice-white-cooked'].nameAr,
         quantity: 200,
-        unitId: null,
-        unitLabelAr: null,
-        grams: 200,
-        kcal: 260,
-        proteinG: 5.4,
-        carbG: 56,
-        fatG: 0.6,
+        portionId: null,
+        portionNameAr: null,
+        weightG: 200,
+        ...macrosOf('rice-white-cooked', 200),
       });
     });
 
@@ -375,37 +420,39 @@ describe('Meal plans over HTTP', () => {
 
       const [tuna] = (response.body as Plan).meals[0].items[0].substitutes;
       expect(tuna).toMatchObject({
-        position: 1,
-        foodName: 'تونة معلبة بالماء',
-        unitLabelAr: 'علبة',
-        grams: 140,
-        kcal: 162.4,
-        proteinG: 36.4,
+        sortOrder: 1,
+        itemName: food['tuna-canned-water'].nameAr,
+        portionNameAr: defaultPortion('tuna-canned-water').nameAr,
+        weightG: defaultPortion('tuna-canned-water').weightG,
+        ...macrosOf(
+          'tuna-canned-water',
+          defaultPortion('tuna-canned-water').weightG,
+        ),
       });
     });
 
     it('adds up each meal and each day, and the gap to the targets', async () => {
       const { session, client } = await ready();
       const plan = await clientPlan(session, client.id, {
-        kcalTarget: 1000,
-        proteinTargetG: 100,
+        caloriesKcalTarget: 1000,
+        proteinGTarget: 100,
       });
 
       const response = await saveMeals(session, plan.id, [lunch()]).expect(200);
 
       const body = response.body as Plan;
-      expect(body.meals[0].totals).toEqual({
-        kcal: 656,
-        proteinG: 79.8,
-        carbG: 56,
-        fatG: 9.24,
-      });
+      expect(body.meals[0].totals).toEqual(lunchTotals());
       expect(body.days).toHaveLength(1);
       expect(body.days[0]).toMatchObject({
-        dayNo: 0,
-        kcal: 656,
-        proteinG: 79.8,
-        gap: { kcal: 344, proteinG: 20.2, carbG: null, fatG: null },
+        weekday: null,
+        caloriesKcal: lunchTotals().caloriesKcal,
+        proteinG: lunchTotals().proteinG,
+        gap: {
+          caloriesKcal: round2(1000 - lunchTotals().caloriesKcal),
+          proteinG: round2(100 - lunchTotals().proteinG),
+          carbsG: null,
+          fatG: null,
+        },
       });
       const split = body.days[0].split;
       expect(split.proteinPct + split.carbPct + split.fatPct).toBe(100);
@@ -417,13 +464,13 @@ describe('Meal plans over HTTP', () => {
 
       const response = await saveMeals(session, plan.id, [
         lunch(),
-        lunch({ dayNo: 3, name: 'Tuesday extra' }),
+        lunch({ weekday: 3, name: 'Tuesday extra' }),
       ]).expect(200);
 
       const days = (response.body as Plan).days;
-      expect(days.map((d) => d.dayNo)).toEqual([1, 2, 3, 4, 5, 6, 7]);
-      expect(days[2].kcal).toBeGreaterThan(days[0].kcal);
-      expect(days[0].kcal).toBe(656);
+      expect(days.map((d) => d.weekday)).toEqual([1, 2, 3, 4, 5, 6, 7]);
+      expect(days[2].caloriesKcal).toBeGreaterThan(days[0].caloriesKcal);
+      expect(days[0].caloriesKcal).toBe(lunchTotals().caloriesKcal);
     });
 
     it('numbers meals within their day and keeps everyday meals first', async () => {
@@ -431,16 +478,20 @@ describe('Meal plans over HTTP', () => {
       const plan = await clientPlan(session, client.id);
 
       const response = await saveMeals(session, plan.id, [
-        lunch({ dayNo: 2, name: 'Pinned' }),
+        lunch({ weekday: 2, name: 'Pinned' }),
         lunch({ name: 'First' }),
         lunch({ name: 'Second' }),
       ]).expect(200);
 
       expect(
-        (response.body as Plan).meals.map((m) => [m.dayNo, m.position, m.name]),
+        (response.body as Plan).meals.map((m) => [
+          m.weekday,
+          m.sortOrder,
+          m.name,
+        ]),
       ).toEqual([
-        [0, 1, 'First'],
-        [0, 2, 'Second'],
+        [null, 1, 'First'],
+        [null, 2, 'Second'],
         [2, 1, 'Pinned'],
       ]);
     });
@@ -484,11 +535,11 @@ describe('Meal plans over HTTP', () => {
           .send({
             nameAr: 'أكلتي',
             category: 'composite',
-            kcal100g: 200,
-            protein100g: 10,
-            carb100g: 20,
-            fat100g: 8,
-            fiber100g: 0,
+            caloriesKcalPer100g: 200,
+            proteinGPer100g: 10,
+            carbsGPer100g: 20,
+            fatGPer100g: 8,
+            fiberGPer100g: 0,
           })
           .expect(201)
       ).body as { id: string };
@@ -500,7 +551,11 @@ describe('Meal plans over HTTP', () => {
       await harness
         .as(session)
         .patch(`/foods/${dish.id}`)
-        .send({ kcal100g: 250, protein100g: 20, nameAr: 'اسم جديد' })
+        .send({
+          caloriesKcalPer100g: 250,
+          proteinGPer100g: 20,
+          nameAr: 'اسم جديد',
+        })
         .expect(200);
       const read = await harness
         .as(session)
@@ -508,13 +563,13 @@ describe('Meal plans over HTTP', () => {
         .expect(200);
 
       expect((read.body as Plan).meals[0].items[0]).toMatchObject({
-        foodName: 'أكلتي',
-        kcal: 200,
+        itemName: 'أكلتي',
+        caloriesKcal: 200,
         proteinG: 10,
       });
     });
 
-    it('refuses a food or a unit that cannot be used, naming where', async () => {
+    it('refuses a food or a portion that cannot be used, naming where', async () => {
       const mine = await ready();
       const theirs = await newCoach();
       const theirFood = (
@@ -524,11 +579,11 @@ describe('Meal plans over HTTP', () => {
           .send({
             nameAr: 'خاص',
             category: 'protein',
-            kcal100g: 100,
-            protein100g: 20,
-            carb100g: 5,
-            fat100g: 0,
-            fiber100g: 0,
+            caloriesKcalPer100g: 100,
+            proteinGPer100g: 20,
+            carbsGPer100g: 5,
+            fatGPer100g: 0,
+            fiberGPer100g: 0,
           })
           .expect(201)
       ).body as { id: string };
@@ -543,7 +598,7 @@ describe('Meal plans over HTTP', () => {
             {
               foodId: food['egg-boiled'].id,
               quantity: 1,
-              unitId: defaultUnit('rice-white-cooked').id,
+              portionId: defaultPortion('rice-white-cooked').id,
             },
             {
               foodId: food['egg-boiled'].id,
@@ -558,7 +613,7 @@ describe('Meal plans over HTTP', () => {
       expect(response.body.details).toEqual([
         'meals[0].items[1].foodId: unavailable',
         'meals[0].items[2].foodId: unavailable',
-        'meals[0].items[3].unitId: not a unit of this food',
+        'meals[0].items[3].portionId: not a portion of this item',
         'meals[0].items[4].substitutes[0].foodId: unavailable',
       ]);
       const read = await harness
@@ -577,11 +632,11 @@ describe('Meal plans over HTTP', () => {
           .send({
             nameAr: 'تجربة',
             category: 'drink',
-            kcal100g: 40,
-            protein100g: 0,
-            carb100g: 10,
-            fat100g: 0,
-            fiber100g: 0,
+            caloriesKcalPer100g: 40,
+            proteinGPer100g: 0,
+            carbsGPer100g: 10,
+            fatGPer100g: 0,
+            fiberGPer100g: 0,
           })
           .expect(201)
       ).body as { id: string };
@@ -643,16 +698,20 @@ describe('Meal plans over HTTP', () => {
         Array.from({ length: 11 }, (_m, i) => lunch({ name: `Meal ${i}` })),
       ).expect(422);
 
-      expect(response.body.details).toEqual(['meals: more than 10 on day 0']);
+      expect(response.body.details).toEqual([
+        'meals: more than 10 on day null',
+      ]);
     });
 
     it.each([
-      ['a day 8', { dayNo: 8 }],
-      ['a negative day', { dayNo: -1 }],
+      ['a zero weekday', { weekday: 0 }],
+      ['a missing weekday', { weekday: undefined }],
+      ['a day 8', { weekday: 8 }],
+      ['a negative day', { weekday: -1 }],
       ['no name', { name: undefined }],
       ['a blank name', { name: '  ' }],
-      ['a time that is not a time', { timeHint: '25:00' }],
-      ['a time with words', { timeHint: 'noon' }],
+      ['a time that is not a time', { suggestedTime: '25:00' }],
+      ['a time with words', { suggestedTime: 'noon' }],
       ['no items list', { items: undefined }],
       ['an item with no quantity', { items: [{ foodId: 'x' }] }],
     ])('refuses %s', async (_label, change) => {
@@ -743,24 +802,28 @@ describe('Meal plans over HTTP', () => {
     it('changes the name, targets and notes, and null clears a target; the gap follows', async () => {
       const { session, client } = await ready();
       const plan = await clientPlan(session, client.id, {
-        kcalTarget: 2000,
-        proteinTargetG: 150,
+        caloriesKcalTarget: 2000,
+        proteinGTarget: 150,
       });
       await saveMeals(session, plan.id, [lunch()]).expect(200);
 
       const response = await harness
         .as(session)
         .patch(`/meal-plans/${plan.id}`)
-        .send({ name: 'Renamed', kcalTarget: 1000, proteinTargetG: null })
+        .send({
+          name: 'Renamed',
+          caloriesKcalTarget: 1000,
+          proteinGTarget: null,
+        })
         .expect(200);
 
       expect(response.body).toMatchObject({
         name: 'Renamed',
-        kcalTarget: 1000,
-        proteinTargetG: null,
+        caloriesKcalTarget: 1000,
+        proteinGTarget: null,
       });
       expect(response.body.days[0].gap).toMatchObject({
-        kcal: 344,
+        caloriesKcal: round2(1000 - lunchTotals().caloriesKcal),
         proteinG: null,
       });
     });
@@ -911,7 +974,7 @@ describe('Meal plans over HTTP', () => {
       const { session, client } = await ready();
       const plan = await clientPlan(session, client.id, {
         name: 'Omar plan',
-        kcalTarget: 1800,
+        caloriesKcalTarget: 1800,
       });
       await saveMeals(session, plan.id, [lunch()]).expect(200);
 
@@ -932,7 +995,7 @@ describe('Meal plans over HTTP', () => {
         isTemplate: true,
         clientId: null,
         name: 'My cutting plan',
-        kcalTarget: 1800,
+        caloriesKcalTarget: 1800,
       });
       expect(template.meals).toHaveLength(1);
       expect(reread.body.meals).toHaveLength(1);
@@ -977,5 +1040,210 @@ describe('Meal plans over HTTP', () => {
         await call().expect(404);
       }, Promise.resolve());
     });
+  });
+  it('resolves recipe grams, portions and substitutes and keeps snapshots when copying', async () => {
+    const { session } = await newCoach();
+    const shared = (
+      await harness.as(session).get('/recipes?scope=shared&limit=1').expect(200)
+    ).body.items[0] as { id: string };
+    const recipe = (
+      await harness
+        .as(session)
+        .post(`/recipes/${shared.id}/copy`)
+        .send({ nameAr: 'Plan recipe' })
+        .expect(201)
+    ).body as {
+      id: string;
+      finishedWeightG: number;
+      caloriesKcalPer100g: number;
+      portions: { id: string; nameAr: string; weightG: number }[];
+    };
+    const f = (await harness.as(session).get('/foods?limit=1').expect(200)).body
+      .items[0] as {
+      id: string;
+      caloriesKcalPer100g: number;
+      portions: { id: string }[];
+    };
+    const plan = (
+      await harness
+        .as(session)
+        .post('/meal-plans')
+        .send({ name: 'Recipes plan' })
+        .expect(201)
+    ).body as { id: string };
+    const response = await harness
+      .as(session)
+      .put(`/meal-plans/${plan.id}/meals`)
+      .send({
+        meals: [
+          {
+            weekday: null,
+            name: 'Lunch',
+            items: [
+              { recipeId: recipe.id, quantity: 100 },
+              {
+                recipeId: recipe.id,
+                portionId: recipe.portions[0].id,
+                quantity: 2,
+              },
+              {
+                foodId: f.id,
+                quantity: 100,
+                substitutes: [{ recipeId: recipe.id, quantity: 50 }],
+              },
+            ],
+          },
+        ],
+      })
+      .expect(200);
+    const saved = response.body as {
+      meals: {
+        items: {
+          recipeId: string | null;
+          kind: string;
+          weightG: number;
+          caloriesKcal: number;
+          portionNameAr: string | null;
+          substitutes: {
+            recipeId: string;
+            kind: string;
+            caloriesKcal: number;
+          }[];
+        }[];
+        totals: { caloriesKcal: number };
+      }[];
+      days: { caloriesKcal: number }[];
+    };
+    const items = saved.meals[0].items;
+    expect(items[0]).toMatchObject({
+      recipeId: recipe.id,
+      kind: 'recipe',
+      weightG: 100,
+      caloriesKcal: recipe.caloriesKcalPer100g,
+    });
+    expect(items[1]).toMatchObject({
+      recipeId: recipe.id,
+      kind: 'recipe',
+      weightG: 2 * recipe.portions[0].weightG,
+      portionNameAr: recipe.portions[0].nameAr,
+    });
+    expect(items[2]).toMatchObject({ kind: 'food' });
+    expect(items[2].substitutes[0]).toMatchObject({
+      recipeId: recipe.id,
+      kind: 'recipe',
+      caloriesKcal:
+        Math.round((recipe.caloriesKcalPer100g * 0.5 + Number.EPSILON) * 100) /
+        100,
+    });
+    const total =
+      Math.round(
+        items.reduce((sum, item) => sum + item.caloriesKcal, 0) * 100,
+      ) / 100;
+    expect(saved.meals[0].totals.caloriesKcal).toBe(total);
+    expect(saved.days[0].caloriesKcal).toBe(total);
+    await harness
+      .as(session)
+      .patch(`/recipes/${recipe.id}`)
+      .send({
+        finishedWeightG: Math.round(recipe.finishedWeightG * 1.01 * 100) / 100,
+      })
+      .expect(200);
+    const unchanged = await harness
+      .as(session)
+      .get(`/meal-plans/${plan.id}`)
+      .expect(200);
+    expect(unchanged.body.meals).toEqual(saved.meals);
+    const copies = await Promise.all([
+      harness
+        .as(session)
+        .post('/meal-plans')
+        .send({ name: 'Copy recipe plan', fromPlanId: plan.id })
+        .expect(201),
+      harness
+        .as(session)
+        .post(`/meal-plans/${plan.id}/save-as-template`)
+        .send({ name: 'Recipe template' })
+        .expect(201),
+    ]);
+    copies.forEach((copy) => expect(copy.body.meals).toEqual(saved.meals));
+    await harness
+      .as(session)
+      .patch(`/recipes/${recipe.id}`)
+      .send({ isActive: false })
+      .expect(200);
+    const inactiveRead = await harness
+      .as(session)
+      .get(`/meal-plans/${plan.id}`)
+      .expect(200);
+    expect(inactiveRead.body.meals).toEqual(saved.meals);
+    await harness
+      .as(session)
+      .put(`/meal-plans/${plan.id}/meals`)
+      .send({
+        meals: [
+          {
+            weekday: null,
+            name: 'Lunch',
+            items: [{ recipeId: recipe.id, quantity: 100 }],
+          },
+        ],
+      })
+      .expect(422);
+  });
+
+  it('refuses ambiguous choices, hidden recipes and a portion from another item', async () => {
+    const { session } = await newCoach();
+    const other = await newCoach();
+    const shared = (
+      await harness.as(session).get('/recipes?scope=shared&limit=1').expect(200)
+    ).body.items[0] as { id: string };
+    const hidden = (
+      await harness
+        .as(other.session)
+        .post(`/recipes/${shared.id}/copy`)
+        .send({})
+        .expect(201)
+    ).body as { id: string };
+    const f = (await harness.as(session).get('/foods?limit=1').expect(200)).body
+      .items[0] as { id: string; portions: { id: string }[] };
+    const plan = (
+      await harness
+        .as(session)
+        .post('/meal-plans')
+        .send({ name: 'Validation' })
+        .expect(201)
+    ).body as { id: string };
+    const save = (item: object) =>
+      harness
+        .as(session)
+        .put(`/meal-plans/${plan.id}/meals`)
+        .send({ meals: [{ weekday: null, name: 'Lunch', items: [item] }] });
+    await save({ quantity: 100 }).expect(400);
+    await save({ foodId: f.id, recipeId: shared.id, quantity: 100 }).expect(
+      400,
+    );
+    await save({
+      foodId: f.id,
+      quantity: 100,
+      substitutes: [{ quantity: 1 }],
+    }).expect(400);
+    await save({
+      foodId: f.id,
+      quantity: 100,
+      substitutes: [{ foodId: f.id, recipeId: shared.id, quantity: 1 }],
+    }).expect(400);
+    await save({ recipeId: hidden.id, quantity: 100 })
+      .expect(422)
+      .expect((r) => expect(r.body.code).toBe('FOOD_NOT_AVAILABLE'));
+    await save({
+      foodId: f.id,
+      quantity: 100,
+      substitutes: [{ recipeId: hidden.id, quantity: 1 }],
+    }).expect(422);
+    await save({
+      recipeId: shared.id,
+      quantity: 100,
+      portionId: f.portions[0].id,
+    }).expect(422);
   });
 });

@@ -134,19 +134,22 @@ describe('AllExceptionsFilter', () => {
     });
   });
 
-  it('ignores details that are not a list of text', () => {
+  it('passes structured details supplied by a domain exception', () => {
     const { host, response } = createHost();
 
     filter.catch(
       new ConflictException({
         code: 'SOMETHING',
         message: 'x',
-        details: { secret: 'object' },
+        details: { id: 'food-id', nameAr: 'Food summary' },
       }),
       host,
     );
 
-    expect(response.body).not.toHaveProperty('details');
+    expect(response.body).toHaveProperty('details', {
+      id: 'food-id',
+      nameAr: 'Food summary',
+    });
   });
 
   it('reports validation failures with every message in details', () => {

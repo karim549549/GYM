@@ -33,10 +33,10 @@ export class MealPlanTemplateSavingOrchestrator extends BaseMealPlanOrchestrator
           createdBy,
           {
             name,
-            kcalTarget: source.kcalTarget,
-            proteinTargetG: source.proteinTargetG,
-            carbTargetG: source.carbTargetG,
-            fatTargetG: source.fatTargetG,
+            caloriesKcalTarget: source.caloriesKcalTarget,
+            proteinGTarget: source.proteinGTarget,
+            carbsGTarget: source.carbsGTarget,
+            fatGTarget: source.fatGTarget,
             notes: source.notes ?? undefined,
           },
         );
@@ -45,7 +45,7 @@ export class MealPlanTemplateSavingOrchestrator extends BaseMealPlanOrchestrator
           template.id,
           this.asStored(await this.mealPlansQuery.loadMeals(planId)),
         );
-        return this.withMeals(template);
+        return this.withMeals(template, workspaceId);
       },
       { workspaceId },
     );
