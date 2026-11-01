@@ -1,0 +1,3821 @@
+[
+  {
+    "slug": "koshari-homemade",
+    "name_ar": "كشري بيتي",
+    "name_en": "Koshari, homemade",
+    "aliases_ar": [
+      "كشري",
+      "كشري مصري"
+    ],
+    "aliases_en": [
+      "koshary"
+    ],
+    "description_ar": "كشري بالرز والعدس والمكرونة والحمص، عليه صلصة وبصل مقرمش. الزيت المحسوب شامل زيت تحمير البصل اللي فضل في الأكل.",
+    "meal_tags": [
+      "lunch",
+      "dinner"
+    ],
+    "finished_weight_g": 2400,
+    "prep_minutes": 30,
+    "cook_minutes": 65,
+    "ingredients": [
+      {
+        "food_slug": "rice-white-short-grain-dry",
+        "weight_g": 220,
+        "note_ar": "رز مصري ناشف؛ الوزن قبل الغسيل والنقع"
+      },
+      {
+        "food_slug": "lentils-brown-dry",
+        "weight_g": 160
+      },
+      {
+        "food_slug": "pasta-dry",
+        "weight_g": 180
+      },
+      {
+        "food_slug": "chickpeas-cooked",
+        "weight_g": 240,
+        "note_ar": "حمص مسلوق ومصفى قبل التجميع"
+      },
+      {
+        "food_slug": "vermicelli-dry",
+        "weight_g": 40
+      },
+      {
+        "food_slug": "onion-raw",
+        "weight_g": 400,
+        "note_ar": "وزن بعد التقشير"
+      },
+      {
+        "food_slug": "tomato",
+        "weight_g": 650,
+        "note_ar": "طماطم مضروبة أو مفرومة"
+      },
+      {
+        "food_slug": "tomato-paste-canned",
+        "weight_g": 30,
+        "note_ar": "صلصة طماطم مركزة"
+      },
+      {
+        "food_slug": "garlic-raw",
+        "weight_g": 25,
+        "note_ar": "توم مقشر"
+      },
+      {
+        "food_slug": "sunflower-oil",
+        "weight_g": 95,
+        "note_ar": "الزيت اللي داخل في الأكل فعلا"
+      },
+      {
+        "food_slug": "vinegar",
+        "weight_g": 40
+      },
+      {
+        "food_slug": "dukkah-dry",
+        "weight_g": 4,
+        "note_ar": "كمون مطحون؛ الدقة بديل لحساب القيمة الغذائية بس، استخدم التابل المكتوب"
+      }
+    ],
+    "steps_ar": [
+      "اسلق العدس والمكرونة كل واحد لوحده، وصفي المكرونة وسخن الحمص المسلوق.",
+      "حمر شرائح البصل في زيت غزير وصفيها؛ احسب ٥٥ جم زيت باقي معاها.",
+      "خد ٢٠ جم من زيت البصل وحمر فيهم الشعرية، وحط الرز والملح وحوالي ٤٥٠ مل مية وسويه على الهادي.",
+      "شوح التوم في باقي الـ٢٠ جم زيت، وضيف الطماطم والصلصة والخل والكمون وسيبها تتسبك.",
+      "قسم الرز والعدس والمكرونة والحمص والصلصة والبصل على ٦ أطباق."
+    ],
+    "youtube_video_id": null,
+    "portions": [
+      {
+        "name_ar": "طبق",
+        "weight_g": 400,
+        "is_default": true,
+        "basis": "Planning serving: 6 equal servings from the estimated 2400 g finished batch; not a measured Egyptian population portion."
+      }
+    ],
+    "yield_note": "Six 400 g plates. Component estimate: rice 600 g, lentils 400 g, pasta 430 g, chickpeas 240 g, vermicelli 100 g, reduced sauce/onions/retained oil 630 g = 2400 g. Of 95 g oil counted, 55 g is assumed retained by drained crispy onions, 20 g reused in rice and 20 g in sauce. Start with about 300 g frying oil; about 225 g remains in the pan after 55 g absorption and 20 g reuse, and is excluded. Do not add reused oil twice. Estimated edible finished weight, not measured; weigh the cooked batch to refine the estimate. Water and salt are omitted from nutrient ingredients; their retained mass is included in yield. Side bread/rice is excluded unless listed.",
+    "origin": "seed",
+    "origin_note": "Home version adapted and compared from https://amiraspantry.com/egyptian-koshari/ ; https://www.themediterraneandish.com/egyptian-koshari-recipe/ . Compared grain/legume/pasta balance and onion/sauce methods; scaled to six home plates. Frying absorption is an explicit assumption. Weights in grams are this batch's explicit household conversions/adaptations, not claimed source measurements. Nutrition is calculated only from the linked foods and finished weight; no website calorie panel is used. Ingredient proxies are nutrition-only mappings identified in ingredient notes; cook with the named actual ingredient. Dukkah, where present, approximates missing dry spices and is not a prescribed nut addition. ",
+    "confidence": "medium",
+    "review_flags": [
+      "quantities_vary_by_household",
+      "yield_estimated",
+      "ingredient_proxy",
+      "oil_absorption_assumed"
+    ],
+    "source_file": "recipes-1-egyptian.json"
+  },
+  {
+    "slug": "mahshi-waraq-enab-homemade",
+    "name_ar": "محشي ورق عنب بيتي",
+    "name_en": "Stuffed vine leaves, Egyptian home style",
+    "aliases_ar": [
+      "ورق عنب",
+      "محشي ورق العنب"
+    ],
+    "aliases_en": [],
+    "description_ar": "ورق عنب بحشوة رز وخضرة من غير لحمة. حساب الورق تقريبي ببديل غذائي لحد ما يتضاف ورق العنب للبيانات.",
+    "meal_tags": [
+      "lunch",
+      "dinner"
+    ],
+    "finished_weight_g": 1800,
+    "prep_minutes": 65,
+    "cook_minutes": 55,
+    "ingredients": [
+      {
+        "food_slug": "cabbage-white-raw",
+        "weight_g": 250,
+        "note_ar": "بديل غذائي تقريبي لوزن ٢٥٠ جم ورق عنب طازة منزوع الأعناق قبل السلق؛ المطلوب فعليا ورق عنب مش كرنب"
+      },
+      {
+        "food_slug": "rice-white-short-grain-dry",
+        "weight_g": 350,
+        "note_ar": "رز مصري ناشف؛ الوزن قبل الغسيل والنقع"
+      },
+      {
+        "food_slug": "onion-raw",
+        "weight_g": 220,
+        "note_ar": "وزن بعد التقشير"
+      },
+      {
+        "food_slug": "tomato",
+        "weight_g": 450,
+        "note_ar": "طماطم مضروبة أو مفرومة"
+      },
+      {
+        "food_slug": "tomato-paste-canned",
+        "weight_g": 30,
+        "note_ar": "صلصة طماطم مركزة"
+      },
+      {
+        "food_slug": "parsley-raw",
+        "weight_g": 30
+      },
+      {
+        "food_slug": "coriander-leaves-raw",
+        "weight_g": 20
+      },
+      {
+        "food_slug": "dill-raw",
+        "weight_g": 20
+      },
+      {
+        "food_slug": "mint-raw",
+        "weight_g": 5
+      },
+      {
+        "food_slug": "sunflower-oil",
+        "weight_g": 60,
+        "note_ar": "الزيت اللي داخل في الأكل فعلا"
+      },
+      {
+        "food_slug": "lemon-juice",
+        "weight_g": 50
+      },
+      {
+        "food_slug": "garlic-raw",
+        "weight_g": 10,
+        "note_ar": "توم مقشر"
+      }
+    ],
+    "steps_ar": [
+      "اسلق ورق العنب غلوة خفيفة وصفيه، وشيل الأعناق.",
+      "شوح البصل في الزيت، وضيف الطماطم والصلصة لحد ما تتقل.",
+      "ارفعها من النار وقلب معاها الرز والخضرة والتوم والملح ونص عصير الليمون.",
+      "حط حشو قليل في كل ورقة واقفل الجنبين ولفها؛ فرش ورق في قاع الحلة ورص المحشي فوقه.",
+      "ضيف باقي الليمون وحوالي ٦٥٠ مل مية سخنة، وحط طبق يتحمل الحرارة فوق اللفائف.",
+      "خليه يغلي وبعدها وطي لحد الرز ما يستوي؛ سيبه يرتاح قبل التقديم."
+    ],
+    "youtube_video_id": null,
+    "portions": [
+      {
+        "name_ar": "طبق",
+        "weight_g": 300,
+        "is_default": true,
+        "basis": "Planning serving: 6 equal servings from the estimated 1800 g finished batch; not a measured Egyptian population portion."
+      }
+    ],
+    "yield_note": "Six 300 g plates, roughly 12-15 small rolls each but count depends on leaf size. Rice 350 g dry becomes about 1000 g within the rolls, leaves about 230 g, reduced onion/tomato/herbs/lemon/oil about 570 g; total 1800 g. Start with 650 ml water and add small amounts if needed; drain no sauce. Grape-leaf mass is actual fresh edible leaf weight, represented nutritionally by raw cabbage, a weak proxy that understates leaf fibre and energy. Estimated edible finished weight, not measured; weigh the cooked batch to refine the estimate. Water and salt are omitted from nutrient ingredients; their retained mass is included in yield. Side bread/rice is excluded unless listed.",
+    "origin": "seed",
+    "origin_note": "Home version adapted and compared from https://amiraspantry.com/rice-stuffed-veggies-aka-mahshi/ ; https://www.supermama.me/posts/محشي-ورق-العنب ; https://amwhatieat.com/meat-and-rice-stuffed-grape-leaves-mahshi-wara-enab/ . Compared markedly different leaf/rice allocations; chose 250 g fresh leaves and 350 g dry rice, not jarred/brined leaf weights. Meatless adaptation with 60 g oil. Weights in grams are this batch's explicit household conversions/adaptations, not claimed source measurements. Nutrition is calculated only from the linked foods and finished weight; no website calorie panel is used. Ingredient proxies are nutrition-only mappings identified in ingredient notes; cook with the named actual ingredient. Dukkah, where present, approximates missing dry spices and is not a prescribed nut addition. ",
+    "confidence": "low",
+    "review_flags": [
+      "quantities_vary_by_household",
+      "yield_estimated",
+      "ingredient_proxy",
+      "weak_leaf_proxy"
+    ],
+    "source_file": "recipes-1-egyptian.json"
+  },
+  {
+    "slug": "mahshi-kromb-homemade",
+    "name_ar": "محشي كرنب بيتي",
+    "name_en": "Egyptian stuffed cabbage rolls",
+    "aliases_ar": [
+      "محشي كرنب",
+      "محشي كرمب"
+    ],
+    "aliases_en": [],
+    "description_ar": "كرنب ملفوف برز وطماطم وخضرة، من غير لحمة. الوزن للورق اللي بيتاكل بعد شيل العروق التخينة.",
+    "meal_tags": [
+      "lunch",
+      "dinner"
+    ],
+    "finished_weight_g": 2400,
+    "prep_minutes": 60,
+    "cook_minutes": 55,
+    "ingredients": [
+      {
+        "food_slug": "cabbage-white-raw",
+        "weight_g": 1100,
+        "note_ar": "ورق صافي ني بعد استبعاد القلب والعروق التخينة"
+      },
+      {
+        "food_slug": "rice-white-short-grain-dry",
+        "weight_g": 350,
+        "note_ar": "رز مصري ناشف؛ الوزن قبل الغسيل والنقع"
+      },
+      {
+        "food_slug": "onion-raw",
+        "weight_g": 200,
+        "note_ar": "وزن بعد التقشير"
+      },
+      {
+        "food_slug": "tomato",
+        "weight_g": 500,
+        "note_ar": "طماطم مضروبة أو مفرومة"
+      },
+      {
+        "food_slug": "tomato-paste-canned",
+        "weight_g": 30,
+        "note_ar": "صلصة طماطم مركزة"
+      },
+      {
+        "food_slug": "parsley-raw",
+        "weight_g": 30
+      },
+      {
+        "food_slug": "coriander-leaves-raw",
+        "weight_g": 20
+      },
+      {
+        "food_slug": "dill-raw",
+        "weight_g": 20
+      },
+      {
+        "food_slug": "sunflower-oil",
+        "weight_g": 60,
+        "note_ar": "الزيت اللي داخل في الأكل فعلا"
+      },
+      {
+        "food_slug": "garlic-raw",
+        "weight_g": 20,
+        "note_ar": "توم مقشر"
+      },
+      {
+        "food_slug": "dukkah-dry",
+        "weight_g": 3,
+        "note_ar": "كمون مطحون؛ الدقة بديل لحساب القيمة الغذائية بس، استخدم التابل المكتوب"
+      }
+    ],
+    "steps_ar": [
+      "فك ورق الكرنب واسلقه غلوة خفيفة، وشيل العروق التخينة وقطع الورق.",
+      "شوح البصل في الزيت، وسبك معاه الطماطم والصلصة.",
+      "لما يهدى قلب معاه الرز والخضرة والتوم والكمون والملح.",
+      "لف صوابع صغيرة من غير ما تكبس الحشو، ورصها في حلة مفروشة بورق كرنب.",
+      "ضيف حوالي ٦٠٠ مل مية سخنة، وخليه يغلي وبعدها وطي النار لحد ما الرز يستوي."
+    ],
+    "youtube_video_id": null,
+    "portions": [
+      {
+        "name_ar": "طبق",
+        "weight_g": 400,
+        "is_default": true,
+        "basis": "Planning serving: 6 equal servings from the estimated 2400 g finished batch; not a measured Egyptian population portion."
+      }
+    ],
+    "yield_note": "Six 400 g plates. Approximate cooked mass: softened cabbage 1000 g, hydrated rice 1000 g and reduced filling vegetables/herbs/oil 400 g = 2400 g. About 600 ml cooking water is added after blanching and additional moisture moves from vegetables to rice; no nutrient-rich cooking sauce is discarded. Estimated edible finished weight, not measured; weigh the cooked batch to refine the estimate. Water and salt are omitted from nutrient ingredients; their retained mass is included in yield. Side bread/rice is excluded unless listed.",
+    "origin": "seed",
+    "origin_note": "Home version adapted and compared from https://amwhatieat.com/mahshi-kromb-egyptian-vegan-cabbage-rolls/ ; https://artsandculture.google.com/story/KQVBig0ED6SMQw . Compared Dahlia’s meatless cabbage formula with Nawaya’s Egyptian household filling account. Edible cabbage allocation and gram yield are household estimates; more rice than Dahlia’s one-cup batch. Weights in grams are this batch's explicit household conversions/adaptations, not claimed source measurements. Nutrition is calculated only from the linked foods and finished weight; no website calorie panel is used. Ingredient proxies are nutrition-only mappings identified in ingredient notes; cook with the named actual ingredient. Dukkah, where present, approximates missing dry spices and is not a prescribed nut addition. ",
+    "confidence": "medium",
+    "review_flags": [
+      "quantities_vary_by_household",
+      "yield_estimated",
+      "ingredient_proxy"
+    ],
+    "source_file": "recipes-1-egyptian.json"
+  },
+  {
+    "slug": "mahshi-mixed-vegetables-homemade",
+    "name_ar": "محشي كوسة وفلفل وبتنجان",
+    "name_en": "Egyptian stuffed zucchini, peppers and eggplant",
+    "aliases_ar": [
+      "محشي مشكل",
+      "محشي كوسة",
+      "محشي فلفل",
+      "محشي بتنجان"
+    ],
+    "aliases_en": [],
+    "description_ar": "حلة محشي مشكل بحشوة رز وخضرة من غير لحمة. أوزان الخضار صافي بعد التقوير ومن غير اللب المستبعد.",
+    "meal_tags": [
+      "lunch",
+      "dinner"
+    ],
+    "finished_weight_g": 2400,
+    "prep_minutes": 50,
+    "cook_minutes": 55,
+    "ingredients": [
+      {
+        "food_slug": "zucchini-raw",
+        "weight_g": 450,
+        "note_ar": "جسم الكوسة بعد التقوير؛ اشتري حوالي ٧٠٠ جم"
+      },
+      {
+        "food_slug": "bell-pepper-green-raw",
+        "weight_g": 400,
+        "note_ar": "فلفل بعد شيل العنق والبذر؛ اشتري حوالي ٥٠٠ جم"
+      },
+      {
+        "food_slug": "eggplant-raw",
+        "weight_g": 450,
+        "note_ar": "جسم بتنجان صغير بعد التقوير؛ اشتري حوالي ٧٠٠ جم"
+      },
+      {
+        "food_slug": "rice-white-short-grain-dry",
+        "weight_g": 350,
+        "note_ar": "رز مصري ناشف؛ الوزن قبل الغسيل والنقع"
+      },
+      {
+        "food_slug": "onion-raw",
+        "weight_g": 200,
+        "note_ar": "وزن بعد التقشير"
+      },
+      {
+        "food_slug": "tomato",
+        "weight_g": 500,
+        "note_ar": "طماطم مضروبة أو مفرومة"
+      },
+      {
+        "food_slug": "tomato-paste-canned",
+        "weight_g": 30,
+        "note_ar": "صلصة طماطم مركزة"
+      },
+      {
+        "food_slug": "parsley-raw",
+        "weight_g": 30
+      },
+      {
+        "food_slug": "coriander-leaves-raw",
+        "weight_g": 20
+      },
+      {
+        "food_slug": "dill-raw",
+        "weight_g": 20
+      },
+      {
+        "food_slug": "sunflower-oil",
+        "weight_g": 60,
+        "note_ar": "الزيت اللي داخل في الأكل فعلا"
+      }
+    ],
+    "steps_ar": [
+      "قور الكوسة والبتنجان وشيل بذر الفلفل؛ زن الأجسام اللي هتتحشي بس.",
+      "شوح البصل في الزيت وسبك معاه الطماطم والصلصة، وبعد ما يهدى ضيف الرز والخضرة والملح.",
+      "احشي الخضار من غير كبس وسيب فراغ فوق عشان الرز يتمدد؛ استخدم كل الحشو.",
+      "رص الخضار في حلة وضيف حوالي ٥٥٠ مل مية سخنة لحد قرب آخر صف.",
+      "لما يغلي وطي وغطي لحد الخضار والرز ما يستووا؛ لو فاض حشو سويه في نفس الحلة وقدمه معاها."
+    ],
+    "youtube_video_id": null,
+    "portions": [
+      {
+        "name_ar": "طبق",
+        "weight_g": 400,
+        "is_default": true,
+        "basis": "Planning serving: 6 equal servings from the estimated 2400 g finished batch; not a measured Egyptian population portion."
+      }
+    ],
+    "yield_note": "Six 400 g mixed plates including any loose filling. Core-free raw shells total 1300 g; after cooking about 1150 g, hydrated rice about 900 g, reduced sauce/herbs/oil about 350 g = 2400 g. Buying weights are rough shopping estimates; excluded cores are not in ingredients or yield. All 350 g rice filling and the 60 g oil are served. Estimated edible finished weight, not measured; weigh the cooked batch to refine the estimate. Water and salt are omitted from nutrient ingredients; their retained mass is included in yield. Side bread/rice is excluded unless listed.",
+    "origin": "seed",
+    "origin_note": "Home version adapted and compared from https://amiraspantry.com/rice-stuffed-veggies-aka-mahshi/ ; https://amwhatieat.com/mahshi/ . Compared meatless versus meat-and-rice versions; selected meatless. The mixed shell weights replace single-vegetable allocations. Filling capacity and final yield need kitchen confirmation. Weights in grams are this batch's explicit household conversions/adaptations, not claimed source measurements. Nutrition is calculated only from the linked foods and finished weight; no website calorie panel is used. ",
+    "confidence": "medium",
+    "review_flags": [
+      "quantities_vary_by_household",
+      "yield_estimated"
+    ],
+    "source_file": "recipes-1-egyptian.json"
+  },
+  {
+    "slug": "fatta-beef-rice-homemade",
+    "name_ar": "فتة باللحمة والرز",
+    "name_en": "Egyptian beef fattah with rice and bread",
+    "aliases_ar": [
+      "فتة لحمة",
+      "فتة بالخل والتوم"
+    ],
+    "aliases_en": [],
+    "description_ar": "فتة بيتية برز وعيش بلدي محمص ولحمة وصوص طماطم بالخل والتوم.",
+    "meal_tags": [
+      "lunch",
+      "dinner"
+    ],
+    "finished_weight_g": 2400,
+    "prep_minutes": 25,
+    "cook_minutes": 120,
+    "ingredients": [
+      {
+        "food_slug": "beef-lean-raw",
+        "weight_g": 750,
+        "note_ar": "لحم بقري ني مكعبات صافي من غير عضم أو دهن ظاهر"
+      },
+      {
+        "food_slug": "rice-white-short-grain-dry",
+        "weight_g": 300,
+        "note_ar": "رز مصري ناشف؛ الوزن قبل الغسيل والنقع"
+      },
+      {
+        "food_slug": "bread-baladi",
+        "weight_g": 240,
+        "note_ar": "عيش بلدي قبل التحميص؛ من غير زيت قلي"
+      },
+      {
+        "food_slug": "ghee",
+        "weight_g": 50,
+        "note_ar": "سمنة داخلة في الأكل كله"
+      },
+      {
+        "food_slug": "tomato",
+        "weight_g": 650,
+        "note_ar": "طماطم مضروبة أو مفرومة"
+      },
+      {
+        "food_slug": "tomato-paste-canned",
+        "weight_g": 30,
+        "note_ar": "صلصة طماطم مركزة"
+      },
+      {
+        "food_slug": "garlic-raw",
+        "weight_g": 35,
+        "note_ar": "توم مقشر"
+      },
+      {
+        "food_slug": "onion-raw",
+        "weight_g": 120,
+        "note_ar": "وزن بعد التقشير"
+      },
+      {
+        "food_slug": "vinegar",
+        "weight_g": 50
+      }
+    ],
+    "steps_ar": [
+      "شوح اللحمة مع البصل في ١٥ جم سمنة، وضيف مية واسلقها لحد ما تطرى واحتفظ بالشوربة.",
+      "شوح الرز في ٢٠ جم سمنة، وضيف حوالي ٥٥٠ مل من شوربة اللحمة وسويه.",
+      "قطع العيش وحمصه في الفرن من غير زيت.",
+      "شوح التوم في باقي السمنة، وضيف الخل والطماطم والصلصة وسيبهم يتسبكوا.",
+      "رص العيش وعليه حوالي ٣٠٠ مل شوربة وبعدين الرز واللحمة والصوص."
+    ],
+    "youtube_video_id": null,
+    "portions": [
+      {
+        "name_ar": "طبق",
+        "weight_g": 400,
+        "is_default": true,
+        "basis": "Planning serving: 6 equal servings from the estimated 2400 g finished batch; not a measured Egyptian population portion."
+      }
+    ],
+    "yield_note": "Six 400 g plates. Estimate rice 800 g, cooked beef 550 g, toasted bread 210 g and sauce/onion/ghee/retained broth 840 g = 2400 g. Use homemade broth generated by the listed raw meat; no extra stock nutrition is added. Retain meat juices and ghee; only surplus clear cooking water is left out. Bread is oven-toasted, with no frying oil. Estimated edible finished weight, not measured; weigh the cooked batch to refine the estimate. Water and salt are omitted from nutrient ingredients; their retained mass is included in yield. Side bread/rice is excluded unless listed.",
+    "origin": "seed",
+    "origin_note": "Home version adapted and compared from https://amiraspantry.com/egyptian-fattah/ ; https://www.supermama.me/posts/فتة-بالخل-والثوم . Compared Amira’s six-person meat fattah with the Arabic garlic-vinegar version. Chose oven-toasted bread, lean beef and fixed total ghee. Weights in grams are this batch's explicit household conversions/adaptations, not claimed source measurements. Nutrition is calculated only from the linked foods and finished weight; no website calorie panel is used. ",
+    "confidence": "medium",
+    "review_flags": [
+      "quantities_vary_by_household",
+      "yield_estimated"
+    ],
+    "source_file": "recipes-1-egyptian.json"
+  },
+  {
+    "slug": "molokhia-chicken-homemade",
+    "name_ar": "ملوخية بالفراخ",
+    "name_en": "Egyptian molokhia stew with chicken",
+    "aliases_ar": [
+      "ملوخية وفراخ",
+      "ملوخية بيتي"
+    ],
+    "aliases_en": [],
+    "description_ar": "ملوخية بطشة توم وسمنة ومعاها فراخ من غير جلد أو عضم. الحصة شاملة نصيبها من الفراخ، من غير رز أو عيش.",
+    "meal_tags": [
+      "lunch",
+      "dinner"
+    ],
+    "finished_weight_g": 2100,
+    "prep_minutes": 20,
+    "cook_minutes": 55,
+    "ingredients": [
+      {
+        "food_slug": "chicken-whole-raw",
+        "weight_g": 800,
+        "note_ar": "وزن اللحم الني الصافي من غير جلد أو عضم، مش وزن الفرخة بالعظم"
+      },
+      {
+        "food_slug": "molokhia-leaves-raw",
+        "weight_g": 500,
+        "note_ar": "ورق ملوخية صافي ني مفروم"
+      },
+      {
+        "food_slug": "onion-raw",
+        "weight_g": 120,
+        "note_ar": "وزن بعد التقشير"
+      },
+      {
+        "food_slug": "garlic-raw",
+        "weight_g": 30,
+        "note_ar": "توم مقشر"
+      },
+      {
+        "food_slug": "ghee",
+        "weight_g": 30,
+        "note_ar": "سمنة داخلة في الأكل كله"
+      },
+      {
+        "food_slug": "dukkah-dry",
+        "weight_g": 6,
+        "note_ar": "كزبرة ناشفة مطحونة؛ الدقة بديل لحساب القيمة الغذائية بس، استخدم التابل المكتوب"
+      }
+    ],
+    "steps_ar": [
+      "اسلق لحم الفراخ مع البصلة والملح في حوالي ١١٠٠ مل مية لحد ما يستوي.",
+      "طلع الفراخ واحتفظ بكل الشوربة والبصل، واظبط السائل لحوالي لتر.",
+      "نزل الملوخية في الشوربة السخنة وقلب على نار هادية لحد ما تستوي من غير غليان عنيف.",
+      "حمر التوم والكزبرة في السمنة وانزل بالطشة على الملوخية.",
+      "قسم الملوخية والفراخ بالتساوي على ٦ حصص."
+    ],
+    "youtube_video_id": null,
+    "portions": [
+      {
+        "name_ar": "طبق",
+        "weight_g": 350,
+        "is_default": true,
+        "basis": "Planning serving: 6 equal servings from the estimated 2100 g finished batch; not a measured Egyptian population portion."
+      }
+    ],
+    "yield_note": "Six 350 g combined servings. About 600 g cooked skinless boneless chicken plus 1500 g molokhia/broth/onion/tasha = 2100 g. Begin with 1100 ml water, retain broth and chicken juices, and adjust to about 1 litre broth before adding leaves. Portion must include one-sixth chicken and one-sixth soup, not soup alone. Estimated edible finished weight, not measured; weigh the cooked batch to refine the estimate. Water and salt are omitted from nutrient ingredients; their retained mass is included in yield. Side bread/rice is excluded unless listed.",
+    "origin": "seed",
+    "origin_note": "Home version adapted and compared from https://amiraspantry.com/mulukhia-aka-jews-mallow/ ; https://www.supermama.me/posts/الملوخية-بالفراخ . Compared leaf/broth ratios and Arabic chicken inclusion. Chose 500 g fresh leaves with about 1 litre retained broth and 800 g raw skinless boneless meat. Every portion includes chicken. Weights in grams are this batch's explicit household conversions/adaptations, not claimed source measurements. Nutrition is calculated only from the linked foods and finished weight; no website calorie panel is used. Ingredient proxies are nutrition-only mappings identified in ingredient notes; cook with the named actual ingredient. Dukkah, where present, approximates missing dry spices and is not a prescribed nut addition. ",
+    "confidence": "medium",
+    "review_flags": [
+      "quantities_vary_by_household",
+      "yield_estimated",
+      "ingredient_proxy"
+    ],
+    "source_file": "recipes-1-egyptian.json"
+  },
+  {
+    "slug": "bamya-beef-homemade",
+    "name_ar": "بامية باللحمة",
+    "name_en": "Egyptian okra stew with beef",
+    "aliases_ar": [
+      "طاجن بامية باللحمة"
+    ],
+    "aliases_en": [],
+    "description_ar": "بامية في صلصة طماطم وتوم، بالدهن المحسوب للحلة كلها. الحصة من غير رز أو عيش.",
+    "meal_tags": [
+      "lunch",
+      "dinner"
+    ],
+    "finished_weight_g": 2100,
+    "prep_minutes": 20,
+    "cook_minutes": 120,
+    "ingredients": [
+      {
+        "food_slug": "okra-raw",
+        "weight_g": 800,
+        "note_ar": "بامية ني مقمعة صافي"
+      },
+      {
+        "food_slug": "beef-lean-raw",
+        "weight_g": 650,
+        "note_ar": "لحم بقري ني مكعبات صافي من غير عضم أو دهن ظاهر"
+      },
+      {
+        "food_slug": "tomato",
+        "weight_g": 650,
+        "note_ar": "طماطم مضروبة أو مفرومة"
+      },
+      {
+        "food_slug": "onion-raw",
+        "weight_g": 180,
+        "note_ar": "وزن بعد التقشير"
+      },
+      {
+        "food_slug": "garlic-raw",
+        "weight_g": 30,
+        "note_ar": "توم مقشر"
+      },
+      {
+        "food_slug": "tomato-paste-canned",
+        "weight_g": 35,
+        "note_ar": "صلصة طماطم مركزة"
+      },
+      {
+        "food_slug": "sunflower-oil",
+        "weight_g": 35,
+        "note_ar": "الزيت اللي داخل في الأكل فعلا"
+      },
+      {
+        "food_slug": "lemon-juice",
+        "weight_g": 25
+      },
+      {
+        "food_slug": "dukkah-dry",
+        "weight_g": 4,
+        "note_ar": "كزبرة ناشفة مطحونة؛ الدقة بديل لحساب القيمة الغذائية بس، استخدم التابل المكتوب"
+      }
+    ],
+    "steps_ar": [
+      "شوح اللحمة والبصل في نص الزيت وضيف حوالي ٧٠٠ مل مية، وسيب اللحمة تطرى.",
+      "ضيف الطماطم والصلصة والبامية والملح، وقلب براحة عشان البامية ما تتهريش.",
+      "سيب الحلة على الهادي لحد البامية والبروتين ما يستووا والصوص يتقل.",
+      "شوح التوم والكزبرة في باقي الزيت وضيفهم للحلة، وحط الليمون في الآخر."
+    ],
+    "youtube_video_id": null,
+    "portions": [
+      {
+        "name_ar": "طبق",
+        "weight_g": 350,
+        "is_default": true,
+        "basis": "Planning serving: 6 equal servings from the estimated 2100 g finished batch; not a measured Egyptian population portion."
+      }
+    ],
+    "yield_note": "Six 350 g stew servings. Cooked beef about 490 g, okra about 700 g and reduced tomato/onion/retained cooking liquid/oil about 910 g = 2100 g. Meat and juices are cooked in the same pot and no fat is drained. All 35 g oil stays in stew; no deep frying. Added water is reduced to the stated finished batch, with no side rice. Estimated edible finished weight, not measured; weigh the cooked batch to refine the estimate. Water and salt are omitted from nutrient ingredients; their retained mass is included in yield. Side bread/rice is excluded unless listed.",
+    "origin": "seed",
+    "origin_note": "Home version adapted and compared from https://amiraspantry.com/bamya-okra/ ; https://thematbakh.com/how-to-cook-oxtail-stew-with-okra-egyptian-bamia-recipe/ . Compared two Egyptian home stews, including lamb/oxtail alternatives; selected lean boneless beef and moderate oil rather than the richer garlic relish. Weights in grams are this batch's explicit household conversions/adaptations, not claimed source measurements. Nutrition is calculated only from the linked foods and finished weight; no website calorie panel is used. Ingredient proxies are nutrition-only mappings identified in ingredient notes; cook with the named actual ingredient. Dukkah, where present, approximates missing dry spices and is not a prescribed nut addition. ",
+    "confidence": "medium",
+    "review_flags": [
+      "quantities_vary_by_household",
+      "yield_estimated",
+      "ingredient_proxy"
+    ],
+    "source_file": "recipes-1-egyptian.json"
+  },
+  {
+    "slug": "bamya-chicken-homemade",
+    "name_ar": "بامية بالفراخ",
+    "name_en": "Okra stew with chicken, Egyptian home style",
+    "aliases_ar": [
+      "طاجن بامية بالفراخ"
+    ],
+    "aliases_en": [],
+    "description_ar": "بامية في صلصة طماطم وتوم، بالدهن المحسوب للحلة كلها. الحصة من غير رز أو عيش.",
+    "meal_tags": [
+      "lunch",
+      "dinner"
+    ],
+    "finished_weight_g": 2100,
+    "prep_minutes": 20,
+    "cook_minutes": 60,
+    "ingredients": [
+      {
+        "food_slug": "okra-raw",
+        "weight_g": 800,
+        "note_ar": "بامية ني مقمعة صافي"
+      },
+      {
+        "food_slug": "chicken-thigh-raw",
+        "weight_g": 700,
+        "note_ar": "لحم ورك ني صافي من غير جلد أو عضم"
+      },
+      {
+        "food_slug": "tomato",
+        "weight_g": 650,
+        "note_ar": "طماطم مضروبة أو مفرومة"
+      },
+      {
+        "food_slug": "onion-raw",
+        "weight_g": 180,
+        "note_ar": "وزن بعد التقشير"
+      },
+      {
+        "food_slug": "garlic-raw",
+        "weight_g": 30,
+        "note_ar": "توم مقشر"
+      },
+      {
+        "food_slug": "tomato-paste-canned",
+        "weight_g": 35,
+        "note_ar": "صلصة طماطم مركزة"
+      },
+      {
+        "food_slug": "sunflower-oil",
+        "weight_g": 35,
+        "note_ar": "الزيت اللي داخل في الأكل فعلا"
+      },
+      {
+        "food_slug": "lemon-juice",
+        "weight_g": 25
+      },
+      {
+        "food_slug": "dukkah-dry",
+        "weight_g": 4,
+        "note_ar": "كزبرة ناشفة مطحونة؛ الدقة بديل لحساب القيمة الغذائية بس، استخدم التابل المكتوب"
+      }
+    ],
+    "steps_ar": [
+      "شوح الفراخ والبصل في نص الزيت وضيف حوالي ٤٠٠ مل مية، وسيب الفراخ تقرب تستوي.",
+      "ضيف الطماطم والصلصة والبامية والملح، وقلب براحة عشان البامية ما تتهريش.",
+      "سيب الحلة على الهادي لحد البامية والبروتين ما يستووا والصوص يتقل.",
+      "شوح التوم والكزبرة في باقي الزيت وضيفهم للحلة، وحط الليمون في الآخر."
+    ],
+    "youtube_video_id": null,
+    "portions": [
+      {
+        "name_ar": "طبق",
+        "weight_g": 350,
+        "is_default": true,
+        "basis": "Planning serving: 6 equal servings from the estimated 2100 g finished batch; not a measured Egyptian population portion."
+      }
+    ],
+    "yield_note": "Six 350 g stew servings. Cooked chicken about 525 g, okra about 700 g and reduced tomato/onion/retained cooking liquid/oil about 875 g = 2100 g. Meat and juices are cooked in the same pot and no fat is drained. All 35 g oil stays in stew; no deep frying. Added water is reduced to the stated finished batch, with no side rice. Estimated edible finished weight, not measured; weigh the cooked batch to refine the estimate. Water and salt are omitted from nutrient ingredients; their retained mass is included in yield. Side bread/rice is excluded unless listed.",
+    "origin": "seed",
+    "origin_note": "Home version adapted and compared from https://amiraspantry.com/bamya-okra/ ; https://thematbakh.com/how-to-cook-oxtail-stew-with-okra-egyptian-bamia-recipe/ ; https://www.alwasat.ly/news/kitchen/447824 . Compared Arabic chicken-okra proportions with Egyptian meat-okra technique. Boneless skinless thighs replace the whole bird and oil is specified. Weights in grams are this batch's explicit household conversions/adaptations, not claimed source measurements. Nutrition is calculated only from the linked foods and finished weight; no website calorie panel is used. Ingredient proxies are nutrition-only mappings identified in ingredient notes; cook with the named actual ingredient. Dukkah, where present, approximates missing dry spices and is not a prescribed nut addition. ",
+    "confidence": "medium",
+    "review_flags": [
+      "quantities_vary_by_household",
+      "yield_estimated",
+      "ingredient_proxy"
+    ],
+    "source_file": "recipes-1-egyptian.json"
+  },
+  {
+    "slug": "fasolia-white-beans-beef-homemade",
+    "name_ar": "فاصوليا بيضا باللحمة",
+    "name_en": "Egyptian white bean stew with beef",
+    "aliases_ar": [
+      "فاصوليا باللحمة",
+      "طبيخ فاصوليا"
+    ],
+    "aliases_en": [],
+    "description_ar": "فاصوليا بيضا باللحمة وصلصة الطماطم، من غير رز الحصة الجانبية.",
+    "meal_tags": [
+      "lunch",
+      "dinner"
+    ],
+    "finished_weight_g": 2100,
+    "prep_minutes": 20,
+    "cook_minutes": 130,
+    "ingredients": [
+      {
+        "food_slug": "white-beans-dry",
+        "weight_g": 300,
+        "note_ar": "وزن ناشف قبل النقع؛ النقع من الليلة اللي قبلها"
+      },
+      {
+        "food_slug": "beef-lean-raw",
+        "weight_g": 650,
+        "note_ar": "لحم بقري ني مكعبات صافي من غير عضم أو دهن ظاهر"
+      },
+      {
+        "food_slug": "tomato",
+        "weight_g": 500,
+        "note_ar": "طماطم مضروبة أو مفرومة"
+      },
+      {
+        "food_slug": "onion-raw",
+        "weight_g": 180,
+        "note_ar": "وزن بعد التقشير"
+      },
+      {
+        "food_slug": "tomato-paste-canned",
+        "weight_g": 30,
+        "note_ar": "صلصة طماطم مركزة"
+      },
+      {
+        "food_slug": "garlic-raw",
+        "weight_g": 20,
+        "note_ar": "توم مقشر"
+      },
+      {
+        "food_slug": "ghee",
+        "weight_g": 30,
+        "note_ar": "سمنة داخلة في الأكل كله"
+      }
+    ],
+    "steps_ar": [
+      "انقع الفاصوليا طول الليل، وصفي مية النقع واشطفها.",
+      "شوح البصل واللحمة في السمنة، وضيف حوالي لتر مية وسيب اللحمة تقرب تطرى.",
+      "ضيف الفاصوليا والتوم والطماطم والصلصة، وزود مية سخنة لو احتاجت.",
+      "سيبها تغلي وبعدها وطي لحد الفاصوليا واللحمة ما يستووا والصوص يتقل، وظبط الملح."
+    ],
+    "youtube_video_id": null,
+    "portions": [
+      {
+        "name_ar": "طبق",
+        "weight_g": 350,
+        "is_default": true,
+        "basis": "Planning serving: 6 equal servings from the estimated 2100 g finished batch; not a measured Egyptian population portion."
+      }
+    ],
+    "yield_note": "Six 350 g portions. Dry beans 300 g become about 780 g, beef 650 g becomes about 490 g, remaining tomato/onion/garlic/ghee and sauce liquid about 830 g = 2100 g. Soak water is discarded; bean cooking takes place in the stew and is retained. Start with 1 litre cooking water, topping up if required. Prep excludes overnight soaking. Estimated edible finished weight, not measured; weigh the cooked batch to refine the estimate. Water and salt are omitted from nutrient ingredients; their retained mass is included in yield. Side bread/rice is excluded unless listed.",
+    "origin": "seed",
+    "origin_note": "Home version adapted and compared from https://www.supermama.me/posts/طريقة-عمل-فاصوليا-باللحمة ; https://www.supermama.me/posts/طريقة-عمل-الفاصوليا-البيضاء-باللحمة . Compared one-cup and two-cup bean batches and cooked-meat versus raw-meat entry states. This six-person pot uses 300 g dry beans and raw beef with its juices retained. Weights in grams are this batch's explicit household conversions/adaptations, not claimed source measurements. Nutrition is calculated only from the linked foods and finished weight; no website calorie panel is used. ",
+    "confidence": "medium",
+    "review_flags": [
+      "quantities_vary_by_household",
+      "yield_estimated"
+    ],
+    "source_file": "recipes-1-egyptian.json"
+  },
+  {
+    "slug": "lobia-tomato-homemade",
+    "name_ar": "لوبيا بالصلصة",
+    "name_en": "Egyptian black-eyed pea tomato stew",
+    "aliases_ar": [
+      "طبيخ لوبيا",
+      "لوبيا من غير لحمة"
+    ],
+    "aliases_en": [],
+    "description_ar": "لوبيا بعين سودا بصلصة الطماطم والتوم، نسخة بيتية من غير لحمة.",
+    "meal_tags": [
+      "lunch",
+      "dinner"
+    ],
+    "finished_weight_g": 1800,
+    "prep_minutes": 15,
+    "cook_minutes": 65,
+    "ingredients": [
+      {
+        "food_slug": "black-eyed-peas-dry",
+        "weight_g": 300,
+        "note_ar": "وزن ناشف قبل النقع ٤ ساعات"
+      },
+      {
+        "food_slug": "tomato",
+        "weight_g": 600,
+        "note_ar": "طماطم مضروبة أو مفرومة"
+      },
+      {
+        "food_slug": "onion-raw",
+        "weight_g": 200,
+        "note_ar": "وزن بعد التقشير"
+      },
+      {
+        "food_slug": "garlic-raw",
+        "weight_g": 20,
+        "note_ar": "توم مقشر"
+      },
+      {
+        "food_slug": "tomato-paste-canned",
+        "weight_g": 35,
+        "note_ar": "صلصة طماطم مركزة"
+      },
+      {
+        "food_slug": "sunflower-oil",
+        "weight_g": 35,
+        "note_ar": "الزيت اللي داخل في الأكل فعلا"
+      }
+    ],
+    "steps_ar": [
+      "انقع اللوبيا ٤ ساعات، وصفيها واشطفها.",
+      "شوح البصل والتوم في الزيت وضيف الطماطم والصلصة وسيبهم يتسبكوا شوية.",
+      "ضيف اللوبيا وحوالي ٨٥٠ مل مية سخنة، وخليها تغلي وبعدها وطي.",
+      "لما اللوبيا تطرى والصوص يبقى مناسب ظبط الملح وقدمها."
+    ],
+    "youtube_video_id": null,
+    "portions": [
+      {
+        "name_ar": "طبق",
+        "weight_g": 300,
+        "is_default": true,
+        "basis": "Planning serving: 6 equal servings from the estimated 1800 g finished batch; not a measured Egyptian population portion."
+      }
+    ],
+    "yield_note": "Six 300 g servings. Hydrated black-eyed peas about 800 g plus reduced sauce/onion/oil/retained water 1000 g = 1800 g. About 850 ml water is added; retained water includes bean hydration. No liquid is drained after cooking. Prep excludes four-hour soaking. Estimated edible finished weight, not measured; weigh the cooked batch to refine the estimate. Water and salt are omitted from nutrient ingredients; their retained mass is included in yield. Side bread/rice is excluded unless listed.",
+    "origin": "seed",
+    "origin_note": "Home version adapted and compared from https://amiraspantry.com/black-eyed-peas/ ; https://www.supermama.me/posts/طريقة-عمل-اللوبيا-باللحمة . Compared Amira’s 270 g meatless batch with the Arabic 250 g meat batch; kept the meatless version with 300 g beans for six smaller stew plates. Weights in grams are this batch's explicit household conversions/adaptations, not claimed source measurements. Nutrition is calculated only from the linked foods and finished weight; no website calorie panel is used. ",
+    "confidence": "medium",
+    "review_flags": [
+      "quantities_vary_by_household",
+      "yield_estimated"
+    ],
+    "source_file": "recipes-1-egyptian.json"
+  },
+  {
+    "slug": "hawawshi-baladi-homemade",
+    "name_ar": "حواوشي بيتي بالعيش البلدي",
+    "name_en": "Home-baked baladi hawawshi",
+    "aliases_ar": [
+      "حواوشي",
+      "عيش باللحمة"
+    ],
+    "aliases_en": [],
+    "description_ar": "عيش بلدي جاهز محشي لحمة مفرومة وبصل وفلفل، وبيتحمر في الفرن.",
+    "meal_tags": [
+      "lunch",
+      "dinner"
+    ],
+    "finished_weight_g": 1250,
+    "prep_minutes": 25,
+    "cook_minutes": 30,
+    "ingredients": [
+      {
+        "food_slug": "bread-baladi",
+        "weight_g": 450,
+        "note_ar": "٥ أرغفة بلدي، وزن الرغيف ٩٠ جم قبل الحشو"
+      },
+      {
+        "food_slug": "beef-ground-20-fat-raw",
+        "weight_g": 600,
+        "note_ar": "لحمة مفرومة ني ٢٠٪ دهن"
+      },
+      {
+        "food_slug": "onion-raw",
+        "weight_g": 180,
+        "note_ar": "وزن بعد التقشير"
+      },
+      {
+        "food_slug": "bell-pepper-green-raw",
+        "weight_g": 120
+      },
+      {
+        "food_slug": "garlic-raw",
+        "weight_g": 10,
+        "note_ar": "توم مقشر"
+      },
+      {
+        "food_slug": "parsley-raw",
+        "weight_g": 20
+      },
+      {
+        "food_slug": "sunflower-oil",
+        "weight_g": 25,
+        "note_ar": "الزيت اللي داخل في الأكل فعلا"
+      },
+      {
+        "food_slug": "dukkah-dry",
+        "weight_g": 5,
+        "note_ar": "بهارات لحمة مطحونة؛ الدقة بديل لحساب القيمة الغذائية بس، استخدم التابل المكتوب"
+      }
+    ],
+    "steps_ar": [
+      "اخلط اللحمة بالبصل والفلفل والتوم والبقدونس والبهارات والملح.",
+      "افتح الأرغفة واحشي كل رغيف بخمس الخلطة وافردها طبقة رفيعة.",
+      "ادهن الأرغفة بكل الزيت المحسوب ورصها في صينية تحتفظ بالعصارة.",
+      "دخلها فرن سخن على ٢٠٠ درجة حوالي ٢٥–٣٠ دقيقة واقلبها في النص، لحد اللحمة ما تستوي والعيش يقرمش."
+    ],
+    "youtube_video_id": null,
+    "portions": [
+      {
+        "name_ar": "رغيف",
+        "weight_g": 250,
+        "is_default": true,
+        "basis": "Planning serving: 5 equal servings from the estimated 1250 g finished batch; not a measured Egyptian population portion."
+      }
+    ],
+    "yield_note": "Five complete stuffed loaves at an estimated 250 g each. Raw ingredients total about 1435 g; about 185 g net water is lost during baking. No beef fat is drained: bread absorbs juices and all 25 g brushing oil is counted. Bread weight is before baking and each loaf carries 120 g raw meat. Pan juices are served with the loaves. Estimated edible finished weight, not measured; weigh the cooked batch to refine the estimate. Water and salt are omitted from nutrient ingredients; their retained mass is included in yield. Side bread/rice is excluded unless listed.",
+    "origin": "seed",
+    "origin_note": "Home version adapted and compared from https://amiraspantry.com/hawawshi-stuffed-pita-bread/ ; https://www.themediterraneandish.com/hawawshi-recipe/ . Compared ready-pita hawawshi versions. Uses baladi bread, 20%-fat beef and five loaves, not Alexandrian raw dough. Weights in grams are this batch's explicit household conversions/adaptations, not claimed source measurements. Nutrition is calculated only from the linked foods and finished weight; no website calorie panel is used. Ingredient proxies are nutrition-only mappings identified in ingredient notes; cook with the named actual ingredient. Dukkah, where present, approximates missing dry spices and is not a prescribed nut addition. ",
+    "confidence": "medium",
+    "review_flags": [
+      "quantities_vary_by_household",
+      "yield_estimated",
+      "ingredient_proxy",
+      "fat_retention_assumed"
+    ],
+    "source_file": "recipes-1-egyptian.json"
+  },
+  {
+    "slug": "macarona-bechamel-homemade",
+    "name_ar": "مكرونة بشاميل باللحمة",
+    "name_en": "Egyptian macarona bechamel",
+    "aliases_ar": [
+      "مكرونة بالبشاميل",
+      "مكرونة فرن"
+    ],
+    "aliases_en": [],
+    "description_ar": "صينية مكرونة باللحمة المفرومة وبشاميل اللبن والزبدة، من غير جبنة إضافية.",
+    "meal_tags": [
+      "lunch",
+      "dinner"
+    ],
+    "finished_weight_g": 2400,
+    "prep_minutes": 30,
+    "cook_minutes": 45,
+    "ingredients": [
+      {
+        "food_slug": "pasta-dry",
+        "weight_g": 400
+      },
+      {
+        "food_slug": "beef-ground-10-fat-raw",
+        "weight_g": 400
+      },
+      {
+        "food_slug": "onion-raw",
+        "weight_g": 150,
+        "note_ar": "وزن بعد التقشير"
+      },
+      {
+        "food_slug": "tomato-paste-canned",
+        "weight_g": 40,
+        "note_ar": "صلصة طماطم مركزة"
+      },
+      {
+        "food_slug": "tomato",
+        "weight_g": 150,
+        "note_ar": "طماطم مضروبة أو مفرومة"
+      },
+      {
+        "food_slug": "milk-full-fat",
+        "weight_g": 900
+      },
+      {
+        "food_slug": "flour-white-dry",
+        "weight_g": 70
+      },
+      {
+        "food_slug": "butter-unsalted",
+        "weight_g": 60
+      },
+      {
+        "food_slug": "sunflower-oil",
+        "weight_g": 25,
+        "note_ar": "الزيت اللي داخل في الأكل فعلا"
+      },
+      {
+        "food_slug": "egg-raw",
+        "weight_g": 50,
+        "note_ar": "بيضة من غير القشر"
+      }
+    ],
+    "steps_ar": [
+      "اسلق المكرونة أقل من السوا الكامل وصفيها.",
+      "شوح البصل في الزيت وضيف اللحمة لحد ما تستوي، وبعدين الطماطم والصلصة والملح وسيب العصاج يتقل.",
+      "سيح الزبدة وقلب فيها الدقيق، وضيف اللبن بالتدريج مع التقليب لحد البشاميل ما يتقل.",
+      "سيب البشاميل يهدى شوية واضرب البيضة فيه بسرعة.",
+      "رص نص المكرونة ومعاها شوية بشاميل، وبعدها اللحمة وباقي المكرونة والبشاميل.",
+      "اخبز على ١٩٠ درجة حوالي ٣٥–٤٥ دقيقة لحد الوش ما يحمر، وسيبها ترتاح قبل التقطيع."
+    ],
+    "youtube_video_id": null,
+    "portions": [
+      {
+        "name_ar": "قطعة",
+        "weight_g": 400,
+        "is_default": true,
+        "basis": "Planning serving: 6 equal servings from the estimated 2400 g finished batch; not a measured Egyptian population portion."
+      }
+    ],
+    "yield_note": "Six 400 g squares. Pasta 400 g dry becomes about 960 g, cooked meat/onion/tomato filling about 620 g and baked bechamel/egg/oil about 820 g = 2400 g. Pasta absorbs about 560 g water; milk sauce and meat lose moisture in baking. All 60 g butter and 25 g oil remain; no fat drained. Estimated edible finished weight, not measured; weigh the cooked batch to refine the estimate. Water and salt are omitted from nutrient ingredients; their retained mass is included in yield. Side bread/rice is excluded unless listed.",
+    "origin": "seed",
+    "origin_note": "Home version adapted and compared from https://amiraspantry.com/egyptian-baked-bechamel-pasta/ ; https://www.supermama.me/posts/المكرونة-بالبشاميل . Compared two meat/pasta and roux-fat ratios. Selected six substantial pieces with milk-only bechamel, 60 g butter and 25 g oil, less rich than either original sauce. Weights in grams are this batch's explicit household conversions/adaptations, not claimed source measurements. Nutrition is calculated only from the linked foods and finished weight; no website calorie panel is used. ",
+    "confidence": "medium",
+    "review_flags": [
+      "quantities_vary_by_household",
+      "yield_estimated"
+    ],
+    "source_file": "recipes-1-egyptian.json"
+  },
+  {
+    "slug": "kofta-grilled-homemade",
+    "name_ar": "كفتة مشوية بيتي",
+    "name_en": "Home-grilled Egyptian beef kofta",
+    "aliases_ar": [
+      "كفتة لحمة",
+      "كفتة مشوية"
+    ],
+    "aliases_en": [],
+    "description_ar": "كفتة لحمة مفرومة بالبصل والبقدونس، مشوية على جريل مصمت مع الاحتفاظ بعصارتها.",
+    "meal_tags": [
+      "lunch",
+      "dinner"
+    ],
+    "finished_weight_g": 900,
+    "prep_minutes": 25,
+    "cook_minutes": 25,
+    "ingredients": [
+      {
+        "food_slug": "beef-ground-20-fat-raw",
+        "weight_g": 850
+      },
+      {
+        "food_slug": "onion-raw",
+        "weight_g": 180,
+        "note_ar": "وزن بعد التقشير"
+      },
+      {
+        "food_slug": "parsley-raw",
+        "weight_g": 30
+      },
+      {
+        "food_slug": "bread-toast-white",
+        "weight_g": 30,
+        "note_ar": "توست مفتت يتشرب عصارة البصل"
+      },
+      {
+        "food_slug": "sunflower-oil",
+        "weight_g": 10,
+        "note_ar": "الزيت اللي داخل في الأكل فعلا"
+      },
+      {
+        "food_slug": "dukkah-dry",
+        "weight_g": 5,
+        "note_ar": "بهارات كفتة مطحونة؛ الدقة بديل لحساب القيمة الغذائية بس، استخدم التابل المكتوب"
+      }
+    ],
+    "steps_ar": [
+      "ابشر البصل وصفي عصيره على التوست، وبعد ما يتشرب اخلط الاتنين من غير رمي العصارة.",
+      "اعجن اللحمة مع البصل والتوست والبقدونس والبهارات والملح، وبرد الخلطة نص ساعة.",
+      "شكل حوالي ٢٠ صباع وادهن الجريل المصمت بالزيت المحسوب.",
+      "اشوي على دفعات مع التقليب لحد ما تستوي؛ قدم العصارة اللي في الجريل مع الكفتة."
+    ],
+    "youtube_video_id": null,
+    "portions": [
+      {
+        "name_ar": "طبق كفتة",
+        "weight_g": 180,
+        "is_default": true,
+        "basis": "Planning serving: 5 equal servings from the estimated 900 g finished batch; not a measured Egyptian population portion."
+      }
+    ],
+    "yield_note": "Five 180 g portions, about four cooked fingers each. Starting 1105 g becomes 900 g after about 205 g moisture loss. All fat and juices are served from a solid grill pan, including the 10 g added oil. This is not open charcoal grilling with fat dripping away; that method needs a separately measured retained-fat calculation. Prep excludes 30 minutes chilling. Estimated edible finished weight, not measured; weigh the cooked batch to refine the estimate. Water and salt are omitted from nutrient ingredients; their retained mass is included in yield. Side bread/rice is excluded unless listed.",
+    "origin": "seed",
+    "origin_note": "Home version adapted and compared from https://amiraspantry.com/kofta-secrets-soft-juicy-meatballs/ ; https://amiraspantry.com/hawawshi-stuffed-pita-bread/ . Family kofta source recommends 80/20 beef and onion-soaked bread. This smaller all-beef batch uses a solid grill pan to keep nutrient accounting explicit. Weights in grams are this batch's explicit household conversions/adaptations, not claimed source measurements. Nutrition is calculated only from the linked foods and finished weight; no website calorie panel is used. Ingredient proxies are nutrition-only mappings identified in ingredient notes; cook with the named actual ingredient. Dukkah, where present, approximates missing dry spices and is not a prescribed nut addition. ",
+    "confidence": "low",
+    "review_flags": [
+      "quantities_vary_by_household",
+      "yield_estimated",
+      "ingredient_proxy",
+      "fat_retention_assumed"
+    ],
+    "source_file": "recipes-1-egyptian.json"
+  },
+  {
+    "slug": "tagen-beef-potato-homemade",
+    "name_ar": "طاجن لحمة بالبطاطس",
+    "name_en": "Egyptian beef and potato casserole",
+    "aliases_ar": [
+      "صينية بطاطس باللحمة",
+      "طاجن بطاطس"
+    ],
+    "aliases_en": [],
+    "description_ar": "طاجن لحمة وطماطم وبطاطس مسلوقة قبل دخول الفرن، بسمنة محسوبة.",
+    "meal_tags": [
+      "lunch",
+      "dinner"
+    ],
+    "finished_weight_g": 2400,
+    "prep_minutes": 25,
+    "cook_minutes": 120,
+    "ingredients": [
+      {
+        "food_slug": "beef-lean-raw",
+        "weight_g": 700,
+        "note_ar": "لحم بقري ني مكعبات صافي من غير عضم أو دهن ظاهر"
+      },
+      {
+        "food_slug": "potato-boiled",
+        "weight_g": 1000,
+        "note_ar": "وزن بطاطس مقشرة مسلوقة بالفعل قبل إضافتها للطاجن؛ مش وزن ني"
+      },
+      {
+        "food_slug": "tomato",
+        "weight_g": 650,
+        "note_ar": "طماطم مضروبة أو مفرومة"
+      },
+      {
+        "food_slug": "onion-raw",
+        "weight_g": 250,
+        "note_ar": "وزن بعد التقشير"
+      },
+      {
+        "food_slug": "garlic-raw",
+        "weight_g": 20,
+        "note_ar": "توم مقشر"
+      },
+      {
+        "food_slug": "tomato-paste-canned",
+        "weight_g": 30,
+        "note_ar": "صلصة طماطم مركزة"
+      },
+      {
+        "food_slug": "ghee",
+        "weight_g": 40,
+        "note_ar": "سمنة داخلة في الأكل كله"
+      }
+    ],
+    "steps_ar": [
+      "شوح اللحمة والبصل في نص السمنة وضيف حوالي ٦٠٠ مل مية، وسيبها تطرى.",
+      "ضيف التوم والطماطم والصلصة والملح وسيبهم يتسبكوا مع اللحمة.",
+      "ادهن الطاجن بباقي السمنة، وحط البطاطس المسلوقة ووزع فوقها اللحمة والصوص.",
+      "دخل الطاجن فرن ٢٠٠ درجة حوالي ٢٠–٣٠ دقيقة لحد ما الوش يتحمر؛ قدم الصوص كله معاه."
+    ],
+    "youtube_video_id": null,
+    "portions": [
+      {
+        "name_ar": "طبق",
+        "weight_g": 400,
+        "is_default": true,
+        "basis": "Planning serving: 6 equal servings from the estimated 2400 g finished batch; not a measured Egyptian population portion."
+      }
+    ],
+    "yield_note": "Six 400 g plates. About 525 g cooked beef, 950 g reheated boiled potatoes and 925 g sauce/onion/ghee/retained broth = 2400 g. The 1000 g potato ingredient is weighed AFTER separate boiling and peeling, because raw potato food is absent; no raw-to-boiled conversion is hidden. All stew juices and ghee retained. Timing excludes preliminary potato boiling. Estimated edible finished weight, not measured; weigh the cooked batch to refine the estimate. Water and salt are omitted from nutrient ingredients; their retained mass is included in yield. Side bread/rice is excluded unless listed.",
+    "origin": "seed",
+    "origin_note": "Home version adapted and compared from https://www.supermama.me/posts/صينية-البطاطس-باللحمة ; https://alwanfm.net/صينية-البطاطس-باللحمة/ . Compared raw-potato oven tray with pre-cooked meat finishing method. Explicit adaptation: preboil potatoes and add late to match the available cooked ingredient state. Weights in grams are this batch's explicit household conversions/adaptations, not claimed source measurements. Nutrition is calculated only from the linked foods and finished weight; no website calorie panel is used. ",
+    "confidence": "medium",
+    "review_flags": [
+      "quantities_vary_by_household",
+      "yield_estimated"
+    ],
+    "source_file": "recipes-1-egyptian.json"
+  },
+  {
+    "slug": "roz-meammar-homemade",
+    "name_ar": "رز معمر بالقشطة",
+    "name_en": "Savory Egyptian baked milk rice",
+    "aliases_ar": [
+      "رز معمر",
+      "أرز معمر"
+    ],
+    "aliases_en": [],
+    "description_ar": "رز مصري في الفرن بلبن كامل الدسم وسمنة وقشطة، بطعم حادق.",
+    "meal_tags": [
+      "lunch",
+      "dinner"
+    ],
+    "finished_weight_g": 1500,
+    "prep_minutes": 10,
+    "cook_minutes": 60,
+    "ingredients": [
+      {
+        "food_slug": "rice-white-short-grain-dry",
+        "weight_g": 400,
+        "note_ar": "رز مصري ناشف؛ الوزن قبل الغسيل والنقع"
+      },
+      {
+        "food_slug": "milk-full-fat",
+        "weight_g": 1000
+      },
+      {
+        "food_slug": "ghee",
+        "weight_g": 30,
+        "note_ar": "سمنة داخلة في الأكل كله"
+      },
+      {
+        "food_slug": "cream-heavy",
+        "weight_g": 60,
+        "note_ar": "بديل غذائي للقشطة البلدي؛ نسبة الدسم بتختلف"
+      }
+    ],
+    "steps_ar": [
+      "اغسل الرز وصفيه، وادهن البرام بجزء من السمنة.",
+      "حط الرز واللبن السخن ومعاه ٢٠٠ مل مية سخنة والملح وباقي السمنة، ووزع القشطة على الوش.",
+      "دخل البرام فرن سخن ٢٠٠ درجة حوالي ٥٠–٦٠ دقيقة لحد الرز ما يستوي والوش ما يحمر.",
+      "سيبه يرتاح ١٠ دقايق قبل ما تقسمه على ٦ أطباق."
+    ],
+    "youtube_video_id": null,
+    "portions": [
+      {
+        "name_ar": "طبق",
+        "weight_g": 250,
+        "is_default": true,
+        "basis": "Planning serving: 6 equal servings from the estimated 1500 g finished batch; not a measured Egyptian population portion."
+      }
+    ],
+    "yield_note": "Six 250 g side portions. Starting 1490 g ingredients plus 200 ml water added with milk becomes 1500 g after approximately 190 g evaporation. Milk and water hydrate rice in the same dish, so rice expansion is not added again to milk mass. All ghee and cream are eaten. Estimated edible finished weight, not measured; weigh the cooked batch to refine the estimate. Water and salt are omitted from nutrient ingredients; their retained mass is included in yield. Side bread/rice is excluded unless listed.",
+    "origin": "seed",
+    "origin_note": "Home version adapted and compared from https://www.supermama.me/posts/وصفة-الأرز-المعمر ; https://cookdaily.me/en/recipes/traditional-egyptian-baked-rice-rice-muammar . Compared two cups rice/four cups milk butter version with cream-and-ghee version. Selected 400 g rice, 1 kg milk, 200 ml water, and specified dairy fat. Weights in grams are this batch's explicit household conversions/adaptations, not claimed source measurements. Nutrition is calculated only from the linked foods and finished weight; no website calorie panel is used. Ingredient proxies are nutrition-only mappings identified in ingredient notes; cook with the named actual ingredient. Dukkah, where present, approximates missing dry spices and is not a prescribed nut addition. ",
+    "confidence": "medium",
+    "review_flags": [
+      "quantities_vary_by_household",
+      "yield_estimated",
+      "ingredient_proxy",
+      "cream_fat_varies"
+    ],
+    "source_file": "recipes-1-egyptian.json"
+  },
+  {
+    "slug": "roz-bel-shaareya-homemade",
+    "name_ar": "رز بالشعرية",
+    "name_en": "Egyptian rice with toasted vermicelli",
+    "aliases_ar": [
+      "أرز بالشعرية",
+      "رز ابيض بالشعرية"
+    ],
+    "aliases_en": [],
+    "description_ar": "رز مصري بشعرية محمرة في السمنة، طبق جانبي من غير بروتين أو طبيخ.",
+    "meal_tags": [
+      "lunch",
+      "dinner"
+    ],
+    "finished_weight_g": 1200,
+    "prep_minutes": 10,
+    "cook_minutes": 25,
+    "ingredients": [
+      {
+        "food_slug": "rice-white-short-grain-dry",
+        "weight_g": 350,
+        "note_ar": "رز مصري ناشف؛ الوزن قبل الغسيل والنقع"
+      },
+      {
+        "food_slug": "vermicelli-dry",
+        "weight_g": 70,
+        "note_ar": "شعرية قمح ناشفة"
+      },
+      {
+        "food_slug": "ghee",
+        "weight_g": 35,
+        "note_ar": "سمنة داخلة في الأكل كله"
+      }
+    ],
+    "steps_ar": [
+      "اغسل الرز وصفيه كويس.",
+      "حمر الشعرية في السمنة لحد ما تبقى دهبي، وضيف الرز وقلبه معاها.",
+      "ضيف حوالي ٨٥٠ مل مية سخنة وملح، ولما يغلي غطي ووطي النار.",
+      "لما يستوي اقفل النار وسيبه يرتاح ١٠ دقايق، وفلفله بالشوكة."
+    ],
+    "youtube_video_id": null,
+    "portions": [
+      {
+        "name_ar": "طبق",
+        "weight_g": 200,
+        "is_default": true,
+        "basis": "Planning serving: 6 equal servings from the estimated 1200 g finished batch; not a measured Egyptian population portion."
+      }
+    ],
+    "yield_note": "Six 200 g side plates. Dry rice plus wheat vermicelli 420 g retain about 745 g water, plus 35 g ghee = 1200 g. Add about 850 ml water and allow about 105 g evaporation; adjust for rice brand. No drained liquid or fat. Estimated edible finished weight, not measured; weigh the cooked batch to refine the estimate. Water and salt are omitted from nutrient ingredients; their retained mass is included in yield. Side bread/rice is excluded unless listed.",
+    "origin": "seed",
+    "origin_note": "Home version adapted and compared from https://www.supermama.me/posts/الأرز-الأبيض-بالشعرية ; https://www.simplyleb.com/recipe/lebanese-rice-vermicelli-noodles/ . Compared Egyptian ghee and regional oil methods. Selected a 5:1 dry rice-to-vermicelli ratio and 35 g ghee for a six-person side pot. Weights in grams are this batch's explicit household conversions/adaptations, not claimed source measurements. Nutrition is calculated only from the linked foods and finished weight; no website calorie panel is used. ",
+    "confidence": "medium",
+    "review_flags": [
+      "quantities_vary_by_household",
+      "yield_estimated"
+    ],
+    "source_file": "recipes-1-egyptian.json"
+  },
+  {
+    "slug": "ful-medames-oil-lemon-homemade",
+    "name_ar": "فول مدمس بالزيت والليمون",
+    "name_en": "Home-style ful medames with oil, lemon and cumin",
+    "aliases_ar": [
+      "فول بالزيت",
+      "فول مدمس بيتي"
+    ],
+    "aliases_en": [],
+    "description_ar": "فول مدمس سادة متسخن بالزيت والليمون والكمون. العيش أو الطحينة مش داخلين في الحصة.",
+    "meal_tags": [
+      "breakfast",
+      "dinner"
+    ],
+    "finished_weight_g": 1200,
+    "prep_minutes": 10,
+    "cook_minutes": 10,
+    "ingredients": [
+      {
+        "food_slug": "ful-medames",
+        "weight_g": 1000,
+        "note_ar": "فول مطبوخ سادة من غير زيت؛ وزن قبل التتبيل"
+      },
+      {
+        "food_slug": "sunflower-oil",
+        "weight_g": 60,
+        "note_ar": "الزيت اللي داخل في الأكل فعلا"
+      },
+      {
+        "food_slug": "lemon-juice",
+        "weight_g": 60
+      },
+      {
+        "food_slug": "garlic-raw",
+        "weight_g": 10,
+        "note_ar": "توم مقشر"
+      },
+      {
+        "food_slug": "dukkah-dry",
+        "weight_g": 3,
+        "note_ar": "كمون مطحون؛ الدقة بديل لحساب القيمة الغذائية بس، استخدم التابل المكتوب"
+      }
+    ],
+    "steps_ar": [
+      "سخن الفول السادة مع حوالي ١٠٠ مل مية، واهرس جزء منه بالشوكة.",
+      "ضيف التوم والملح وسيبه يسخن كويس.",
+      "اطفي النار وقلب الزيت والليمون والكمون، وقسمه على ٥ أطباق."
+    ],
+    "youtube_video_id": null,
+    "portions": [
+      {
+        "name_ar": "طبق",
+        "weight_g": 240,
+        "is_default": true,
+        "basis": "Planning serving: 5 equal servings from the estimated 1200 g finished batch; not a measured Egyptian population portion."
+      }
+    ],
+    "yield_note": "Five 240 g bowls. Ingredients 1133 g plus 100 ml water minus about 33 g evaporation = 1200 g. Starts with already cooked unseasoned ful, not 1 kg dry fava beans. All 60 g oil stays in dish; no bread or tahini. Cooking time is reheating only, not cooking beans from dry. Estimated edible finished weight, not measured; weigh the cooked batch to refine the estimate. Water and salt are omitted from nutrient ingredients; their retained mass is included in yield. Side bread/rice is excluded unless listed.",
+    "origin": "seed",
+    "origin_note": "Home version adapted and compared from https://amiraspantry.com/foul-ful-medames/ ; https://www.supermama.me/posts/فول-بالزيت-والليمون . Compared slow-cooked bean base and oil/lemon dressing. Uses 1 kg cooked ful for five, with a fixed 60 g oil rather than an unmeasured drizzle. Weights in grams are this batch's explicit household conversions/adaptations, not claimed source measurements. Nutrition is calculated only from the linked foods and finished weight; no website calorie panel is used. Ingredient proxies are nutrition-only mappings identified in ingredient notes; cook with the named actual ingredient. Dukkah, where present, approximates missing dry spices and is not a prescribed nut addition. ",
+    "confidence": "medium",
+    "review_flags": [
+      "quantities_vary_by_household",
+      "yield_estimated",
+      "ingredient_proxy"
+    ],
+    "source_file": "recipes-1-egyptian.json"
+  },
+  {
+    "slug": "taameya-fried-homemade",
+    "name_ar": "طعمية بيتي مقلية",
+    "name_en": "Home-fried Egyptian fava bean taameya",
+    "aliases_ar": [
+      "طعمية",
+      "فلافل مصري"
+    ],
+    "aliases_en": [],
+    "description_ar": "طعمية بالفول المدشوش والخضرة والسمسم. كمية الزيت المحسوبة هي اللي مفترض فضلت في الأقراص بعد التصفية.",
+    "meal_tags": [
+      "breakfast",
+      "dinner"
+    ],
+    "finished_weight_g": 750,
+    "prep_minutes": 30,
+    "cook_minutes": 20,
+    "ingredients": [
+      {
+        "food_slug": "fava-beans-dry",
+        "weight_g": 300,
+        "note_ar": "بديل غذائي للفول المدشوش المقشر؛ الوزن ناشف قبل النقع"
+      },
+      {
+        "food_slug": "spring-onion-raw",
+        "weight_g": 60
+      },
+      {
+        "food_slug": "leek-raw",
+        "weight_g": 40
+      },
+      {
+        "food_slug": "parsley-raw",
+        "weight_g": 40
+      },
+      {
+        "food_slug": "coriander-leaves-raw",
+        "weight_g": 40
+      },
+      {
+        "food_slug": "garlic-raw",
+        "weight_g": 20,
+        "note_ar": "توم مقشر"
+      },
+      {
+        "food_slug": "sesame-seeds-dry",
+        "weight_g": 20
+      },
+      {
+        "food_slug": "sunflower-oil",
+        "weight_g": 85,
+        "note_ar": "الزيت اللي داخل في الأكل فعلا"
+      },
+      {
+        "food_slug": "dukkah-dry",
+        "weight_g": 5,
+        "note_ar": "كزبرة ناشفة وكمون مطحون؛ الدقة بديل لحساب القيمة الغذائية بس، استخدم التابل المكتوب"
+      }
+    ],
+    "steps_ar": [
+      "انقع الفول المدشوش المقشر ٨ ساعات، وصفيه كويس من غير سلق.",
+      "افرم الفول مع البصل الأخضر والكرات والتوم والخضرة والبهارات والملح لحد ما العجينة تنعم.",
+      "اخفق العجينة عشان تهوى، وشكل حوالي ٢٥ قرص وحط على الوش السمسم.",
+      "اقلي في زيت سخن على دفعات لحد ما الأقراص تستوي وتبقى دهبي، وصفيها على ورق مطبخ.",
+      "الـ٨٥ جم زيت المحسوبين هم تقدير الزيت اللي فضل في الـ٢٥ قرص، مش كل زيت الحلة."
+    ],
+    "youtube_video_id": null,
+    "portions": [
+      {
+        "name_ar": "٥ أقراص",
+        "weight_g": 150,
+        "is_default": true,
+        "basis": "Planning serving: 5 equal servings from the estimated 750 g finished batch; not a measured Egyptian population portion."
+      }
+    ],
+    "yield_note": "Five servings of five patties, 25 patties averaging 30 g cooked = 750 g. Ingredient mass before soaking is 670 g including 85 g retained frying oil. Net retained soaking water after frying is estimated 80 g; larger hydration is mostly offset by frying evaporation. Start with about 600 g frying oil; assume 85 g remains in drained patties and 515 g remains outside the food, excluded. This is 11.3% of final mass as added absorbed oil; not measured. Dry whole fava nutrition is a weak proxy for peeled split fava and overstates fibre. Prep excludes 8-hour soaking. Estimated edible finished weight, not measured; weigh the cooked batch to refine the estimate. Water and salt are omitted from nutrient ingredients; their retained mass is included in yield. Side bread/rice is excluded unless listed.",
+    "origin": "seed",
+    "origin_note": "Home version adapted and compared from https://amiraspantry.com/falafel/ ; https://www.arabamerica.com/recipe/egyptian-tamiya-falafel/ . Compared split-fava and whole-broadbean home mixtures. Scaled 180 g/15 patties to 300 g/25; leek is an own household adaptation. Absorbed oil and cooked patty mass are assumptions. Weights in grams are this batch's explicit household conversions/adaptations, not claimed source measurements. Nutrition is calculated only from the linked foods and finished weight; no website calorie panel is used. Ingredient proxies are nutrition-only mappings identified in ingredient notes; cook with the named actual ingredient. Dukkah, where present, approximates missing dry spices and is not a prescribed nut addition. ",
+    "confidence": "low",
+    "review_flags": [
+      "quantities_vary_by_household",
+      "yield_estimated",
+      "ingredient_proxy",
+      "oil_absorption_assumed",
+      "peeled_pulse_proxy"
+    ],
+    "source_file": "recipes-1-egyptian.json"
+  },
+  {
+    "slug": "shakshuka-homemade",
+    "name_ar": "شكشوكة بيتي",
+    "name_en": "Home-style Egyptian shakshuka",
+    "aliases_ar": [
+      "شكشوكة",
+      "بيض بالطماطم"
+    ],
+    "aliases_en": [],
+    "description_ar": "بيض في صلصة طماطم وبصل وفلفل، بزيت محسوب ومن غير عيش.",
+    "meal_tags": [
+      "breakfast",
+      "dinner"
+    ],
+    "finished_weight_g": 1200,
+    "prep_minutes": 15,
+    "cook_minutes": 25,
+    "ingredients": [
+      {
+        "food_slug": "egg-raw",
+        "weight_g": 400,
+        "note_ar": "٨ بيضات كبار من غير القشر"
+      },
+      {
+        "food_slug": "tomato",
+        "weight_g": 650,
+        "note_ar": "طماطم مضروبة أو مفرومة"
+      },
+      {
+        "food_slug": "onion-raw",
+        "weight_g": 180,
+        "note_ar": "وزن بعد التقشير"
+      },
+      {
+        "food_slug": "bell-pepper-green-raw",
+        "weight_g": 150
+      },
+      {
+        "food_slug": "garlic-raw",
+        "weight_g": 10,
+        "note_ar": "توم مقشر"
+      },
+      {
+        "food_slug": "sunflower-oil",
+        "weight_g": 35,
+        "note_ar": "الزيت اللي داخل في الأكل فعلا"
+      },
+      {
+        "food_slug": "parsley-raw",
+        "weight_g": 15
+      },
+      {
+        "food_slug": "dukkah-dry",
+        "weight_g": 3,
+        "note_ar": "كمون مطحون؛ الدقة بديل لحساب القيمة الغذائية بس، استخدم التابل المكتوب"
+      }
+    ],
+    "steps_ar": [
+      "شوح البصل في الزيت وضيف الفلفل والتوم.",
+      "ضيف الطماطم والكمون والملح وسيب الصلصة تتقل.",
+      "اعمل ٨ فتحات وانزل ببيضة في كل فتحة، وغطي على نار هادية لحد البيض ما يستوي.",
+      "رش البقدونس وقسمها ٤ حصص، كل حصة فيها بيضتين وربع الصلصة."
+    ],
+    "youtube_video_id": null,
+    "portions": [
+      {
+        "name_ar": "طبق",
+        "weight_g": 300,
+        "is_default": true,
+        "basis": "Planning serving: 4 equal servings from the estimated 1200 g finished batch; not a measured Egyptian population portion."
+      }
+    ],
+    "yield_note": "Four 300 g servings each with two eggs. About 1443 g starting ingredients reduce to 1200 g through approximately 243 g evaporation, mainly from tomato. All oil retained; egg weights exclude shells. Equal partitioning of eggs and sauce is needed for reported portion protein. Estimated edible finished weight, not measured; weigh the cooked batch to refine the estimate. Water and salt are omitted from nutrient ingredients; their retained mass is included in yield. Side bread/rice is excluded unless listed.",
+    "origin": "seed",
+    "origin_note": "Home version adapted and compared from https://amiraspantry.com/shakshuka/ . Adapted the four-person tomato/pepper/egg method to two eggs per person, 650 g tomato and 35 g oil. No cheese garnish; egg allocation is a household adaptation. Weights in grams are this batch's explicit household conversions/adaptations, not claimed source measurements. Nutrition is calculated only from the linked foods and finished weight; no website calorie panel is used. Ingredient proxies are nutrition-only mappings identified in ingredient notes; cook with the named actual ingredient. Dukkah, where present, approximates missing dry spices and is not a prescribed nut addition. ",
+    "confidence": "medium",
+    "review_flags": [
+      "quantities_vary_by_household",
+      "yield_estimated",
+      "ingredient_proxy"
+    ],
+    "source_file": "recipes-1-egyptian.json"
+  },
+  {
+    "slug": "sayadeya-fish-onion-rice-homemade",
+    "name_ar": "صيادية سمك ورز بالبصل",
+    "name_en": "Egyptian fish sayadeya with browned-onion rice",
+    "aliases_ar": [
+      "صيادية",
+      "رز صيادية بالسمك"
+    ],
+    "aliases_en": [],
+    "description_ar": "سمك فيليه مع رز مصري بالبصل المحمر. السمك بيتشوح في زيت محسوب ومن غير تغطية دقيق أو قلي غزير.",
+    "meal_tags": [
+      "lunch",
+      "dinner"
+    ],
+    "finished_weight_g": 2100,
+    "prep_minutes": 25,
+    "cook_minutes": 45,
+    "ingredients": [
+      {
+        "food_slug": "tilapia-raw",
+        "weight_g": 900,
+        "note_ar": "فيليه بلطي ني صافي من غير شوك أو جلد"
+      },
+      {
+        "food_slug": "rice-white-short-grain-dry",
+        "weight_g": 350,
+        "note_ar": "رز مصري ناشف؛ الوزن قبل الغسيل والنقع"
+      },
+      {
+        "food_slug": "onion-raw",
+        "weight_g": 500,
+        "note_ar": "وزن بعد التقشير"
+      },
+      {
+        "food_slug": "garlic-raw",
+        "weight_g": 20,
+        "note_ar": "توم مقشر"
+      },
+      {
+        "food_slug": "sunflower-oil",
+        "weight_g": 60,
+        "note_ar": "الزيت اللي داخل في الأكل فعلا"
+      },
+      {
+        "food_slug": "lemon-juice",
+        "weight_g": 40
+      },
+      {
+        "food_slug": "dukkah-dry",
+        "weight_g": 5,
+        "note_ar": "كمون وبهارات سمك مطحونة؛ الدقة بديل لحساب القيمة الغذائية بس، استخدم التابل المكتوب"
+      }
+    ],
+    "steps_ar": [
+      "تبل الفيليه بالليمون والكمون والملح، وشوحه في ٢٠ جم زيت وارفعه على طبق.",
+      "في نفس الحلة حمر البصل في باقي الزيت على الهادي لحد ما يبقى بني من غير حرق.",
+      "ضيف التوم والرز وقلب، وبعدها حوالي ٨٠٠ مل مية سخنة والملح.",
+      "رجع السمك وعصارته فوق الرز، وغطي على نار هادية لحد الاتنين ما يستووا.",
+      "قسم السمك والرز بالتساوي على ٦ أطباق."
+    ],
+    "youtube_video_id": null,
+    "portions": [
+      {
+        "name_ar": "طبق",
+        "weight_g": 350,
+        "is_default": true,
+        "basis": "Planning serving: 6 equal servings from the estimated 2100 g finished batch; not a measured Egyptian population portion."
+      }
+    ],
+    "yield_note": "Six 350 g complete plates: approximately 700 g cooked fish, 1000 g hydrated rice and 400 g browned onion/garlic/lemon/oil = 2100 g. Add 800 ml water; total input 2675 g including water loses about 575 g moisture. All 60 g sauté oil remains in the covered rice dish, including oil and juices from searing fish. No deep frying and no extra crispy-onion topping. Estimated edible finished weight, not measured; weigh the cooked batch to refine the estimate. Water and salt are omitted from nutrient ingredients; their retained mass is included in yield. Side bread/rice is excluded unless listed.",
+    "origin": "seed",
+    "origin_note": "Home version adapted and compared from https://www.supermama.me/posts/أرز-صيادية-بقطع-السمك ; https://ouklat.com/صيادية-السمك-بالرز/ . Compared fish-on-rice and onion-browned rice methods; selected local short-grain rice, no pine nuts and no separately deep-fried onion garnish. Weights in grams are this batch's explicit household conversions/adaptations, not claimed source measurements. Nutrition is calculated only from the linked foods and finished weight; no website calorie panel is used. Ingredient proxies are nutrition-only mappings identified in ingredient notes; cook with the named actual ingredient. Dukkah, where present, approximates missing dry spices and is not a prescribed nut addition. ",
+    "confidence": "medium",
+    "review_flags": [
+      "quantities_vary_by_household",
+      "yield_estimated",
+      "ingredient_proxy"
+    ],
+    "source_file": "recipes-1-egyptian.json"
+  },
+  {
+    "slug": "tagen-orzo-beef-homemade",
+    "name_ar": "طاجن لسان عصفور باللحمة",
+    "name_en": "Egyptian orzo and beef casserole",
+    "aliases_ar": [
+      "لسان عصفور باللحمة",
+      "طاجن لسان عصفور"
+    ],
+    "aliases_en": [],
+    "description_ar": "لسان عصفور متحمر في السمنة مع لحمة وطماطم، مكمل سواه في الفرن.",
+    "meal_tags": [
+      "lunch",
+      "dinner"
+    ],
+    "finished_weight_g": 2100,
+    "prep_minutes": 20,
+    "cook_minutes": 120,
+    "ingredients": [
+      {
+        "food_slug": "pasta-dry",
+        "weight_g": 350,
+        "note_ar": "بديل غذائي للسان العصفور الناشف؛ استخدم لسان عصفور فعليا بنفس الوزن"
+      },
+      {
+        "food_slug": "beef-lean-raw",
+        "weight_g": 650,
+        "note_ar": "لحم بقري ني مكعبات صافي من غير عضم أو دهن ظاهر"
+      },
+      {
+        "food_slug": "onion-raw",
+        "weight_g": 180,
+        "note_ar": "وزن بعد التقشير"
+      },
+      {
+        "food_slug": "tomato",
+        "weight_g": 400,
+        "note_ar": "طماطم مضروبة أو مفرومة"
+      },
+      {
+        "food_slug": "tomato-paste-canned",
+        "weight_g": 35,
+        "note_ar": "صلصة طماطم مركزة"
+      },
+      {
+        "food_slug": "bell-pepper-green-raw",
+        "weight_g": 120
+      },
+      {
+        "food_slug": "ghee",
+        "weight_g": 40,
+        "note_ar": "سمنة داخلة في الأكل كله"
+      }
+    ],
+    "steps_ar": [
+      "شوح اللحمة والبصل في ٢٠ جم سمنة، وضيف حوالي ٩٠٠ مل مية وسيب اللحمة تقرب تستوي.",
+      "ضيف الطماطم والصلصة والفلفل والملح للحمة.",
+      "حمر لسان العصفور في باقي السمنة وقلبه مع اللحمة والصوص في طاجن.",
+      "اظبط السائل لحوالي ٧٥٠ مل حوالين اللحمة قبل إضافة لسان العصفور، وغطي الطاجن.",
+      "دخل فرن ١٨٠ درجة حوالي ٣٠ دقيقة لحد لسان العصفور ما يستوي ويتشرب، وسيبه يرتاح."
+    ],
+    "youtube_video_id": null,
+    "portions": [
+      {
+        "name_ar": "طبق",
+        "weight_g": 350,
+        "is_default": true,
+        "basis": "Planning serving: 6 equal servings from the estimated 2100 g finished batch; not a measured Egyptian population portion."
+      }
+    ],
+    "yield_note": "Six 350 g portions. Cooked orzo about 900 g, beef about 490 g and cooked vegetables/sauce/ghee about 710 g = 2100 g. Dry pasta nutrition is used for the missing orzo shape; both are dry wheat pasta. Broth is generated from listed meat, retained, and not counted a second time. Around 750 ml liquid is present before oven cooking; all 40 g ghee is served. Estimated edible finished weight, not measured; weigh the cooked batch to refine the estimate. Water and salt are omitted from nutrient ingredients; their retained mass is included in yield. Side bread/rice is excluded unless listed.",
+    "origin": "seed",
+    "origin_note": "Home version adapted and compared from https://www.elbalad.news/6756978 ; https://www.elbalad.news/6638760 . Compared home casseroles attributed to chefs Thoraya Al-Alfi and Ghada Gamil; scaled below the 500 g dry-orzo pot and explicitly counted 40 g ghee. Weights in grams are this batch's explicit household conversions/adaptations, not claimed source measurements. Nutrition is calculated only from the linked foods and finished weight; no website calorie panel is used. Ingredient proxies are nutrition-only mappings identified in ingredient notes; cook with the named actual ingredient. Dukkah, where present, approximates missing dry spices and is not a prescribed nut addition. ",
+    "confidence": "medium",
+    "review_flags": [
+      "quantities_vary_by_household",
+      "yield_estimated",
+      "ingredient_proxy"
+    ],
+    "source_file": "recipes-1-egyptian.json"
+  },
+  {
+    "slug": "shorbet-adas-homemade",
+    "name_ar": "شوربة عدس أصفر",
+    "name_en": "Egyptian yellow lentil soup",
+    "aliases_ar": [
+      "شوربة عدس",
+      "عدس اصفر"
+    ],
+    "aliases_en": [],
+    "description_ar": "شوربة عدس بالخضار والتوم والكمون، مضروبة ناعم وبزيت محسوب.",
+    "meal_tags": [
+      "lunch",
+      "dinner"
+    ],
+    "finished_weight_g": 2100,
+    "prep_minutes": 15,
+    "cook_minutes": 40,
+    "ingredients": [
+      {
+        "food_slug": "lentils-yellow-dry",
+        "weight_g": 300
+      },
+      {
+        "food_slug": "onion-raw",
+        "weight_g": 180,
+        "note_ar": "وزن بعد التقشير"
+      },
+      {
+        "food_slug": "carrot",
+        "weight_g": 200
+      },
+      {
+        "food_slug": "tomato",
+        "weight_g": 250,
+        "note_ar": "طماطم مضروبة أو مفرومة"
+      },
+      {
+        "food_slug": "garlic-raw",
+        "weight_g": 20,
+        "note_ar": "توم مقشر"
+      },
+      {
+        "food_slug": "sunflower-oil",
+        "weight_g": 30,
+        "note_ar": "الزيت اللي داخل في الأكل فعلا"
+      },
+      {
+        "food_slug": "lemon-juice",
+        "weight_g": 40
+      },
+      {
+        "food_slug": "dukkah-dry",
+        "weight_g": 4,
+        "note_ar": "كمون مطحون؛ الدقة بديل لحساب القيمة الغذائية بس، استخدم التابل المكتوب"
+      }
+    ],
+    "steps_ar": [
+      "اغسل العدس وحطه مع الجزر والطماطم ونص البصل وحوالي ١٥٠٠ مل مية.",
+      "خليه يغلي وبعدها وطي لحد العدس والخضار ما يطروا.",
+      "اضرب الشوربة بالخلاط اليدوي وظبط القوام بمية سخنة لو احتاجت.",
+      "شوح باقي البصل والتوم في الزيت، وضيفهم مع الكمون والملح للشوربة وخليها تغلي غلوة.",
+      "ضيف الليمون وقسمها على ٦ أطباق، من غير عيش محمر إضافي."
+    ],
+    "youtube_video_id": null,
+    "portions": [
+      {
+        "name_ar": "طبق",
+        "weight_g": 350,
+        "is_default": true,
+        "basis": "Planning serving: 6 equal servings from the estimated 2100 g finished batch; not a measured Egyptian population portion."
+      }
+    ],
+    "yield_note": "Six 350 g bowls. Starting 1024 g food ingredients plus 1500 ml water minus about 424 g evaporation = 2100 g. Lentils hydrate within the retained soup liquid, with no separate rice/pasta and no discarded cooking water. All 30 g finishing oil included. Estimated edible finished weight, not measured; weigh the cooked batch to refine the estimate. Water and salt are omitted from nutrient ingredients; their retained mass is included in yield. Side bread/rice is excluded unless listed.",
+    "origin": "seed",
+    "origin_note": "Home version adapted and compared from https://amiraspantry.com/red-lentil-soup-revisited/ ; https://turmat.no/oppskrifter/vegetar/shorbet-adas-egyptisk-linsesuppe . Compared Amira’s 200 g lentil pot and Hanan Abdelrahman’s Egyptian family vegetable soup. Selected yellow split lentils, omitted potato and used a measured onion-oil finish. Weights in grams are this batch's explicit household conversions/adaptations, not claimed source measurements. Nutrition is calculated only from the linked foods and finished weight; no website calorie panel is used. Ingredient proxies are nutrition-only mappings identified in ingredient notes; cook with the named actual ingredient. Dukkah, where present, approximates missing dry spices and is not a prescribed nut addition. ",
+    "confidence": "medium",
+    "review_flags": [
+      "quantities_vary_by_household",
+      "yield_estimated",
+      "ingredient_proxy"
+    ],
+    "source_file": "recipes-1-egyptian.json"
+  },
+  {
+    "slug": "kebda-eskandarani-homemade",
+    "name_ar": "كبدة اسكندراني بيتي",
+    "name_en": "Home-style Alexandrian beef liver",
+    "aliases_ar": [
+      "كبدة اسكندراني",
+      "كبدة بالتوم والفلفل"
+    ],
+    "aliases_en": [],
+    "description_ar": "شرايح كبدة بقري بالتوم والفلفل والخل والليمون، من غير عيش أو طحينة.",
+    "meal_tags": [
+      "lunch",
+      "dinner"
+    ],
+    "finished_weight_g": 900,
+    "prep_minutes": 20,
+    "cook_minutes": 15,
+    "ingredients": [
+      {
+        "food_slug": "beef-liver-raw",
+        "weight_g": 700,
+        "note_ar": "كبدة ني صافية مقطعة شرايح"
+      },
+      {
+        "food_slug": "bell-pepper-green-raw",
+        "weight_g": 250
+      },
+      {
+        "food_slug": "hot-pepper-green-raw",
+        "weight_g": 25
+      },
+      {
+        "food_slug": "garlic-raw",
+        "weight_g": 35,
+        "note_ar": "توم مقشر"
+      },
+      {
+        "food_slug": "sunflower-oil",
+        "weight_g": 45,
+        "note_ar": "الزيت اللي داخل في الأكل فعلا"
+      },
+      {
+        "food_slug": "vinegar",
+        "weight_g": 30
+      },
+      {
+        "food_slug": "lemon-juice",
+        "weight_g": 30
+      },
+      {
+        "food_slug": "dukkah-dry",
+        "weight_g": 4,
+        "note_ar": "كمون وكزبرة ناشفة مطحونين؛ الدقة بديل لحساب القيمة الغذائية بس، استخدم التابل المكتوب"
+      }
+    ],
+    "steps_ar": [
+      "قطع الكبدة شرايح رفيعة وقلبها مع التوم والكمون والكزبرة والخل والليمون.",
+      "سخن الزيت في طاسة واسعة وانزل بالكبدة على دفعات عشان تتشوح كويس.",
+      "ضيف الفلفل الحلو والحار والملح وقلب لحد الكبدة ما تستوي.",
+      "رجع أي دفعة وعصارتها للطاسة وقلب الكل؛ قدمها بصوصها من غير تصفية الزيت."
+    ],
+    "youtube_video_id": null,
+    "portions": [
+      {
+        "name_ar": "طبق",
+        "weight_g": 180,
+        "is_default": true,
+        "basis": "Planning serving: 5 equal servings from the estimated 900 g finished batch; not a measured Egyptian population portion."
+      }
+    ],
+    "yield_note": "Five 180 g plates. Starting 1119 g ingredients reduce to about 900 g through roughly 219 g evaporation. Approximate cooked liver 525 g with pepper/garlic/retained dressing/oil 375 g. All 45 g shallow-sauté oil and sauce are eaten; this is not a drained deep-fried recipe. Bread/tahini are excluded. Estimated edible finished weight, not measured; weigh the cooked batch to refine the estimate. Water and salt are omitted from nutrient ingredients; their retained mass is included in yield. Side bread/rice is excluded unless listed.",
+    "origin": "seed",
+    "origin_note": "Home version adapted and compared from https://gate.ahram.org.eg/News/4361618.aspx ; https://www.supermama.me/posts/الكبدة-الإسكندراني-على-طريقة-العربيات . Compared Ghada Gamil’s chef recipe with a home cart-style version. Kept beef liver, peppers, garlic and acid, with fixed oil rather than restaurant frying quantities. Weights in grams are this batch's explicit household conversions/adaptations, not claimed source measurements. Nutrition is calculated only from the linked foods and finished weight; no website calorie panel is used. Ingredient proxies are nutrition-only mappings identified in ingredient notes; cook with the named actual ingredient. Dukkah, where present, approximates missing dry spices and is not a prescribed nut addition. ",
+    "confidence": "medium",
+    "review_flags": [
+      "quantities_vary_by_household",
+      "yield_estimated",
+      "ingredient_proxy"
+    ],
+    "source_file": "recipes-1-egyptian.json"
+  },
+  {
+    "slug": "roz-bel-laban-homemade",
+    "name_ar": "رز بلبن بيتي",
+    "name_en": "Egyptian homemade rice pudding",
+    "aliases_ar": [
+      "أرز بلبن",
+      "رز بحليب"
+    ],
+    "aliases_en": [],
+    "description_ar": "رز بلبن كامل الدسم وسكر وقشطة، من غير مكسرات أو آيس كريم على الوش.",
+    "meal_tags": [
+      "snack"
+    ],
+    "finished_weight_g": 1200,
+    "prep_minutes": 10,
+    "cook_minutes": 45,
+    "ingredients": [
+      {
+        "food_slug": "rice-white-short-grain-dry",
+        "weight_g": 90,
+        "note_ar": "رز مصري ناشف؛ الوزن قبل الغسيل والنقع"
+      },
+      {
+        "food_slug": "milk-full-fat",
+        "weight_g": 1000
+      },
+      {
+        "food_slug": "sugar-white",
+        "weight_g": 100
+      },
+      {
+        "food_slug": "corn-starch-dry",
+        "weight_g": 15
+      },
+      {
+        "food_slug": "cream-heavy",
+        "weight_g": 40,
+        "note_ar": "بديل غذائي للقشطة البلدي؛ الدسم بيختلف"
+      }
+    ],
+    "steps_ar": [
+      "اسلق الرز في حوالي ٢٥٠ مل مية على الهادي لحد ما يطرى.",
+      "ضيف معظم اللبن والسكر وقلب لحد الخليط ما يسخن ويتقل شوية.",
+      "دوب النشا في باقي اللبن البارد، وضيفه بالتدريج مع التقليب لحد ما يمسك.",
+      "اطفي وضيف القشطة، وقسمه على ٦ أطباق صغيرة وسيبه يبرد."
+    ],
+    "youtube_video_id": null,
+    "portions": [
+      {
+        "name_ar": "طبق صغير",
+        "weight_g": 200,
+        "is_default": true,
+        "basis": "Planning serving: 6 equal servings from the estimated 1200 g finished batch; not a measured Egyptian population portion."
+      }
+    ],
+    "yield_note": "Six 200 g dessert bowls. Starting 1245 g ingredients plus 250 ml water minus about 295 g evaporation = 1200 g. Rice absorbs water and milk within the pot, without adding its cooked mass again. Sugar, starch and cream all retained; no unlisted toppings. Estimated edible finished weight, not measured; weigh the cooked batch to refine the estimate. Water and salt are omitted from nutrient ingredients; their retained mass is included in yield. Side bread/rice is excluded unless listed.",
+    "origin": "seed",
+    "origin_note": "Home version adapted and compared from https://amiraspantry.com/rice-p-easy-creamy-rice-pudding/ ; https://amiraspantry.com/egyptian-dessert-omm-ali-om-ali-or-alis-mom/ . Rice pudding source uses starch and cream; this smaller six-bowl adaptation has explicitly weighed sugar instead of sugar to taste. Compared cream/milk choices with the Egyptian milk dessert source. Weights in grams are this batch's explicit household conversions/adaptations, not claimed source measurements. Nutrition is calculated only from the linked foods and finished weight; no website calorie panel is used. Ingredient proxies are nutrition-only mappings identified in ingredient notes; cook with the named actual ingredient. Dukkah, where present, approximates missing dry spices and is not a prescribed nut addition. ",
+    "confidence": "medium",
+    "review_flags": [
+      "quantities_vary_by_household",
+      "yield_estimated",
+      "ingredient_proxy",
+      "cream_fat_varies"
+    ],
+    "source_file": "recipes-1-egyptian.json"
+  },
+  {
+    "slug": "om-ali-croissant-homemade",
+    "name_ar": "أم علي بالكرواسون",
+    "name_en": "Homemade Om Ali with croissants",
+    "aliases_ar": [
+      "أم علي",
+      "ام علي"
+    ],
+    "aliases_en": [],
+    "description_ar": "أم علي بيتية بكرواسون سادة محمص ولبن وقشطة ومكسرات وزبيب، من غير عجينة جاهزة إضافية.",
+    "meal_tags": [
+      "snack"
+    ],
+    "finished_weight_g": 1500,
+    "prep_minutes": 15,
+    "cook_minutes": 25,
+    "ingredients": [
+      {
+        "food_slug": "croissant-plain",
+        "weight_g": 250,
+        "note_ar": "كرواسون سادة جاهز مخبوز قبل التحميص"
+      },
+      {
+        "food_slug": "milk-full-fat",
+        "weight_g": 1000
+      },
+      {
+        "food_slug": "sugar-white",
+        "weight_g": 70
+      },
+      {
+        "food_slug": "cream-heavy",
+        "weight_g": 100,
+        "note_ar": "بديل غذائي للقشطة البلدي"
+      },
+      {
+        "food_slug": "almonds",
+        "weight_g": 30
+      },
+      {
+        "food_slug": "hazelnuts",
+        "weight_g": 30
+      },
+      {
+        "food_slug": "raisins",
+        "weight_g": 40
+      },
+      {
+        "food_slug": "coconut-dried",
+        "weight_g": 20
+      }
+    ],
+    "steps_ar": [
+      "قطع الكرواسون وحمصه في الفرن من غير زيت لحد ما يقرمش.",
+      "سخن اللبن ودوب فيه السكر.",
+      "حط الكرواسون والمكسرات والزبيب وجوز الهند في طاجن، وصب اللبن وسيبه يتشرب شوية.",
+      "وزع القشطة على الوش ودخل فرن ٢٠٠ درجة حوالي ١٥–٢٠ دقيقة لحد ما الوش يحمر.",
+      "سيبها تهدى شوية وقسمها ٦ أطباق مع توزيع المكسرات بالتساوي."
+    ],
+    "youtube_video_id": null,
+    "portions": [
+      {
+        "name_ar": "طبق صغير",
+        "weight_g": 250,
+        "is_default": true,
+        "basis": "Planning serving: 6 equal servings from the estimated 1500 g finished batch; not a measured Egyptian population portion."
+      }
+    ],
+    "yield_note": "Six 250 g desserts. Starting ingredients 1540 g become 1500 g through about 40 g net evaporation during toasting and brief baking. Milk absorption softens pastry but does not add a second hydration mass. All milk is poured into the dish, not served as an uncounted side jug. No extra butter/ghee/oil: croissant fat and 100 g cream are already counted. Estimated edible finished weight, not measured; weigh the cooked batch to refine the estimate. Water and salt are omitted from nutrient ingredients; their retained mass is included in yield. Side bread/rice is excluded unless listed.",
+    "origin": "seed",
+    "origin_note": "Home version adapted and compared from https://amiraspantry.com/egyptian-dessert-omm-ali-om-ali-or-alis-mom/ ; https://amiraspantry.com/rice-p-easy-creamy-rice-pudding/ . Om Ali source explicitly permits toasted croissants instead of puff pastry. Selected that actual variant because puff pastry/Om Ali flakes are absent; cream, nuts, raisins and sugar are explicitly weighed, compared with rice-pudding dairy choices. Weights in grams are this batch's explicit household conversions/adaptations, not claimed source measurements. Nutrition is calculated only from the linked foods and finished weight; no website calorie panel is used. Ingredient proxies are nutrition-only mappings identified in ingredient notes; cook with the named actual ingredient. Dukkah, where present, approximates missing dry spices and is not a prescribed nut addition. ",
+    "confidence": "medium",
+    "review_flags": [
+      "quantities_vary_by_household",
+      "yield_estimated",
+      "ingredient_proxy",
+      "cream_fat_varies"
+    ],
+    "source_file": "recipes-1-egyptian.json"
+  },
+  {
+    "slug": "protein-oats-banana",
+    "name_ar": "شوفان بالبروتين والموز",
+    "name_en": "Protein oats with milk and banana",
+    "aliases_ar": [
+      "شوفان بالواي"
+    ],
+    "aliases_en": [],
+    "description_ar": "شوفان بالبروتين والموز بمقادير موزونة؛ الحصة بولة وزنها 400 جرام.",
+    "meal_tags": [
+      "breakfast",
+      "post_workout"
+    ],
+    "finished_weight_g": 400,
+    "prep_minutes": 5,
+    "cook_minutes": 7,
+    "ingredients": [
+      {
+        "food_slug": "oats-dry",
+        "weight_g": 50,
+        "note_ar": "وزن جاف"
+      },
+      {
+        "food_slug": "milk-low-fat",
+        "weight_g": 200,
+        "note_ar": "لبن قليل الدسم موزون بالجرام"
+      },
+      {
+        "food_slug": "whey-protein",
+        "weight_g": 30,
+        "note_ar": "بودرة جافة؛ وزنها بالميزان"
+      },
+      {
+        "food_slug": "banana",
+        "weight_g": 100,
+        "note_ar": "من غير القشر"
+      }
+    ],
+    "steps_ar": [
+      "حط الشوفان واللبن و٥٠ جرام مية في حلة صغيرة.",
+      "قلب على نار هادية من ٥ لـ٧ دقايق لحد ما يتقل.",
+      "اطفي النار وسيبه يهدى شوية، وبعدين قلب الواي كويس.",
+      "قطع الموز فوقه وحط الكمية كلها في بولة."
+    ],
+    "youtube_video_id": null,
+    "portions": [
+      {
+        "name_ar": "بولة",
+        "weight_g": 400,
+        "is_default": true,
+        "basis": "Planning serving: finished batch divided equally into 1 serving(s), 400 g each. Not a measured Egyptian population average."
+      }
+    ],
+    "yield_note": "Makes 1 serving(s): 1 x 400 g (بولة); finished batch 400 g. Estimated, not kitchen measured. 380 g ingredients plus 50 g water, less about 30 g evaporation = 400 g. Oat hydration does not create additional mass.",
+    "origin": "seed",
+    "origin_note": "Recipe quantities and method checked against https://www.mindsetfit.co.uk/protein-recipes/protein-porridge-recipe/ (accessed 2026-10-31). The source uses a 50 g oats base and adds protein after cooking. Milk, banana, whey and water grams here are explicit single-bowl planning amounts. These are planning adaptations, not a verified prescription from an Egyptian coach. Nutrition is calculated only from the listed out/foods-*.json ingredients and estimated finished weight; source-page nutrition is not copied. All edible oil and sauces listed are counted as eaten; no unlisted caloric garnish.",
+    "confidence": "low",
+    "review_flags": [
+      "quantities_vary_by_household",
+      "yield_estimated",
+      "portion_assumed",
+      "brand_varies"
+    ],
+    "source_file": "recipes-2-gym.json"
+  },
+  {
+    "slug": "overnight-oats-yogurt",
+    "name_ar": "شوفان من بالليل بالزبادي",
+    "name_en": "Overnight oats with Greek yogurt and banana",
+    "aliases_ar": [
+      "أوفرنايت أوتس"
+    ],
+    "aliases_en": [],
+    "description_ar": "شوفان من بالليل بالزبادي بمقادير موزونة؛ الحصة برطمان وزنها 380 جرام.",
+    "meal_tags": [
+      "breakfast"
+    ],
+    "finished_weight_g": 380,
+    "prep_minutes": 5,
+    "cook_minutes": 0,
+    "ingredients": [
+      {
+        "food_slug": "oats-dry",
+        "weight_g": 50,
+        "note_ar": "شوفان جاف"
+      },
+      {
+        "food_slug": "milk-low-fat",
+        "weight_g": 150,
+        "note_ar": "لبن موزون بالجرام"
+      },
+      {
+        "food_slug": "yogurt-greek",
+        "weight_g": 100,
+        "note_ar": "يوناني سادة كامل الدسم زي بيانات الطعام"
+      },
+      {
+        "food_slug": "banana",
+        "weight_g": 80,
+        "note_ar": "وزن من غير القشر"
+      }
+    ],
+    "steps_ar": [
+      "قلب الشوفان مع اللبن والزبادي في برطمان.",
+      "غطيه وحطه في التلاجة حوالي ٨ ساعات.",
+      "قطع الموز وقلبه مع الشوفان قبل الأكل؛ الحصة البرطمان كله."
+    ],
+    "youtube_video_id": null,
+    "portions": [
+      {
+        "name_ar": "برطمان",
+        "weight_g": 380,
+        "is_default": true,
+        "basis": "Planning serving: finished batch divided equally into 1 serving(s), 380 g each. Not a measured Egyptian population average."
+      }
+    ],
+    "yield_note": "Makes 1 serving(s): 1 x 380 g (برطمان); finished batch 380 g. Estimated, not kitchen measured. 50 + 150 + 100 + 80 = 380 g; covered cold soaking retains the milk with negligible evaporation. Prep excludes 8 hours chilling.",
+    "origin": "seed",
+    "origin_note": "Recipe quantities and method checked against https://www.bbcgoodfood.com/recipes/banana-overnight-oats (accessed 2026-10-31). Retains the source per-serving 50 g oats and approximately 150 ml milk pattern, but uses 150 g weighed milk, more Greek yogurt, less banana, and no syrup or nut butter. No added water. These are planning adaptations, not a verified prescription from an Egyptian coach. Nutrition is calculated only from the listed out/foods-*.json ingredients and estimated finished weight; source-page nutrition is not copied. All edible oil and sauces listed are counted as eaten; no unlisted caloric garnish.",
+    "confidence": "medium",
+    "review_flags": [
+      "quantities_vary_by_household",
+      "yield_estimated",
+      "portion_assumed"
+    ],
+    "source_file": "recipes-2-gym.json"
+  },
+  {
+    "slug": "oats-dates-walnuts",
+    "name_ar": "شوفان بالبلح وعين الجمل",
+    "name_en": "Oats with dates and walnuts",
+    "aliases_ar": [
+      "شوفان بالتمر والمكسرات"
+    ],
+    "aliases_en": [],
+    "description_ar": "شوفان بالبلح وعين الجمل بمقادير موزونة؛ الحصة بولة وزنها 325 جرام.",
+    "meal_tags": [
+      "breakfast",
+      "pre_workout"
+    ],
+    "finished_weight_g": 325,
+    "prep_minutes": 5,
+    "cook_minutes": 8,
+    "ingredients": [
+      {
+        "food_slug": "oats-dry",
+        "weight_g": 50
+      },
+      {
+        "food_slug": "milk-low-fat",
+        "weight_g": 250,
+        "note_ar": "لبن موزون بالجرام"
+      },
+      {
+        "food_slug": "dates",
+        "weight_g": 30,
+        "note_ar": "بلح ناشف من غير النوى"
+      },
+      {
+        "food_slug": "walnuts",
+        "weight_g": 15,
+        "note_ar": "لب عين جمل من غير القشر"
+      }
+    ],
+    "steps_ar": [
+      "قطع البلح حتت صغيرة بعد ما تشيل النوى.",
+      "سخن اللبن مع الشوفان، وضيف البلح وقلب على نار هادية حوالي ٨ دقايق.",
+      "حط الشوفان في بولة وانثر عين الجمل المقطع فوقه."
+    ],
+    "youtube_video_id": null,
+    "portions": [
+      {
+        "name_ar": "بولة",
+        "weight_g": 325,
+        "is_default": true,
+        "basis": "Planning serving: finished batch divided equally into 1 serving(s), 325 g each. Not a measured Egyptian population average."
+      }
+    ],
+    "yield_note": "Makes 1 serving(s): 1 x 325 g (بولة); finished batch 325 g. Estimated, not kitchen measured. 345 g input, less about 20 g water evaporation = 325 g, including all dates and nuts.",
+    "origin": "seed",
+    "origin_note": "Recipe quantities and method checked against https://www.heartuk.org.uk/tasty-recipes/recipe-detail/154-date-and-walnut-porridge (accessed 2026-10-31). Source serves two with 80 g oats plus 20 g oat bran and 560 ml milk, dates and walnuts. Uses its allowed all-oats variant at 50 g per serving, 250 g milk, weighed dates/nuts, and omits honey. These are planning adaptations, not a verified prescription from an Egyptian coach. Nutrition is calculated only from the listed out/foods-*.json ingredients and estimated finished weight; source-page nutrition is not copied. All edible oil and sauces listed are counted as eaten; no unlisted caloric garnish.",
+    "confidence": "medium",
+    "review_flags": [
+      "quantities_vary_by_household",
+      "yield_estimated",
+      "portion_assumed"
+    ],
+    "source_file": "recipes-2-gym.json"
+  },
+  {
+    "slug": "egg-white-vegetable-omelette",
+    "name_ar": "أومليت بياض بالخضار",
+    "name_en": "Egg-white vegetable omelette",
+    "aliases_ar": [
+      "بياض بيض بالخضار"
+    ],
+    "aliases_en": [],
+    "description_ar": "أومليت بياض بالخضار بمقادير موزونة؛ الحصة طبق أومليت وزنها 300 جرام.",
+    "meal_tags": [
+      "breakfast",
+      "dinner"
+    ],
+    "finished_weight_g": 300,
+    "prep_minutes": 8,
+    "cook_minutes": 8,
+    "ingredients": [
+      {
+        "food_slug": "egg-white",
+        "weight_g": 200,
+        "note_ar": "بياض ني موزون؛ حوالي ٦ بياضات"
+      },
+      {
+        "food_slug": "spinach-raw",
+        "weight_g": 40
+      },
+      {
+        "food_slug": "bell-pepper-green-raw",
+        "weight_g": 60
+      },
+      {
+        "food_slug": "tomato",
+        "weight_g": 60
+      },
+      {
+        "food_slug": "olive-oil",
+        "weight_g": 5,
+        "note_ar": "الكمية كلها محسوبة"
+      }
+    ],
+    "steps_ar": [
+      "قطع الفلفل والطماطم والسبانخ حتت صغيرة.",
+      "سخن الزيت في طاسة مش بتلزق وشوح الخضار ٣ دقايق.",
+      "صب البياض على الخضار وغطيه على نار هادية لحد ما يتماسك كله.",
+      "اطوي الأومليت وقدمه في طبق."
+    ],
+    "youtube_video_id": null,
+    "portions": [
+      {
+        "name_ar": "طبق أومليت",
+        "weight_g": 300,
+        "is_default": true,
+        "basis": "Planning serving: finished batch divided equally into 1 serving(s), 300 g each. Not a measured Egyptian population average."
+      }
+    ],
+    "yield_note": "Makes 1 serving(s): 1 x 300 g (طبق أومليت); finished batch 300 g. Estimated, not kitchen measured. 365 g input, less about 65 g vegetable/egg water lost during cooking = 300 g. No yolks included.",
+    "origin": "seed",
+    "origin_note": "Recipe quantities and method checked against https://ebccp.cancercontrol.cancer.gov/viewProduct.do?productId=1414789&viewMode=product (accessed 2026-10-31). Western egg-white omelet source checks the vegetable-saute-then-egg method. Exact 200 g whites, vegetable mix and 5 g oil are our assumed one-plate version. These are planning adaptations, not a verified prescription from an Egyptian coach. Nutrition is calculated only from the listed out/foods-*.json ingredients and estimated finished weight; source-page nutrition is not copied. All edible oil and sauces listed are counted as eaten; no unlisted caloric garnish.",
+    "confidence": "low",
+    "review_flags": [
+      "quantities_vary_by_household",
+      "yield_estimated",
+      "portion_assumed"
+    ],
+    "source_file": "recipes-2-gym.json"
+  },
+  {
+    "slug": "scrambled-eggs-cheese",
+    "name_ar": "بيض مخفوق بالجبنة",
+    "name_en": "Scrambled eggs with cheese",
+    "aliases_ar": [
+      "سكرامبل بالجبنة"
+    ],
+    "aliases_en": [],
+    "description_ar": "بيض مخفوق بالجبنة بمقادير موزونة؛ الحصة طبق وزنها 140 جرام.",
+    "meal_tags": [
+      "breakfast"
+    ],
+    "finished_weight_g": 140,
+    "prep_minutes": 5,
+    "cook_minutes": 6,
+    "ingredients": [
+      {
+        "food_slug": "egg-raw",
+        "weight_g": 100,
+        "note_ar": "بيضتين من غير القشر"
+      },
+      {
+        "food_slug": "milk-low-fat",
+        "weight_g": 30
+      },
+      {
+        "food_slug": "mozzarella-cheese",
+        "weight_g": 25
+      },
+      {
+        "food_slug": "olive-oil",
+        "weight_g": 3
+      }
+    ],
+    "steps_ar": [
+      "اضرب البيض مع اللبن بالشوكة.",
+      "سخن الزيت في طاسة على نار هادية وصب البيض.",
+      "قلب براحة لحد ما يبدأ يتماسك، وضيف الجبنة المبشورة.",
+      "كمل تقليب لحد ما البيض يستوي والجبنة تسيح وقدمه."
+    ],
+    "youtube_video_id": null,
+    "portions": [
+      {
+        "name_ar": "طبق",
+        "weight_g": 140,
+        "is_default": true,
+        "basis": "Planning serving: finished batch divided equally into 1 serving(s), 140 g each. Not a measured Egyptian population average."
+      }
+    ],
+    "yield_note": "Makes 1 serving(s): 1 x 140 g (طبق); finished batch 140 g. Estimated, not kitchen measured. 158 g input, less approximately 18 g water during gentle cooking = 140 g. Bread is not included.",
+    "origin": "seed",
+    "origin_note": "Recipe quantities and method checked against https://www.bbcgoodfood.com/recipes/perfect-scrambled-eggs-recipe (accessed 2026-10-31). Uses the source gentle scrambling method and two-egg serving. Milk replaces cream by deliberate recipe design; 25 g mozzarella and 3 g olive oil are our measured-plan variation, not the source formula. These are planning adaptations, not a verified prescription from an Egyptian coach. Nutrition is calculated only from the listed out/foods-*.json ingredients and estimated finished weight; source-page nutrition is not copied. All edible oil and sauces listed are counted as eaten; no unlisted caloric garnish.",
+    "confidence": "low",
+    "review_flags": [
+      "quantities_vary_by_household",
+      "yield_estimated",
+      "portion_assumed"
+    ],
+    "source_file": "recipes-2-gym.json"
+  },
+  {
+    "slug": "protein-oat-pancakes",
+    "name_ar": "بان كيك شوفان بالبروتين",
+    "name_en": "Thin protein oat pancakes",
+    "aliases_ar": [
+      "بانكيك بروتين"
+    ],
+    "aliases_en": [],
+    "description_ar": "بان كيك شوفان بالبروتين بمقادير موزونة؛ الحصة طبق ٣ بان كيك وزنها 180 جرام.",
+    "meal_tags": [
+      "breakfast",
+      "post_workout"
+    ],
+    "finished_weight_g": 360,
+    "prep_minutes": 8,
+    "cook_minutes": 12,
+    "ingredients": [
+      {
+        "food_slug": "oats-dry",
+        "weight_g": 80
+      },
+      {
+        "food_slug": "egg-raw",
+        "weight_g": 150,
+        "note_ar": "حوالي ٣ بيضات من غير القشر"
+      },
+      {
+        "food_slug": "banana",
+        "weight_g": 120,
+        "note_ar": "من غير القشر"
+      },
+      {
+        "food_slug": "whey-protein",
+        "weight_g": 30
+      },
+      {
+        "food_slug": "milk-low-fat",
+        "weight_g": 40
+      },
+      {
+        "food_slug": "olive-oil",
+        "weight_g": 6
+      }
+    ],
+    "steps_ar": [
+      "اطحن الشوفان، وضيف البيض والموز واللبن والواي واضربهم لحد ما الخليط ينعم.",
+      "وزع الزيت في طاسة مش بتلزق وسخنها على نار متوسطة هادية.",
+      "صب الخليط على ٦ دواير صغيرة على دفعات، وسيب كل ناحية تتماسك قبل ما تقلبها.",
+      "كمل لحد ما البان كيك يستوي من جوه، وقسمه على طبقين كل طبق ٣ قطع."
+    ],
+    "youtube_video_id": null,
+    "portions": [
+      {
+        "name_ar": "طبق ٣ بان كيك",
+        "weight_g": 180,
+        "is_default": true,
+        "basis": "Planning serving: finished batch divided equally into 2 serving(s), 180 g each. Not a measured Egyptian population average."
+      }
+    ],
+    "yield_note": "Makes 2 serving(s): 2 x 180 g (طبق ٣ بان كيك); finished batch 360 g. Estimated, not kitchen measured. 426 g batter/oil input, less about 66 g water during pan cooking = 360 g. Makes 6 thin pancakes, two servings of 3 (180 g per stack).",
+    "origin": "seed",
+    "origin_note": "Recipe quantities and method checked against https://www.bbcgoodfood.com/recipes/protein-pancakes-with-banana (accessed 2026-10-31). Source serves two using 3 eggs, 75 g oats, banana, protein powder and milk. Rounded to 80 g oats and weighed banana, whey, milk and oil. Baking powder/cinnamon and optional toppings are omitted intentionally: these are thin, unraised pancakes. These are planning adaptations, not a verified prescription from an Egyptian coach. Nutrition is calculated only from the listed out/foods-*.json ingredients and estimated finished weight; source-page nutrition is not copied. All edible oil and sauces listed are counted as eaten; no unlisted caloric garnish.",
+    "confidence": "medium",
+    "review_flags": [
+      "quantities_vary_by_household",
+      "yield_estimated",
+      "portion_assumed",
+      "brand_varies"
+    ],
+    "source_file": "recipes-2-gym.json"
+  },
+  {
+    "slug": "greek-yogurt-fruit-honey",
+    "name_ar": "بولة زبادي يوناني بالفواكه والعسل",
+    "name_en": "Greek yogurt fruit and honey bowl",
+    "aliases_ar": [
+      "زبادي يوناني بالموز والفراولة"
+    ],
+    "aliases_en": [],
+    "description_ar": "بولة زبادي يوناني بالفواكه والعسل بمقادير موزونة؛ الحصة بولة وزنها 390 جرام.",
+    "meal_tags": [
+      "breakfast",
+      "snack"
+    ],
+    "finished_weight_g": 390,
+    "prep_minutes": 5,
+    "cook_minutes": 0,
+    "ingredients": [
+      {
+        "food_slug": "yogurt-greek",
+        "weight_g": 200,
+        "note_ar": "سادة كامل الدسم"
+      },
+      {
+        "food_slug": "banana",
+        "weight_g": 80,
+        "note_ar": "من غير القشر"
+      },
+      {
+        "food_slug": "strawberries",
+        "weight_g": 100,
+        "note_ar": "من غير العنق"
+      },
+      {
+        "food_slug": "honey",
+        "weight_g": 10
+      }
+    ],
+    "steps_ar": [
+      "اغسل الفراولة وشيل العنق وقطعها مع الموز.",
+      "حط الزبادي في بولة وضيف الفاكهة.",
+      "وزع العسل فوقهم وكل البولة كحصة واحدة."
+    ],
+    "youtube_video_id": null,
+    "portions": [
+      {
+        "name_ar": "بولة",
+        "weight_g": 390,
+        "is_default": true,
+        "basis": "Planning serving: finished batch divided equally into 1 serving(s), 390 g each. Not a measured Egyptian population average."
+      }
+    ],
+    "yield_note": "Makes 1 serving(s): 1 x 390 g (بولة); finished batch 390 g. Estimated, not kitchen measured. 200 + 80 + 100 + 10 = 390 g; no cooking, added water or discarded dressing.",
+    "origin": "seed",
+    "origin_note": "Recipe quantities and method checked against https://health.clevelandclinic.org/recipe-yogurt-fruit-dip (accessed 2026-10-31). Source checks Greek yogurt, fruit and honey combination. Reworked from a dip into one bowl using 200 g whole-milk Greek yogurt and 10 g honey; fruit grams are our serving assumption. These are planning adaptations, not a verified prescription from an Egyptian coach. Nutrition is calculated only from the listed out/foods-*.json ingredients and estimated finished weight; source-page nutrition is not copied. All edible oil and sauces listed are counted as eaten; no unlisted caloric garnish.",
+    "confidence": "low",
+    "review_flags": [
+      "quantities_vary_by_household",
+      "yield_estimated",
+      "portion_assumed"
+    ],
+    "source_file": "recipes-2-gym.json"
+  },
+  {
+    "slug": "peanut-butter-banana-toast",
+    "name_ar": "توست بزبدة الفول السوداني والموز",
+    "name_en": "Peanut butter banana toast",
+    "aliases_ar": [
+      "توست موز وبي نات بتر"
+    ],
+    "aliases_en": [],
+    "description_ar": "توست بزبدة الفول السوداني والموز بمقادير موزونة؛ الحصة طبق شريحتين توست وزنها 185 جرام.",
+    "meal_tags": [
+      "breakfast",
+      "pre_workout"
+    ],
+    "finished_weight_g": 185,
+    "prep_minutes": 5,
+    "cook_minutes": 2,
+    "ingredients": [
+      {
+        "food_slug": "bread-toast-whole-wheat",
+        "weight_g": 60,
+        "note_ar": "شريحتين؛ الوزن قبل التحميص"
+      },
+      {
+        "food_slug": "peanut-butter",
+        "weight_g": 30
+      },
+      {
+        "food_slug": "banana",
+        "weight_g": 100,
+        "note_ar": "من غير القشر"
+      }
+    ],
+    "steps_ar": [
+      "حمص شريحتين التوست تحميص خفيف.",
+      "ادهن زبدة الفول السوداني بالتساوي على الشريحتين.",
+      "قطع الموز شرايح ووزعه فوقهم؛ الطبق كله حصة واحدة."
+    ],
+    "youtube_video_id": null,
+    "portions": [
+      {
+        "name_ar": "طبق شريحتين توست",
+        "weight_g": 185,
+        "is_default": true,
+        "basis": "Planning serving: finished batch divided equally into 1 serving(s), 185 g each. Not a measured Egyptian population average."
+      }
+    ],
+    "yield_note": "Makes 1 serving(s): 1 x 185 g (طبق شريحتين توست); finished batch 185 g. Estimated, not kitchen measured. 190 g ingredients minus about 5 g bread moisture during light toasting = 185 g; two topped slices are one serving.",
+    "origin": "seed",
+    "origin_note": "Recipe quantities and method checked against https://www.islhd.health.nsw.gov.au/sites/default/files/Health_Promotion/Healthy_adults/Recipe_PDF/Toast_toppers.pdf (accessed 2026-10-31). NSW Health source serves one with two bread slices, two tablespoons peanut butter and a banana. Household units converted to explicit planning weights of 60, 30 and 100 g; actual slice and banana sizes vary. These are planning adaptations, not a verified prescription from an Egyptian coach. Nutrition is calculated only from the listed out/foods-*.json ingredients and estimated finished weight; source-page nutrition is not copied. All edible oil and sauces listed are counted as eaten; no unlisted caloric garnish.",
+    "confidence": "medium",
+    "review_flags": [
+      "quantities_vary_by_household",
+      "yield_estimated",
+      "portion_assumed"
+    ],
+    "source_file": "recipes-2-gym.json"
+  },
+  {
+    "slug": "chicken-rice-vegetable-box",
+    "name_ar": "علبة فراخ مشوية ورز وخضار",
+    "name_en": "Grilled chicken rice and vegetable prep boxes",
+    "aliases_ar": [
+      "ميل بريب فراخ ورز"
+    ],
+    "aliases_en": [],
+    "description_ar": "علبة فراخ مشوية ورز وخضار بمقادير موزونة؛ الحصة علبة وزنها 500 جرام.",
+    "meal_tags": [
+      "lunch",
+      "dinner",
+      "post_workout"
+    ],
+    "finished_weight_g": 2000,
+    "prep_minutes": 15,
+    "cook_minutes": 30,
+    "ingredients": [
+      {
+        "food_slug": "chicken-breast-raw",
+        "weight_g": 800,
+        "note_ar": "صدور ني من غير جلد أو عضم؛ ٢٠٠ جرام لكل علبة"
+      },
+      {
+        "food_slug": "rice-white-raw",
+        "weight_g": 280,
+        "note_ar": "رز جاف قبل الغسيل؛ ٧٠ جرام لكل علبة"
+      },
+      {
+        "food_slug": "broccoli-raw",
+        "weight_g": 400
+      },
+      {
+        "food_slug": "carrot",
+        "weight_g": 200
+      },
+      {
+        "food_slug": "olive-oil",
+        "weight_g": 28
+      },
+      {
+        "food_slug": "lemon-juice",
+        "weight_g": 40
+      },
+      {
+        "food_slug": "garlic-raw",
+        "weight_g": 12
+      }
+    ],
+    "steps_ar": [
+      "اغسل الرز وسويه بمية كفاية لحد ما يستوي؛ وزنه بعد التسوية المتوقع ٨٤٠ جرام.",
+      "قطع الفراخ وتبلها بالليمون والتوم ونص الزيت ورشة ملح، وسيبها ربع ساعة في التلاجة.",
+      "اشوي الفراخ في طاسة مش بتلزق لحد ما تستوي من جوه؛ حرارة قلبها توصل ٧٤ درجة.",
+      "سوي البروكلي والجزر على البخار، وقلبهم مع باقي الزيت.",
+      "وزع الرز والفراخ والخضار بالتساوي على ٤ علب، ولم عصارة الطاسة عليهم.",
+      "لو هتجهزهم لبعدين، برد الرز بسرعة ودخله التلاجة خلال ساعة، وجمد حصص الأيام اللي بعدها."
+    ],
+    "youtube_video_id": null,
+    "portions": [
+      {
+        "name_ar": "علبة",
+        "weight_g": 500,
+        "is_default": true,
+        "basis": "Planning serving: finished batch divided equally into 4 serving(s), 500 g each. Not a measured Egyptian population average."
+      }
+    ],
+    "yield_note": "Makes 4 serving(s): 4 x 500 g (علبة); finished batch 2000 g. Estimated, not kitchen measured. 1760 g ingredients. Chicken 800 -> 600 g; dry rice 280 -> 840 g (absorbs 560 g water); broccoli/carrot 600 -> 500 g; oil/lemon/garlic 80 -> 60 g with all oil retained. Total 2000 g, four 500 g boxes. Added cooking water not listed as calories.",
+    "origin": "seed",
+    "origin_note": "Recipe quantities and method checked against https://www.mealprep.org.uk/recipes/chicken-broccoli-bowl (accessed 2026-10-31). Source one-serving template is 175 g chicken, 80 g dry brown rice, about 200 g broccoli and 1 tsp oil. Adapted to 200 g raw chicken, 70 g dry white rice, 150 g mixed raw vegetables and 7 g oil per box; garlic/lemon replace soy seasoning. The dry white rice food is named rice-white-raw but its state is dry. These are planning adaptations, not a verified prescription from an Egyptian coach. Nutrition is calculated only from the listed out/foods-*.json ingredients and estimated finished weight; source-page nutrition is not copied. All edible oil and sauces listed are counted as eaten; no unlisted caloric garnish.",
+    "confidence": "medium",
+    "review_flags": [
+      "quantities_vary_by_household",
+      "yield_estimated",
+      "portion_assumed"
+    ],
+    "source_file": "recipes-2-gym.json"
+  },
+  {
+    "slug": "chicken-shawarma-rice-bowl",
+    "name_ar": "بولة شاورما فراخ ورز",
+    "name_en": "Chicken shawarma rice bowls",
+    "aliases_ar": [
+      "شاورما بول"
+    ],
+    "aliases_en": [],
+    "description_ar": "بولة شاورما فراخ ورز بمقادير موزونة؛ الحصة بولة وزنها 550 جرام.",
+    "meal_tags": [
+      "lunch",
+      "dinner"
+    ],
+    "finished_weight_g": 1100,
+    "prep_minutes": 20,
+    "cook_minutes": 25,
+    "ingredients": [
+      {
+        "food_slug": "chicken-breast-raw",
+        "weight_g": 400
+      },
+      {
+        "food_slug": "rice-basmati-dry",
+        "weight_g": 120,
+        "note_ar": "رز بسمتي جاف"
+      },
+      {
+        "food_slug": "yogurt-greek",
+        "weight_g": 100,
+        "note_ar": "٦٠ جرام للتتبيلة و٤٠ للصوص؛ سادة كامل الدسم"
+      },
+      {
+        "food_slug": "olive-oil",
+        "weight_g": 12
+      },
+      {
+        "food_slug": "lemon-juice",
+        "weight_g": 30
+      },
+      {
+        "food_slug": "garlic-raw",
+        "weight_g": 6
+      },
+      {
+        "food_slug": "tomato",
+        "weight_g": 150
+      },
+      {
+        "food_slug": "cucumber",
+        "weight_g": 150
+      },
+      {
+        "food_slug": "onion-raw",
+        "weight_g": 50
+      },
+      {
+        "food_slug": "tomato-paste-canned",
+        "weight_g": 10
+      }
+    ],
+    "steps_ar": [
+      "قطع الفراخ شرايح وقلبها مع ٦٠ جرام زبادي والتوم والصلصة ونص الليمون والزيت ورشة ملح؛ سيبها نص ساعة في التلاجة.",
+      "سوي الرز البسمتي بمية لحد ما يشرب ويستوي.",
+      "شوح الفراخ والبصل في طاسة لحد ما الفراخ تستوي، وحرارة قلبها توصل ٧٤ درجة.",
+      "قطع الطماطم والخيار، وقلب باقي الزبادي مع باقي الليمون للصوص.",
+      "قسم الرز والفراخ وعصارتها والسلطة والصوص بالتساوي على بولتين."
+    ],
+    "youtube_video_id": null,
+    "portions": [
+      {
+        "name_ar": "بولة",
+        "weight_g": 550,
+        "is_default": true,
+        "basis": "Planning serving: finished batch divided equally into 2 serving(s), 550 g each. Not a measured Egyptian population average."
+      }
+    ],
+    "yield_note": "Makes 2 serving(s): 2 x 550 g (بولة); finished batch 1100 g. Estimated, not kitchen measured. 1028 g input; chicken 400 -> 300 g, rice 120 -> 360 g, onion 50 -> 40 g, remaining 458 -> 400 g from cooked marinade evaporation. All oil and cooked marinade juices served. Two 550 g bowls.",
+    "origin": "seed",
+    "origin_note": "Recipe quantities and method checked against https://www.tesco.com/recipes/en-GB/recipe/chicken-shawarma-buddha-bowl (accessed 2026-10-31). Source checks yogurt/lemon/garlic/tomato-puree chicken marinade. Our bowl uses rice and cucumber/tomato instead of mixed grains, avocado and hummus, plus extra yogurt as sauce. No packaged shawarma spice or unlisted spice calories; prep excludes 30-minute marinating. These are planning adaptations, not a verified prescription from an Egyptian coach. Nutrition is calculated only from the listed out/foods-*.json ingredients and estimated finished weight; source-page nutrition is not copied. All edible oil and sauces listed are counted as eaten; no unlisted caloric garnish.",
+    "confidence": "low",
+    "review_flags": [
+      "quantities_vary_by_household",
+      "yield_estimated",
+      "portion_assumed"
+    ],
+    "source_file": "recipes-2-gym.json"
+  },
+  {
+    "slug": "chicken-sweet-potato-box",
+    "name_ar": "علبة فراخ وبطاطا",
+    "name_en": "Chicken and baked sweet potato prep boxes",
+    "aliases_ar": [
+      "فراخ وبطاطا مشوية"
+    ],
+    "aliases_en": [],
+    "description_ar": "علبة فراخ وبطاطا بمقادير موزونة؛ الحصة علبة وزنها 550 جرام.",
+    "meal_tags": [
+      "lunch",
+      "dinner",
+      "post_workout"
+    ],
+    "finished_weight_g": 1100,
+    "prep_minutes": 10,
+    "cook_minutes": 20,
+    "ingredients": [
+      {
+        "food_slug": "chicken-breast-raw",
+        "weight_g": 400
+      },
+      {
+        "food_slug": "sweet-potato-baked",
+        "weight_g": 500,
+        "note_ar": "لب بطاطا مشوية سادة جاهزة؛ الوزن بعد الشوي ومن غير القشر"
+      },
+      {
+        "food_slug": "broccoli-raw",
+        "weight_g": 300
+      },
+      {
+        "food_slug": "olive-oil",
+        "weight_g": 16
+      },
+      {
+        "food_slug": "lemon-juice",
+        "weight_g": 20
+      },
+      {
+        "food_slug": "garlic-raw",
+        "weight_g": 6
+      }
+    ],
+    "steps_ar": [
+      "وزن لب البطاطا بعد ما تكون اتشوت سادة ومن غير أي زيت، وقطعها مكعبات.",
+      "قلب الفراخ مع التوم والليمون ونص الزيت واشويها لحد ما تستوي وحرارة قلبها توصل ٧٤ درجة.",
+      "سوي البروكلي على البخار وسخن البطاطا، وقلبهم مع باقي الزيت.",
+      "قسم الفراخ وعصارتها والبطاطا والبروكلي على علبتين بالتساوي."
+    ],
+    "youtube_video_id": null,
+    "portions": [
+      {
+        "name_ar": "علبة",
+        "weight_g": 550,
+        "is_default": true,
+        "basis": "Planning serving: finished batch divided equally into 2 serving(s), 550 g each. Not a measured Egyptian population average."
+      }
+    ],
+    "yield_note": "Makes 2 serving(s): 2 x 550 g (علبة); finished batch 1100 g. Estimated, not kitchen measured. 1242 g input. Chicken 400 -> 300 g, already-baked sweet potato 500 -> 490 g during reheating, broccoli 300 -> 280 g, oil/lemon/garlic 42 -> 30 g. Two 550 g boxes. Time excludes baking the already-cooked sweet potato ingredient.",
+    "origin": "seed",
+    "origin_note": "Recipe quantities and method checked against https://www.mealprep.org.uk/recipes/chicken-sweet-potato-bowl ; https://www.mealprep.org.uk/recipes/chicken-broccoli-bowl (accessed 2026-10-31). Sweet-potato bowl combination and chicken method checked in search results; direct sweet-potato page fetch failed. Grams are our assumed plan. Deliberately starts with 250 g cooked peeled sweet potato per box, not 250 g raw; no raw/cooked proxy conversion. These are planning adaptations, not a verified prescription from an Egyptian coach. Nutrition is calculated only from the listed out/foods-*.json ingredients and estimated finished weight; source-page nutrition is not copied. All edible oil and sauces listed are counted as eaten; no unlisted caloric garnish.",
+    "confidence": "low",
+    "review_flags": [
+      "quantities_vary_by_household",
+      "yield_estimated",
+      "portion_assumed"
+    ],
+    "source_file": "recipes-2-gym.json"
+  },
+  {
+    "slug": "beef-vegetable-stir-fry",
+    "name_ar": "شرايح لحمة بالخضار",
+    "name_en": "Beef and vegetable stir-fry",
+    "aliases_ar": [
+      "لحمة ستير فراي"
+    ],
+    "aliases_en": [],
+    "description_ar": "شرايح لحمة بالخضار بمقادير موزونة؛ الحصة طبق وزنها 400 جرام.",
+    "meal_tags": [
+      "lunch",
+      "dinner"
+    ],
+    "finished_weight_g": 800,
+    "prep_minutes": 15,
+    "cook_minutes": 12,
+    "ingredients": [
+      {
+        "food_slug": "beef-steak-raw",
+        "weight_g": 400,
+        "note_ar": "شرايح ستيك ني قليلة الدهن"
+      },
+      {
+        "food_slug": "broccoli-raw",
+        "weight_g": 250
+      },
+      {
+        "food_slug": "bell-pepper-red-raw",
+        "weight_g": 200
+      },
+      {
+        "food_slug": "onion-raw",
+        "weight_g": 100
+      },
+      {
+        "food_slug": "olive-oil",
+        "weight_g": 16
+      },
+      {
+        "food_slug": "soy-sauce",
+        "weight_g": 20
+      },
+      {
+        "food_slug": "garlic-raw",
+        "weight_g": 8
+      }
+    ],
+    "steps_ar": [
+      "قطع اللحمة شرايح رفيعة عكس اتجاه الألياف، وقطع الخضار.",
+      "سخن نص الزيت وشوح البروكلي والفلفل والبصل لحد ما يطروا شوية، وبعدين طلعهم.",
+      "حط باقي الزيت وشوح اللحمة على دفعات لحد ما تستوي.",
+      "رجع الخضار وضيف التوم والصويا وقلب دقيقتين؛ قسم الكمية على طبقين."
+    ],
+    "youtube_video_id": null,
+    "portions": [
+      {
+        "name_ar": "طبق",
+        "weight_g": 400,
+        "is_default": true,
+        "basis": "Planning serving: finished batch divided equally into 2 serving(s), 400 g each. Not a measured Egyptian population average."
+      }
+    ],
+    "yield_note": "Makes 2 serving(s): 2 x 400 g (طبق); finished batch 800 g. Estimated, not kitchen measured. 994 g input minus about 194 g meat and vegetable water = 800 g. Retains all oil and soy sauce. No rice/noodles included.",
+    "origin": "seed",
+    "origin_note": "Recipe quantities and method checked against https://www.bbcgoodfood.com/recipes/quick-beef-broccoli-noodles (accessed 2026-10-31). Source checks seared beef, broccoli, soy and garlic method. This is a vegetable-heavy version with 200 g raw beef per serving, no noodles, oyster sauce or ginger, and olive oil instead of sesame oil by recipe choice. These are planning adaptations, not a verified prescription from an Egyptian coach. Nutrition is calculated only from the listed out/foods-*.json ingredients and estimated finished weight; source-page nutrition is not copied. All edible oil and sauces listed are counted as eaten; no unlisted caloric garnish.",
+    "confidence": "low",
+    "review_flags": [
+      "quantities_vary_by_household",
+      "yield_estimated",
+      "portion_assumed"
+    ],
+    "source_file": "recipes-2-gym.json"
+  },
+  {
+    "slug": "baked-fish-rice-vegetables",
+    "name_ar": "سمك في الفرن بالرز والخضار",
+    "name_en": "Baked tilapia with rice and vegetables",
+    "aliases_ar": [
+      "علبة سمك ورز"
+    ],
+    "aliases_en": [],
+    "description_ar": "سمك في الفرن بالرز والخضار بمقادير موزونة؛ الحصة علبة وزنها 590 جرام.",
+    "meal_tags": [
+      "lunch",
+      "dinner"
+    ],
+    "finished_weight_g": 1180,
+    "prep_minutes": 15,
+    "cook_minutes": 30,
+    "ingredients": [
+      {
+        "food_slug": "tilapia-raw",
+        "weight_g": 400,
+        "note_ar": "فيليه ني صافي من غير جلد أو شوك"
+      },
+      {
+        "food_slug": "rice-white-raw",
+        "weight_g": 140,
+        "note_ar": "رز جاف"
+      },
+      {
+        "food_slug": "zucchini-raw",
+        "weight_g": 300
+      },
+      {
+        "food_slug": "tomato",
+        "weight_g": 200
+      },
+      {
+        "food_slug": "olive-oil",
+        "weight_g": 16
+      },
+      {
+        "food_slug": "lemon-juice",
+        "weight_g": 30
+      },
+      {
+        "food_slug": "garlic-raw",
+        "weight_g": 6
+      }
+    ],
+    "steps_ar": [
+      "سخن الفرن على ٢٠٠ درجة وسوي الرز لوحده بمية.",
+      "قطع الكوسة والطماطم وحطهم في صينية بالزيت والتوم ورشة ملح، ودخلهم الفرن ١٠ دقايق.",
+      "حط الفيليه والليمون فوق الخضار وغطي الصينية وكمل من ١٥ لـ٢٠ دقيقة لحد ما السمك يستوي ويتفتت بالشوكة.",
+      "قسم السمك والخضار وعصارة الصينية والرز على علبتين بالتساوي."
+    ],
+    "youtube_video_id": null,
+    "portions": [
+      {
+        "name_ar": "علبة",
+        "weight_g": 590,
+        "is_default": true,
+        "basis": "Planning serving: finished batch divided equally into 2 serving(s), 590 g each. Not a measured Egyptian population average."
+      }
+    ],
+    "yield_note": "Makes 2 serving(s): 2 x 590 g (علبة); finished batch 1180 g. Estimated, not kitchen measured. 1092 g input: fish 400 -> 320 g; rice 140 -> 420 g absorbing 280 g water; zucchini/tomato 500 -> 400 g; oil/lemon/garlic 52 -> 40 g. Retains tray juices and all oil. Two 590 g boxes.",
+    "origin": "seed",
+    "origin_note": "Recipe quantities and method checked against https://lauralovinglife.org/baked-tilapia-fresh-veggies-onion-rice/ ; https://loveoffood.sodexo.com/recipe/baked-tilapia-with-basmati-rice/ (accessed 2026-10-31). Sources check baked tilapia with vegetables/rice and oven cooking. Our assumed two-serving version uses zucchini/tomato, plain rice, olive oil and lemon without anchovy butter or onion rice. These are planning adaptations, not a verified prescription from an Egyptian coach. Nutrition is calculated only from the listed out/foods-*.json ingredients and estimated finished weight; source-page nutrition is not copied. All edible oil and sauces listed are counted as eaten; no unlisted caloric garnish.",
+    "confidence": "low",
+    "review_flags": [
+      "quantities_vary_by_household",
+      "yield_estimated",
+      "portion_assumed"
+    ],
+    "source_file": "recipes-2-gym.json"
+  },
+  {
+    "slug": "tuna-vegetable-salad",
+    "name_ar": "سلطة تونة بالخضار",
+    "name_en": "Tuna vegetable salad",
+    "aliases_ar": [
+      "تونة بالسلطة"
+    ],
+    "aliases_en": [],
+    "description_ar": "سلطة تونة بالخضار بمقادير موزونة؛ الحصة بولة وزنها 447 جرام.",
+    "meal_tags": [
+      "lunch",
+      "dinner"
+    ],
+    "finished_weight_g": 447,
+    "prep_minutes": 10,
+    "cook_minutes": 0,
+    "ingredients": [
+      {
+        "food_slug": "tuna-canned-water",
+        "weight_g": 140,
+        "note_ar": "تونة بالمية؛ الوزن بعد التصفية"
+      },
+      {
+        "food_slug": "tomato",
+        "weight_g": 120
+      },
+      {
+        "food_slug": "cucumber",
+        "weight_g": 100
+      },
+      {
+        "food_slug": "lettuce",
+        "weight_g": 40
+      },
+      {
+        "food_slug": "onion-red-raw",
+        "weight_g": 20
+      },
+      {
+        "food_slug": "olive-oil",
+        "weight_g": 7
+      },
+      {
+        "food_slug": "lemon-juice",
+        "weight_g": 20
+      }
+    ],
+    "steps_ar": [
+      "صفي التونة كويس ووزن ١٤٠ جرام منها.",
+      "اغسل الخضار وقطعه وحطه في بولة.",
+      "ضيف التونة والزيت والليمون وقلب؛ البولة كلها حصة واحدة."
+    ],
+    "youtube_video_id": null,
+    "portions": [
+      {
+        "name_ar": "بولة",
+        "weight_g": 447,
+        "is_default": true,
+        "basis": "Planning serving: finished batch divided equally into 1 serving(s), 447 g each. Not a measured Egyptian population average."
+      }
+    ],
+    "yield_note": "Makes 1 serving(s): 1 x 447 g (بولة); finished batch 447 g. Estimated, not kitchen measured. 140 + 120 + 100 + 40 + 20 + 7 + 20 = 447 g. Weigh tuna after draining, keep all vegetable juices/dressing; no bread included.",
+    "origin": "seed",
+    "origin_note": "Recipe quantities and method checked against https://www.canada.ca/en/health-canada/services/food-guide/eating-support/kitchen/recipes/tuna-tomato-salad.html (accessed 2026-10-31). Health Canada source checks drained water-packed tuna with tomato/cucumber and oil dressing. Increased tuna to one weighed 140 g serving; lettuce/onion and lemon are a deliberate home variation, omitting celery and vinegar. These are planning adaptations, not a verified prescription from an Egyptian coach. Nutrition is calculated only from the listed out/foods-*.json ingredients and estimated finished weight; source-page nutrition is not copied. All edible oil and sauces listed are counted as eaten; no unlisted caloric garnish.",
+    "confidence": "medium",
+    "review_flags": [
+      "quantities_vary_by_household",
+      "yield_estimated",
+      "portion_assumed"
+    ],
+    "source_file": "recipes-2-gym.json"
+  },
+  {
+    "slug": "tuna-tomato-pasta",
+    "name_ar": "مكرونة بالتونة والطماطم",
+    "name_en": "Tuna tomato pasta prep bowls",
+    "aliases_ar": [
+      "مكرونة تونة"
+    ],
+    "aliases_en": [],
+    "description_ar": "مكرونة بالتونة والطماطم بمقادير موزونة؛ الحصة علبة وزنها 500 جرام.",
+    "meal_tags": [
+      "lunch",
+      "dinner",
+      "post_workout"
+    ],
+    "finished_weight_g": 1000,
+    "prep_minutes": 10,
+    "cook_minutes": 20,
+    "ingredients": [
+      {
+        "food_slug": "pasta-dry",
+        "weight_g": 160,
+        "note_ar": "مكرونة جافة قبل السلق"
+      },
+      {
+        "food_slug": "tuna-canned-water",
+        "weight_g": 280,
+        "note_ar": "وزن بعد التصفية"
+      },
+      {
+        "food_slug": "tomato",
+        "weight_g": 300
+      },
+      {
+        "food_slug": "onion-raw",
+        "weight_g": 80
+      },
+      {
+        "food_slug": "garlic-raw",
+        "weight_g": 6
+      },
+      {
+        "food_slug": "olive-oil",
+        "weight_g": 14
+      }
+    ],
+    "steps_ar": [
+      "اسلق المكرونة في مية وصفيها؛ متزودش زيت على مية السلق.",
+      "شوح البصل بالزيت، وضيف التوم والطماطم المقطعة ورشة ملح وسيبهم يتسبكوا.",
+      "ضيف التونة المصفاة وقلبها لحد ما تسخن.",
+      "قلب المكرونة في الصوص وقسمها على علبتين بالتساوي."
+    ],
+    "youtube_video_id": null,
+    "portions": [
+      {
+        "name_ar": "علبة",
+        "weight_g": 500,
+        "is_default": true,
+        "basis": "Planning serving: finished batch divided equally into 2 serving(s), 500 g each. Not a measured Egyptian population average."
+      }
+    ],
+    "yield_note": "Makes 2 serving(s): 2 x 500 g (علبة); finished batch 1000 g. Estimated, not kitchen measured. 840 g input; pasta 160 -> 400 g after absorbing 240 g water, sauce vegetables 386 -> 306 g through evaporation, tuna 280 g and oil 14 g retained = 1000 g. Two 500 g boxes.",
+    "origin": "seed",
+    "origin_note": "Recipe quantities and method checked against https://www.bbcgoodfood.com/recipes/pasta-tuna-tomato-sauce (accessed 2026-10-31). Source checks tomato-onion-garlic sauce plus drained tuna and separately boiled pasta. Our gym version intentionally changes the ratio to 80 g dry pasta and 140 g drained tuna per box and omits sugar/chilli. These are planning adaptations, not a verified prescription from an Egyptian coach. Nutrition is calculated only from the listed out/foods-*.json ingredients and estimated finished weight; source-page nutrition is not copied. All edible oil and sauces listed are counted as eaten; no unlisted caloric garnish.",
+    "confidence": "low",
+    "review_flags": [
+      "quantities_vary_by_household",
+      "yield_estimated",
+      "portion_assumed"
+    ],
+    "source_file": "recipes-2-gym.json"
+  },
+  {
+    "slug": "chicken-vegetable-soup",
+    "name_ar": "شوربة فراخ وخضار",
+    "name_en": "Chicken vegetable soup",
+    "aliases_ar": [
+      "شوربة صدور فراخ"
+    ],
+    "aliases_en": [],
+    "description_ar": "شوربة فراخ وخضار بمقادير موزونة؛ الحصة بولة شوربة وزنها 600 جرام.",
+    "meal_tags": [
+      "lunch",
+      "dinner"
+    ],
+    "finished_weight_g": 1800,
+    "prep_minutes": 12,
+    "cook_minutes": 30,
+    "ingredients": [
+      {
+        "food_slug": "chicken-breast-raw",
+        "weight_g": 400,
+        "note_ar": "فراخ ني مكعبات صغيرة"
+      },
+      {
+        "food_slug": "carrot",
+        "weight_g": 160
+      },
+      {
+        "food_slug": "zucchini-raw",
+        "weight_g": 200
+      },
+      {
+        "food_slug": "celery-raw",
+        "weight_g": 60
+      },
+      {
+        "food_slug": "onion-raw",
+        "weight_g": 80
+      },
+      {
+        "food_slug": "olive-oil",
+        "weight_g": 10
+      },
+      {
+        "food_slug": "lemon-juice",
+        "weight_g": 20
+      }
+    ],
+    "steps_ar": [
+      "شوح البصل والكرفس في الزيت دقيقتين.",
+      "ضيف الفراخ الني والجزر والكوسة ولتر مية ورشة ملح.",
+      "سيب الشوربة تغلي وبعدين وطي النار حوالي ٢٥ دقيقة لحد ما الفراخ والخضار يستووا؛ حرارة الفراخ توصل ٧٤ درجة.",
+      "ضيف الليمون وقلب، وقسم الشوربة مع الفراخ بالتساوي على ٣ بولات."
+    ],
+    "youtube_video_id": null,
+    "portions": [
+      {
+        "name_ar": "بولة شوربة",
+        "weight_g": 600,
+        "is_default": true,
+        "basis": "Planning serving: finished batch divided equally into 3 serving(s), 600 g each. Not a measured Egyptian population average."
+      }
+    ],
+    "yield_note": "Makes 3 serving(s): 3 x 600 g (بولة شوربة); finished batch 1800 g. Estimated, not kitchen measured. 930 g ingredients plus 1000 g water, less approximately 130 g evaporation = 1800 g. Chicken cooks in the soup; all broth and soluble solids stay in the batch. Three 600 g bowls.",
+    "origin": "seed",
+    "origin_note": "Recipe quantities and method checked against https://www.bbcgoodfood.com/recipes/easy-noodle-soup (accessed 2026-10-31). Source checks chicken-and-vegetable soup with roughly 500 ml stock for two. Our version starts with raw chicken cooked in 1000 g water, has more chicken/vegetables, and no noodles or stock cube; recipe quantities and evaporation are assumed. These are planning adaptations, not a verified prescription from an Egyptian coach. Nutrition is calculated only from the listed out/foods-*.json ingredients and estimated finished weight; source-page nutrition is not copied. All edible oil and sauces listed are counted as eaten; no unlisted caloric garnish.",
+    "confidence": "low",
+    "review_flags": [
+      "quantities_vary_by_household",
+      "yield_estimated",
+      "portion_assumed"
+    ],
+    "source_file": "recipes-2-gym.json"
+  },
+  {
+    "slug": "mixed-vegetable-soup",
+    "name_ar": "شوربة خضار للتجهيز",
+    "name_en": "Mixed vegetable prep soup",
+    "aliases_ar": [
+      "شوربة خضار خفيفة"
+    ],
+    "aliases_en": [],
+    "description_ar": "شوربة خضار للتجهيز بمقادير موزونة؛ الحصة بولة شوربة وزنها 450 جرام.",
+    "meal_tags": [
+      "lunch",
+      "dinner"
+    ],
+    "finished_weight_g": 1800,
+    "prep_minutes": 12,
+    "cook_minutes": 25,
+    "ingredients": [
+      {
+        "food_slug": "carrot",
+        "weight_g": 200
+      },
+      {
+        "food_slug": "zucchini-raw",
+        "weight_g": 300
+      },
+      {
+        "food_slug": "green-peas-raw",
+        "weight_g": 200
+      },
+      {
+        "food_slug": "onion-raw",
+        "weight_g": 100
+      },
+      {
+        "food_slug": "celery-raw",
+        "weight_g": 60
+      },
+      {
+        "food_slug": "tomato",
+        "weight_g": 200
+      },
+      {
+        "food_slug": "olive-oil",
+        "weight_g": 16
+      }
+    ],
+    "steps_ar": [
+      "اغسل الخضار وقطعه مكعبات صغيرة.",
+      "شوح البصل والكرفس في الزيت، وضيف باقي الخضار وقلب دقيقتين.",
+      "ضيف ٩٠٠ جرام مية ورشة ملح، وسيبها على نار هادية لحد ما الخضار يستوي.",
+      "قلب كويس وقسم الخضار والشوربة بالتساوي على ٤ بولات."
+    ],
+    "youtube_video_id": null,
+    "portions": [
+      {
+        "name_ar": "بولة شوربة",
+        "weight_g": 450,
+        "is_default": true,
+        "basis": "Planning serving: finished batch divided equally into 4 serving(s), 450 g each. Not a measured Egyptian population average."
+      }
+    ],
+    "yield_note": "Makes 4 serving(s): 4 x 450 g (بولة شوربة); finished batch 1800 g. Estimated, not kitchen measured. 1076 g ingredients plus 900 g water, less about 176 g evaporation = 1800 g. Four 450 g bowls with solids divided evenly. Side soup, not a complete high-protein main.",
+    "origin": "seed",
+    "origin_note": "Recipe quantities and method checked against https://www.bbcgoodfood.com/recipes/versatile-veg-soup (accessed 2026-10-31). Source checks an adaptable vegetable soup, about 500 g vegetables/potatoes to 700 ml stock. Our chunky version uses peas and zucchini instead of potatoes, water instead of stock and no cream; grams and final dilution are planning assumptions. These are planning adaptations, not a verified prescription from an Egyptian coach. Nutrition is calculated only from the listed out/foods-*.json ingredients and estimated finished weight; source-page nutrition is not copied. All edible oil and sauces listed are counted as eaten; no unlisted caloric garnish.",
+    "confidence": "low",
+    "review_flags": [
+      "quantities_vary_by_household",
+      "yield_estimated",
+      "portion_assumed"
+    ],
+    "source_file": "recipes-2-gym.json"
+  },
+  {
+    "slug": "turkey-egg-wrap",
+    "name_ar": "راب رومي وبيض",
+    "name_en": "Turkey and egg wrap",
+    "aliases_ar": [
+      "ساندوتش رومي وبيض تورتيلا"
+    ],
+    "aliases_en": [],
+    "description_ar": "راب رومي وبيض بمقادير موزونة؛ الحصة ساندوتش راب وزنها 250 جرام.",
+    "meal_tags": [
+      "breakfast",
+      "lunch",
+      "post_workout"
+    ],
+    "finished_weight_g": 250,
+    "prep_minutes": 8,
+    "cook_minutes": 7,
+    "ingredients": [
+      {
+        "food_slug": "bread-tortilla",
+        "weight_g": 60,
+        "note_ar": "رغيف تورتيلا جاهز"
+      },
+      {
+        "food_slug": "turkey-breast",
+        "weight_g": 80,
+        "note_ar": "صدر رومي مشوي سادة جاهز؛ وزن مطبوخ مش لانشون"
+      },
+      {
+        "food_slug": "egg-raw",
+        "weight_g": 50,
+        "note_ar": "بيضة من غير القشر"
+      },
+      {
+        "food_slug": "tomato",
+        "weight_g": 50
+      },
+      {
+        "food_slug": "lettuce",
+        "weight_g": 20
+      },
+      {
+        "food_slug": "olive-oil",
+        "weight_g": 3
+      }
+    ],
+    "steps_ar": [
+      "اخفق البيضة وسويها في طاسة مش بتلزق بالزيت لحد ما تتماسك كلها.",
+      "سخن شرايح الرومي المشوي الجاهز والتورتيلا سخنة خفيفة.",
+      "حط البيض والرومي والطماطم والخس في التورتيلا ولفها كويس."
+    ],
+    "youtube_video_id": null,
+    "portions": [
+      {
+        "name_ar": "ساندوتش راب",
+        "weight_g": 250,
+        "is_default": true,
+        "basis": "Planning serving: finished batch divided equally into 1 serving(s), 250 g each. Not a measured Egyptian population average."
+      }
+    ],
+    "yield_note": "Makes 1 serving(s): 1 x 250 g (ساندوتش راب); finished batch 250 g. Estimated, not kitchen measured. 263 g input, less about 13 g water from egg cooking and warming = 250 g. Turkey starts cooked; one whole wrap is one serving.",
+    "origin": "seed",
+    "origin_note": "Recipe quantities and method checked against https://www.youtube.com/watch?v=-6pkOIoUhC4 (accessed 2026-10-31). Recipe search result for Crispy Crave | Easy Comfort Food, Tortilla Egg Wrap with Turkey, describes eggs, tortilla, tomato, greens and cooked turkey. Adapted to one egg and weighed 80 g roasted turkey, omitting cheese. Video was not independently opened/confirmed, so youtube_video_id stays null. These are planning adaptations, not a verified prescription from an Egyptian coach. Nutrition is calculated only from the listed out/foods-*.json ingredients and estimated finished weight; source-page nutrition is not copied. All edible oil and sauces listed are counted as eaten; no unlisted caloric garnish.",
+    "confidence": "low",
+    "review_flags": [
+      "quantities_vary_by_household",
+      "yield_estimated",
+      "portion_assumed"
+    ],
+    "source_file": "recipes-2-gym.json"
+  },
+  {
+    "slug": "kareish-vegetable-bowl",
+    "name_ar": "بولة جبنة قريش بالخضار",
+    "name_en": "Kareish cheese vegetable bowl",
+    "aliases_ar": [
+      "قريش بالخيار والطماطم"
+    ],
+    "aliases_en": [],
+    "description_ar": "بولة جبنة قريش بالخضار بمقادير موزونة؛ الحصة بولة وزنها 415 جرام.",
+    "meal_tags": [
+      "breakfast",
+      "dinner",
+      "snack"
+    ],
+    "finished_weight_g": 415,
+    "prep_minutes": 8,
+    "cook_minutes": 0,
+    "ingredients": [
+      {
+        "food_slug": "cottage-cheese",
+        "weight_g": 200,
+        "note_ar": "قريش قليلة الدسم؛ بياناتها بديل كوتج أمريكي ٢٪ دسم"
+      },
+      {
+        "food_slug": "tomato",
+        "weight_g": 100
+      },
+      {
+        "food_slug": "cucumber",
+        "weight_g": 100
+      },
+      {
+        "food_slug": "parsley-raw",
+        "weight_g": 10
+      },
+      {
+        "food_slug": "olive-oil",
+        "weight_g": 5
+      }
+    ],
+    "steps_ar": [
+      "قطع الخيار والطماطم وافرم البقدونس.",
+      "حط القريش في بولة وفتتها بالشوكة.",
+      "ضيف الخضار والزيت وقلب؛ البولة كلها حصة واحدة."
+    ],
+    "youtube_video_id": null,
+    "portions": [
+      {
+        "name_ar": "بولة",
+        "weight_g": 415,
+        "is_default": true,
+        "basis": "Planning serving: finished batch divided equally into 1 serving(s), 415 g each. Not a measured Egyptian population average."
+      }
+    ],
+    "yield_note": "Makes 1 serving(s): 1 x 415 g (بولة); finished batch 415 g. Estimated, not kitchen measured. 200 + 100 + 100 + 10 + 5 = 415 g; no cooking or draining after weighing. Actual kareish moisture can differ from the existing cottage-cheese proxy.",
+    "origin": "seed",
+    "origin_note": "Recipe quantities and method checked against https://www.skinnytaste.com/savory-cottage-cheese-bowl/ (accessed 2026-10-31). Source checks a savory cottage cheese bowl with cucumber/tomato. Uses a 200 g cheese serving and no pistachios. Missing direct Egyptian kareish composition: existing cottage-cheese food is already a US 2% cottage-cheese proxy; curd moisture, fat and salt vary locally. These are planning adaptations, not a verified prescription from an Egyptian coach. Nutrition is calculated only from the listed out/foods-*.json ingredients and estimated finished weight; source-page nutrition is not copied. All edible oil and sauces listed are counted as eaten; no unlisted caloric garnish.",
+    "confidence": "low",
+    "review_flags": [
+      "quantities_vary_by_household",
+      "yield_estimated",
+      "portion_assumed",
+      "ingredient_proxy"
+    ],
+    "source_file": "recipes-2-gym.json"
+  },
+  {
+    "slug": "chickpea-lemon-salad",
+    "name_ar": "سلطة حمص بالليمون",
+    "name_en": "Chickpea lemon salad",
+    "aliases_ar": [
+      "حمص مسلوق بالخضار"
+    ],
+    "aliases_en": [],
+    "description_ar": "سلطة حمص بالليمون بمقادير موزونة؛ الحصة بولة وزنها 437 جرام.",
+    "meal_tags": [
+      "lunch",
+      "dinner"
+    ],
+    "finished_weight_g": 437,
+    "prep_minutes": 10,
+    "cook_minutes": 0,
+    "ingredients": [
+      {
+        "food_slug": "chickpeas-cooked",
+        "weight_g": 200,
+        "note_ar": "حمص مسلوق ومصفى؛ الوزن بعد السلق"
+      },
+      {
+        "food_slug": "tomato",
+        "weight_g": 100
+      },
+      {
+        "food_slug": "cucumber",
+        "weight_g": 80
+      },
+      {
+        "food_slug": "onion-red-raw",
+        "weight_g": 20
+      },
+      {
+        "food_slug": "parsley-raw",
+        "weight_g": 10
+      },
+      {
+        "food_slug": "olive-oil",
+        "weight_g": 7
+      },
+      {
+        "food_slug": "lemon-juice",
+        "weight_g": 20
+      }
+    ],
+    "steps_ar": [
+      "صفي الحمص المسلوق ووزن ٢٠٠ جرام منه.",
+      "قطع الطماطم والخيار والبصل وافرم البقدونس.",
+      "قلب الكل مع الليمون والزيت ورشة ملح؛ الحصة البولة كلها."
+    ],
+    "youtube_video_id": null,
+    "portions": [
+      {
+        "name_ar": "بولة",
+        "weight_g": 437,
+        "is_default": true,
+        "basis": "Planning serving: finished batch divided equally into 1 serving(s), 437 g each. Not a measured Egyptian population average."
+      }
+    ],
+    "yield_note": "Makes 1 serving(s): 1 x 437 g (بولة); finished batch 437 g. Estimated, not kitchen measured. 200 + 100 + 80 + 20 + 10 + 7 + 20 = 437 g; chickpeas weighed cooked and drained. All dressing retained; soaking/boiling time excluded because input is cooked.",
+    "origin": "seed",
+    "origin_note": "Recipe quantities and method checked against https://www.bbcgoodfood.com/recipes/no-cook-chickpea-salad (accessed 2026-10-31). Source checks cooked drained chickpeas, tomato, onion, parsley, oil and lemon. Our larger one-bowl serving adds cucumber and omits harissa and coriander; cooked chickpea grams replace the ambiguous can net weight. These are planning adaptations, not a verified prescription from an Egyptian coach. Nutrition is calculated only from the listed out/foods-*.json ingredients and estimated finished weight; source-page nutrition is not copied. All edible oil and sauces listed are counted as eaten; no unlisted caloric garnish.",
+    "confidence": "medium",
+    "review_flags": [
+      "quantities_vary_by_household",
+      "yield_estimated",
+      "portion_assumed"
+    ],
+    "source_file": "recipes-2-gym.json"
+  },
+  {
+    "slug": "whey-milk-banana-shake",
+    "name_ar": "شيك واي باللبن والموز",
+    "name_en": "Whey milk banana shake",
+    "aliases_ar": [
+      "بروتين شيك بالموز"
+    ],
+    "aliases_en": [],
+    "description_ar": "شيك واي باللبن والموز بمقادير موزونة؛ الحصة شيك وزنها 380 جرام.",
+    "meal_tags": [
+      "snack",
+      "post_workout"
+    ],
+    "finished_weight_g": 380,
+    "prep_minutes": 5,
+    "cook_minutes": 0,
+    "ingredients": [
+      {
+        "food_slug": "milk-low-fat",
+        "weight_g": 250,
+        "note_ar": "لبن قليل الدسم موزون بالجرام"
+      },
+      {
+        "food_slug": "whey-protein",
+        "weight_g": 30,
+        "note_ar": "بودرة جافة موزونة مش حجم سكوب"
+      },
+      {
+        "food_slug": "banana",
+        "weight_g": 100,
+        "note_ar": "من غير القشر"
+      }
+    ],
+    "steps_ar": [
+      "قشر الموز ووزن منه ١٠٠ جرام.",
+      "حط اللبن والموز والواي في الخلاط واضربهم لحد ما ينعموا.",
+      "صب الكمية كلها في كوباية كبيرة واشربها كحصة واحدة."
+    ],
+    "youtube_video_id": null,
+    "portions": [
+      {
+        "name_ar": "شيك",
+        "weight_g": 380,
+        "is_default": true,
+        "basis": "Planning serving: finished batch divided equally into 1 serving(s), 380 g each. Not a measured Egyptian population average."
+      }
+    ],
+    "yield_note": "Makes 1 serving(s): 1 x 380 g (شيك); finished batch 380 g. Estimated, not kitchen measured. 250 + 30 + 100 = 380 g, no added ice/water. Assume negligible blender residue; foam changes volume, not mass.",
+    "origin": "seed",
+    "origin_note": "Recipe quantities and method checked against https://www.proteincakery.com/easy-banana-protein-shake/ (accessed 2026-10-31). Source checks a three-ingredient banana, whey and milk shake and about 30 g whey. Uses a thinner 250 g milk serving and 100 g banana, deliberately different from the source frozen thick shake. These are planning adaptations, not a verified prescription from an Egyptian coach. Nutrition is calculated only from the listed out/foods-*.json ingredients and estimated finished weight; source-page nutrition is not copied. All edible oil and sauces listed are counted as eaten; no unlisted caloric garnish.",
+    "confidence": "medium",
+    "review_flags": [
+      "quantities_vary_by_household",
+      "yield_estimated",
+      "portion_assumed",
+      "brand_varies"
+    ],
+    "source_file": "recipes-2-gym.json"
+  },
+  {
+    "slug": "homemade-mass-gainer-shake",
+    "name_ar": "شيك زيادة سعرات بيتي",
+    "name_en": "Homemade mass-gainer style shake",
+    "aliases_ar": [
+      "شيك تضخيم باللبن والشوفان"
+    ],
+    "aliases_en": [],
+    "description_ar": "شيك زيادة سعرات بيتي بمقادير موزونة؛ الحصة شيك كبير وزنها 640 جرام.",
+    "meal_tags": [
+      "breakfast",
+      "post_workout"
+    ],
+    "finished_weight_g": 640,
+    "prep_minutes": 8,
+    "cook_minutes": 0,
+    "ingredients": [
+      {
+        "food_slug": "milk-full-fat",
+        "weight_g": 300,
+        "note_ar": "لبن كامل الدسم موزون بالجرام"
+      },
+      {
+        "food_slug": "oats-dry",
+        "weight_g": 60
+      },
+      {
+        "food_slug": "peanut-butter",
+        "weight_g": 30
+      },
+      {
+        "food_slug": "banana",
+        "weight_g": 120,
+        "note_ar": "من غير القشر"
+      },
+      {
+        "food_slug": "whey-protein",
+        "weight_g": 30
+      }
+    ],
+    "steps_ar": [
+      "اطحن الشوفان في الخلاط لحد ما يبقى ناعم.",
+      "ضيف اللبن و١٠٠ جرام مية وسيبه ١٠ دقايق عشان الشوفان يطرى.",
+      "ضيف الموز وزبدة الفول السوداني والواي واضرب كويس.",
+      "صب الخليط كله في كوباية كبيرة؛ الكمية دي شيك واحد عالي السعرات."
+    ],
+    "youtube_video_id": null,
+    "portions": [
+      {
+        "name_ar": "شيك كبير",
+        "weight_g": 640,
+        "is_default": true,
+        "basis": "Planning serving: finished batch divided equally into 1 serving(s), 640 g each. Not a measured Egyptian population average."
+      }
+    ],
+    "yield_note": "Makes 1 serving(s): 1 x 640 g (شيك كبير); finished batch 640 g. Estimated, not kitchen measured. 300 + 60 + 30 + 120 + 30 = 540 g ingredients plus 100 g cold water = 640 g. Soaking and blending retain all ingredients; foam not weighed as extra food.",
+    "origin": "seed",
+    "origin_note": "Recipe quantities and method checked against https://www.bbcgoodfood.com/recipes/peanut-butter-smoothie ; https://www.coles.com.au/recipes-inspiration/recipes/high-protein-smoothie (accessed 2026-10-31). Sources check banana/oats/nut-butter smoothies and a whey-containing version. Our high-energy serving uses regular whole milk, 60 g dry oats, 30 g peanut butter and 30 g whey, with 100 g water for texture. No commercial mass-gainer powder needed; prep excludes 10-minute soaking. These are planning adaptations, not a verified prescription from an Egyptian coach. Nutrition is calculated only from the listed out/foods-*.json ingredients and estimated finished weight; source-page nutrition is not copied. All edible oil and sauces listed are counted as eaten; no unlisted caloric garnish.",
+    "confidence": "low",
+    "review_flags": [
+      "quantities_vary_by_household",
+      "yield_estimated",
+      "portion_assumed",
+      "brand_varies"
+    ],
+    "source_file": "recipes-2-gym.json"
+  },
+  {
+    "slug": "date-nut-energy-balls",
+    "name_ar": "كرات بلح بالمكسرات",
+    "name_en": "Date and nut energy balls",
+    "aliases_ar": [
+      "كرات طاقة بالبلح"
+    ],
+    "aliases_en": [],
+    "description_ar": "كرات بلح بالمكسرات بمقادير موزونة؛ الحصة كورتين بلح وزنها 40 جرام.",
+    "meal_tags": [
+      "snack",
+      "pre_workout"
+    ],
+    "finished_weight_g": 320,
+    "prep_minutes": 15,
+    "cook_minutes": 0,
+    "ingredients": [
+      {
+        "food_slug": "dates",
+        "weight_g": 200,
+        "note_ar": "بلح ناشف من غير النوى؛ طري كفاية للفرم"
+      },
+      {
+        "food_slug": "almonds",
+        "weight_g": 60,
+        "note_ar": "لب لوز"
+      },
+      {
+        "food_slug": "walnuts",
+        "weight_g": 40,
+        "note_ar": "لب عين جمل"
+      },
+      {
+        "food_slug": "peanut-butter",
+        "weight_g": 20
+      }
+    ],
+    "steps_ar": [
+      "افرم اللوز وعين الجمل في الكبة فرم خشن.",
+      "ضيف البلح من غير النوى وزبدة الفول السوداني واضرب لحد ما الخليط يمسك نفسه.",
+      "قسم الخليط على ١٦ حتة متساوية وكورها؛ كل كورة حوالي ٢٠ جرام.",
+      "دخلها التلاجة نص ساعة؛ الحصة كورتين."
+    ],
+    "youtube_video_id": null,
+    "portions": [
+      {
+        "name_ar": "كورتين بلح",
+        "weight_g": 40,
+        "is_default": true,
+        "basis": "Planning serving: finished batch divided equally into 8 serving(s), 40 g each. Not a measured Egyptian population average."
+      }
+    ],
+    "yield_note": "Makes 8 serving(s): 8 x 40 g (كورتين بلح); finished batch 320 g. Estimated, not kitchen measured. 320 g ingredients, no cooking or soaking water. Makes 16 balls at 20 g each; 8 snack servings of 2 balls, 40 g per serving. Prep excludes 30-minute chilling.",
+    "origin": "seed",
+    "origin_note": "Recipe quantities and method checked against https://www.gordonramsayacademy.com/en/uk/recipes/date-energy-balls-recipe (accessed 2026-10-31). Source combines 250 g dates, 100 g nuts and 2 tbsp nut butter, making 8-10 large balls. Our version uses 200 g dates, 100 g nuts, 20 g nut butter, no cocoa and 16 smaller balls; serving is two balls, not the batch. These are planning adaptations, not a verified prescription from an Egyptian coach. Nutrition is calculated only from the listed out/foods-*.json ingredients and estimated finished weight; source-page nutrition is not copied. All edible oil and sauces listed are counted as eaten; no unlisted caloric garnish.",
+    "confidence": "medium",
+    "review_flags": [
+      "quantities_vary_by_household",
+      "yield_estimated",
+      "portion_assumed"
+    ],
+    "source_file": "recipes-2-gym.json"
+  },
+  {
+    "slug": "rice-cakes-peanut-butter",
+    "name_ar": "رايس كيك بزبدة الفول السوداني",
+    "name_en": "Rice cakes with peanut butter and banana",
+    "aliases_ar": [
+      "رايس كيك بالموز"
+    ],
+    "aliases_en": [],
+    "description_ar": "رايس كيك بزبدة الفول السوداني بمقادير موزونة؛ الحصة طبق قطعتين رايس كيك وزنها 98 جرام.",
+    "meal_tags": [
+      "snack",
+      "pre_workout"
+    ],
+    "finished_weight_g": 98,
+    "prep_minutes": 5,
+    "cook_minutes": 0,
+    "ingredients": [
+      {
+        "food_slug": "rice-cakes-plain",
+        "weight_g": 18,
+        "note_ar": "قطعتين كبار؛ وزنهم مع بعض ١٨ جرام"
+      },
+      {
+        "food_slug": "peanut-butter",
+        "weight_g": 20
+      },
+      {
+        "food_slug": "banana",
+        "weight_g": 60,
+        "note_ar": "من غير القشر"
+      }
+    ],
+    "steps_ar": [
+      "وزن قطعتين الرايس كيك ووزع عليهم زبدة الفول السوداني.",
+      "قطع الموز دواير رفيعة.",
+      "رص الموز فوق الرايس كيك؛ الحصة القطعتين مع بعض."
+    ],
+    "youtube_video_id": null,
+    "portions": [
+      {
+        "name_ar": "طبق قطعتين رايس كيك",
+        "weight_g": 98,
+        "is_default": true,
+        "basis": "Planning serving: finished batch divided equally into 1 serving(s), 98 g each. Not a measured Egyptian population average."
+      }
+    ],
+    "yield_note": "Makes 1 serving(s): 1 x 98 g (طبق قطعتين رايس كيك); finished batch 98 g. Estimated, not kitchen measured. 18 + 20 + 60 = 98 g. No heating or added liquid; two topped cakes are one snack serving.",
+    "origin": "seed",
+    "origin_note": "Recipe quantities and method checked against https://www.montana.edu/extension/buyeatlivebetter/recipes/peanutbutterandricecakefaces/Peanut_Butter_and_Rice_Cake_Faces.pdf (accessed 2026-10-31). Montana State Extension source checks two rice cakes, peanut butter and sliced banana. Uses 18 g cakes, 20 g peanut butter and 60 g banana as one snack, omits raisins/decorations and does not assume a universal cake weight. These are planning adaptations, not a verified prescription from an Egyptian coach. Nutrition is calculated only from the listed out/foods-*.json ingredients and estimated finished weight; source-page nutrition is not copied. All edible oil and sauces listed are counted as eaten; no unlisted caloric garnish.",
+    "confidence": "medium",
+    "review_flags": [
+      "quantities_vary_by_household",
+      "yield_estimated",
+      "portion_assumed"
+    ],
+    "source_file": "recipes-2-gym.json"
+  },
+  {
+    "slug": "fresh-fruit-salad",
+    "name_ar": "سلطة فواكه من غير سكر",
+    "name_en": "Fresh fruit salad without added sugar",
+    "aliases_ar": [
+      "بولة فواكه"
+    ],
+    "aliases_en": [],
+    "description_ar": "سلطة فواكه من غير سكر بمقادير موزونة؛ الحصة بولة فواكه وزنها 250 جرام.",
+    "meal_tags": [
+      "snack",
+      "pre_workout"
+    ],
+    "finished_weight_g": 500,
+    "prep_minutes": 10,
+    "cook_minutes": 0,
+    "ingredients": [
+      {
+        "food_slug": "apple",
+        "weight_g": 120,
+        "note_ar": "من غير القلب والبذر"
+      },
+      {
+        "food_slug": "banana",
+        "weight_g": 100,
+        "note_ar": "من غير القشر"
+      },
+      {
+        "food_slug": "orange",
+        "weight_g": 120,
+        "note_ar": "فصوص من غير القشر والبذر"
+      },
+      {
+        "food_slug": "strawberries",
+        "weight_g": 160,
+        "note_ar": "من غير العنق"
+      }
+    ],
+    "steps_ar": [
+      "اغسل التفاح والفراولة وشيل قلب التفاحة وعنق الفراولة.",
+      "قشر الموز والبرتقال، وقطع كل الفاكهة حتت صغيرة.",
+      "قلب الفاكهة براحة وقسمها على بولتين متساويين من غير سكر."
+    ],
+    "youtube_video_id": null,
+    "portions": [
+      {
+        "name_ar": "بولة فواكه",
+        "weight_g": 250,
+        "is_default": true,
+        "basis": "Planning serving: finished batch divided equally into 2 serving(s), 250 g each. Not a measured Egyptian population average."
+      }
+    ],
+    "yield_note": "Makes 2 serving(s): 2 x 250 g (بولة فواكه); finished batch 500 g. Estimated, not kitchen measured. 120 + 100 + 120 + 160 = 500 g prepared edible fruit, two 250 g bowls. Peels, cores and stalks excluded before weighing; no syrup or juice added.",
+    "origin": "seed",
+    "origin_note": "Recipe quantities and method checked against https://extension.okstate.edu/programs/oklahoma-gardening/recipes/fruit-salad-with-citrus-dressing (accessed 2026-10-31). Source checks a mixed apple/banana/strawberry fruit salad. Our seasonal four-fruit variation uses orange segments instead of separate citrus dressing, excludes blueberries and other optional fruit, and uses weighed edible fruit rather than cup weights. These are planning adaptations, not a verified prescription from an Egyptian coach. Nutrition is calculated only from the listed out/foods-*.json ingredients and estimated finished weight; source-page nutrition is not copied. All edible oil and sauces listed are counted as eaten; no unlisted caloric garnish.",
+    "confidence": "medium",
+    "review_flags": [
+      "quantities_vary_by_household",
+      "yield_estimated",
+      "portion_assumed"
+    ],
+    "source_file": "recipes-2-gym.json"
+  },
+  {
+    "slug": "homemade-protein-bars",
+    "name_ar": "بار بروتين بيتي بالشوفان",
+    "name_en": "Homemade oat protein bars",
+    "aliases_ar": [
+      "بروتين بار بيتي"
+    ],
+    "aliases_en": [],
+    "description_ar": "بار بروتين بيتي بالشوفان بمقادير موزونة؛ الحصة بار وزنها 70 جرام.",
+    "meal_tags": [
+      "snack",
+      "post_workout"
+    ],
+    "finished_weight_g": 560,
+    "prep_minutes": 15,
+    "cook_minutes": 0,
+    "ingredients": [
+      {
+        "food_slug": "oats-dry",
+        "weight_g": 150
+      },
+      {
+        "food_slug": "banana",
+        "weight_g": 160,
+        "note_ar": "وزن بعد التقشير"
+      },
+      {
+        "food_slug": "peanut-butter",
+        "weight_g": 120
+      },
+      {
+        "food_slug": "whey-protein",
+        "weight_g": 90
+      },
+      {
+        "food_slug": "honey",
+        "weight_g": 40
+      }
+    ],
+    "steps_ar": [
+      "اطحن الشوفان ناعم واهرس الموز كويس.",
+      "قلب الشوفان والواي، وضيف الموز وزبدة الفول السوداني والعسل واعجن لحد ما الخليط يتماسك.",
+      "افرد الخليط في علبة مبطنة بورق زبدة واضغطه كويس، ودخله التلاجة ساعة.",
+      "قطعه على ٨ بارات متساويين، وزن البار حوالي ٧٠ جرام، واحفظهم في التلاجة."
+    ],
+    "youtube_video_id": null,
+    "portions": [
+      {
+        "name_ar": "بار",
+        "weight_g": 70,
+        "is_default": true,
+        "basis": "Planning serving: finished batch divided equally into 8 serving(s), 70 g each. Not a measured Egyptian population average."
+      }
+    ],
+    "yield_note": "Makes 8 serving(s): 8 x 70 g (بار); finished batch 560 g. Estimated, not kitchen measured. 150 + 160 + 120 + 90 + 40 = 560 g, pressed and chilled without baking. Makes 8 bars at 70 g; no additional liquid or topping. Prep excludes 1 hour chilling.",
+    "origin": "seed",
+    "origin_note": "Recipe quantities and method checked against https://www.bbcgoodfood.com/recipes/protein-bars (accessed 2026-10-31). Source no-bake template uses 150 g oats, 160 g banana, 200 g nut butter, 90 g protein powder plus syrup/seeds/chocolate. Our simplified version keeps oats, banana and powder quantities, reduces peanut butter to 120 g and deliberately uses 40 g honey; seeds, vanilla and chocolate are omitted. These are planning adaptations, not a verified prescription from an Egyptian coach. Nutrition is calculated only from the listed out/foods-*.json ingredients and estimated finished weight; source-page nutrition is not copied. All edible oil and sauces listed are counted as eaten; no unlisted caloric garnish.",
+    "confidence": "low",
+    "review_flags": [
+      "quantities_vary_by_household",
+      "yield_estimated",
+      "portion_assumed",
+      "brand_varies"
+    ],
+    "source_file": "recipes-2-gym.json"
+  }
+]

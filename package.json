@@ -22,7 +22,9 @@
     "db:generate": "drizzle-kit generate",
     "db:migrate": "drizzle-kit migrate",
     "db:studio": "drizzle-kit studio",
-    "db:check": "drizzle-kit check"
+    "db:check": "drizzle-kit check",
+    "seed:validate": "node seed-data/validate-foods.cjs && node seed-data/validate-recipes.cjs",
+    "seed:generate": "node seed-data/generate-seed-migration.cjs"
   },
   "dependencies": {
     "@nestjs/common": "^12.0.1",
