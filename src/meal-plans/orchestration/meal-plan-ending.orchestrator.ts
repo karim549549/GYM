@@ -26,7 +26,7 @@ export class MealPlanEndingOrchestrator extends BaseMealPlanOrchestrator {
           throw new MealPlanNotActiveException();
         }
         await this.mealPlansQuery.setStatus(planId, MealPlanStatus.ENDED);
-        return this.withMeals(await this.mustFind(planId));
+        return this.withMeals(await this.mustFind(planId), workspaceId);
       },
       { workspaceId },
     );

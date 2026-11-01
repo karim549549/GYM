@@ -23,25 +23,25 @@ export class UpdateMealPlanDto {
   @IsInt()
   @Min(0)
   @Max(10_000)
-  kcalTarget?: number | null;
+  caloriesKcalTarget?: number | null;
 
   @ValidateIf((_, value) => value !== undefined && value !== null)
   @IsInt()
   @Min(0)
   @Max(1000)
-  proteinTargetG?: number | null;
+  proteinGTarget?: number | null;
 
   @ValidateIf((_, value) => value !== undefined && value !== null)
   @IsInt()
   @Min(0)
   @Max(2000)
-  carbTargetG?: number | null;
+  carbsGTarget?: number | null;
 
   @ValidateIf((_, value) => value !== undefined && value !== null)
   @IsInt()
   @Min(0)
   @Max(1000)
-  fatTargetG?: number | null;
+  fatGTarget?: number | null;
 
   /** `null` clears it. */
   @Trimmed()

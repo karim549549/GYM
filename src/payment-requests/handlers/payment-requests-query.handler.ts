@@ -1,14 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import {
-  and,
-  count,
-  desc,
-  eq,
-  gt,
-  isNotNull,
-  isNull,
-  sql,
-} from 'drizzle-orm';
+import { and, count, desc, eq, gt, isNotNull, isNull, sql } from 'drizzle-orm';
 import {
   BaseQueryHandler,
   type PaginatedResponse,

@@ -22,19 +22,21 @@ export class FoodMacrosPolicy {
     const { protein, carb, fat } = FoodMacrosPolicy.KCAL_PER_GRAM;
 
     const worked =
-      protein * food.protein100g + carb * food.carb100g + fat * food.fat100g;
+      protein * food.proteinGPer100g +
+      carb * food.carbsGPer100g +
+      fat * food.fatGPer100g;
     const slack = Math.max(
       FoodMacrosPolicy.SMALL_SLACK,
       FoodMacrosPolicy.TOLERANCE * worked,
     );
-    if (Math.abs(food.kcal100g - worked) > slack) {
-      problems.push('kcal100g: inconsistent');
+    if (Math.abs(food.caloriesKcalPer100g - worked) > slack) {
+      problems.push('caloriesKcalPer100g: inconsistent');
     }
-    if (food.protein100g + food.carb100g + food.fat100g > 100) {
+    if (food.proteinGPer100g + food.carbsGPer100g + food.fatGPer100g > 100) {
       problems.push('macros: more than 100 g');
     }
-    if (food.fiber100g > food.carb100g) {
-      problems.push('fiber100g: more than the carbohydrates');
+    if (food.fiberGPer100g > food.carbsGPer100g) {
+      problems.push('fiberGPer100g: more than the carbohydrates');
     }
 
     return problems.length > 0

@@ -4,7 +4,7 @@ import { MealPlanStructurePolicy } from './meal-plan-structure.policy';
 const policy = new MealPlanStructurePolicy();
 
 const meal = (items: MealInput['items']): MealInput => ({
-  dayNo: 0,
+  weekday: null,
   name: 'Lunch',
   items,
 });
@@ -85,9 +85,60 @@ describe('MealPlanStructurePolicy', () => {
     ).toEqual([]);
   });
 
+  it('counts everyday meals together and weekday meals in their own group', () => {
+    expect(
+      problems([
+        ...Array.from({ length: 10 }, () => meal([])),
+        { ...meal([]), weekday: 1 },
+        { ...meal([]), weekday: 7 },
+      ]),
+    ).toEqual([]);
+  });
+
   it('refuses more than 70 meals, ten to a day of the week', () => {
     const many = Array.from({ length: 11 }, () => meal([]));
 
-    expect(problems(many)).toEqual(['meals: more than 10 on day 0']);
+    expect(problems(many)).toEqual(['meals: more than 10 on day null']);
+  });
+});
+
+describe('Recipe substitutes', () => {
+  const policy = new MealPlanStructurePolicy();
+  it('allows a recipe alternative to food', () =>
+    expect(
+      policy.check([
+        {
+          weekday: null,
+          name: 'Lunch',
+          items: [
+            {
+              foodId: 'a',
+              quantity: 1,
+              substitutes: [{ recipeId: 'a', quantity: 1 }],
+            },
+          ],
+        },
+      ]).outcome,
+    ).toBe('valid'));
+  it('rejects the same recipe and duplicate recipe alternatives', () => {
+    const result = policy.check([
+      {
+        weekday: null,
+        name: 'Lunch',
+        items: [
+          {
+            recipeId: 'a',
+            quantity: 1,
+            substitutes: [
+              { recipeId: 'a', quantity: 1 },
+              { recipeId: 'b', quantity: 1 },
+              { recipeId: 'b', quantity: 1 },
+            ],
+          },
+        ],
+      },
+    ]);
+    expect(result.outcome).toBe('invalid');
+    if (result.outcome === 'invalid') expect(result.problems).toHaveLength(2);
   });
 });

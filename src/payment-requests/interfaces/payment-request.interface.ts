@@ -1,11 +1,7 @@
 import type { PaymentMethod } from '../../payments/enums/payment-method.enum';
 
 /** Worked out from the dates and from whether the client reported paying; never stored. */
-export type PaymentRequestState =
-  | 'waiting'
-  | 'paid'
-  | 'confirmed'
-  | 'expired';
+export type PaymentRequestState = 'waiting' | 'paid' | 'confirmed' | 'expired';
 
 /** A payment request as stored. */
 export interface StoredPaymentRequest {
@@ -43,8 +39,10 @@ export interface NewPaymentRequest {
 }
 
 /** What the coach sees: the stored request without the workspace, and its state. */
-export interface PaymentRequestRecord
-  extends Omit<StoredPaymentRequest, 'workspaceId' | 'receiptKey'> {
+export interface PaymentRequestRecord extends Omit<
+  StoredPaymentRequest,
+  'workspaceId' | 'receiptKey'
+> {
   state: PaymentRequestState;
   /** A link that expires, for the screenshot the client sent; null until they did. */
   receiptUrl: string | null;

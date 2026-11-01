@@ -49,9 +49,9 @@ export class StarterMealPlansOrchestrator {
         templates.map((template, index) => ({
           planId: created[index].id,
           meals: template.meals.map((meal): StoredMeal => ({
-            dayNo: 0,
+            weekday: null,
             name: meal.name,
-            timeHint: meal.timeHint,
+            suggestedTime: meal.suggestedTime,
             notes: null,
             items: meal.items.map((item) => {
               const food = library.get(item.slug) as FoodRecord | undefined;
@@ -59,13 +59,13 @@ export class StarterMealPlansOrchestrator {
                 // a library without its own foods is a broken deployment, not a coach's mistake
                 throw new Error(`The food database is missing "${item.slug}"`);
               }
-              const unit = food.units.find((u) => u.isDefault);
+              const portion = food.portions.find((u) => u.isDefault);
               return {
                 foodId: food.id,
-                foodName: food.nameAr,
+                itemName: food.nameAr,
                 quantity: item.quantity,
-                unitId: unit?.id ?? null,
-                ...this.macrosPolicy.resolve(food, item.quantity, unit),
+                portionId: portion?.id ?? null,
+                ...this.macrosPolicy.resolve(food, item.quantity, portion),
                 substitutes: [],
               };
             }),

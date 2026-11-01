@@ -22,25 +22,25 @@ export class CreateMealPlanDto {
   @IsInt()
   @Min(0)
   @Max(10_000)
-  kcalTarget?: number;
+  caloriesKcalTarget?: number;
 
   @IsOptional()
   @IsInt()
   @Min(0)
   @Max(1000)
-  proteinTargetG?: number;
+  proteinGTarget?: number;
 
   @IsOptional()
   @IsInt()
   @Min(0)
   @Max(2000)
-  carbTargetG?: number;
+  carbsGTarget?: number;
 
   @IsOptional()
   @IsInt()
   @Min(0)
   @Max(1000)
-  fatTargetG?: number;
+  fatGTarget?: number;
 
   @Trimmed()
   @IsOptional()

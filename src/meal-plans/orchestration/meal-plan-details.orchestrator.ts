@@ -18,7 +18,7 @@ export class MealPlanDetailsOrchestrator extends BaseMealPlanOrchestrator {
 
   execute(workspaceId: string, planId: string): Promise<MealPlanRecord> {
     return this.transactions.run(
-      async () => this.withMeals(await this.mustFind(planId)),
+      async () => this.withMeals(await this.mustFind(planId), workspaceId),
       { workspaceId },
     );
   }

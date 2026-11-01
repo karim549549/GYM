@@ -5,17 +5,19 @@ const templates = new StarterMealPlansPolicy().starterTemplates();
 describe('StarterMealPlansPolicy', () => {
   it('gives a coach a cutting and a bulking template', () => {
     expect(templates).toHaveLength(2);
-    expect(templates[0].kcalTarget).toBeLessThan(templates[1].kcalTarget);
+    expect(templates[0].caloriesKcalTarget).toBeLessThan(
+      templates[1].caloriesKcalTarget,
+    );
   });
 
   it('names each in Arabic and sets all four targets', () => {
     for (const template of templates) {
       expect(template.name).toMatch(/[؀-ۿ]/);
       for (const target of [
-        template.kcalTarget,
-        template.proteinTargetG,
-        template.carbTargetG,
-        template.fatTargetG,
+        template.caloriesKcalTarget,
+        template.proteinGTarget,
+        template.carbsGTarget,
+        template.fatGTarget,
       ]) {
         expect(target).toBeGreaterThan(0);
       }
@@ -27,7 +29,7 @@ describe('StarterMealPlansPolicy', () => {
       expect(template.meals.length).toBeGreaterThanOrEqual(4);
       for (const meal of template.meals) {
         expect(meal.name.length).toBeGreaterThan(0);
-        expect(meal.timeHint).toMatch(/^\d{2}:\d{2}$/);
+        expect(meal.suggestedTime).toMatch(/^\d{2}:\d{2}$/);
         expect(meal.items.length).toBeGreaterThanOrEqual(2);
       }
     }

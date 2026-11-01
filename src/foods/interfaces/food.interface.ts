@@ -1,24 +1,45 @@
+import type { FoodState } from '../enums/food-state.enum';
+import type { FoodOrigin } from '../enums/food-origin.enum';
+import type { FoodEntryBasis } from '../enums/food-entry-basis.enum';
+import type { NutritionConfidence } from '../enums/nutrition-confidence.enum';
+import type { NutritionAliasKind } from '../enums/nutrition-alias-kind.enum';
+import type { NutrientMeasureUnit } from '../enums/nutrient-measure-unit.enum';
 import type { FoodCategory } from '../enums/food-category.enum';
 
-export interface FoodUnitRecord {
+export interface FoodPortionRecord {
   id: string;
   /** For example "cup", "loaf", "tablespoon", in Arabic. */
-  labelAr: string;
+  nameAr: string;
   /** What one of them weighs. */
-  grams: number;
+  weightG: number;
   isDefault: boolean;
 }
 
 /** Macros are per 100 g, always. */
 export interface FoodMacros {
-  kcal100g: number;
-  protein100g: number;
-  carb100g: number;
-  fat100g: number;
-  fiber100g: number;
+  caloriesKcalPer100g: number;
+  proteinGPer100g: number;
+  carbsGPer100g: number;
+  fatGPer100g: number;
+  fiberGPer100g: number;
 }
 
 export interface FoodRecord extends FoodMacros {
+  brand: string | null;
+  barcode: string | null;
+  state: FoodState | null;
+  description: string | null;
+  origin: FoodOrigin;
+  usdaFdcId: number | null;
+  confidence: NutritionConfidence | null;
+  reviewFlags: string[];
+  isVerified: boolean;
+  isOwn: boolean;
+  entryBasis: FoodEntryBasis;
+  enteredServingWeightG: number | null;
+  aliases: Record<NutritionAliasKind, string[]>;
+  nutrients: FoodNutrientRecord[];
+  defaultPortion: FoodPortionRecord | null;
   id: string;
   nameAr: string;
   nameEn: string | null;
@@ -29,35 +50,68 @@ export interface FoodRecord extends FoodMacros {
   /** True for a coach's own addition, false for the library's. */
   isCustom: boolean;
   /** Where the numbers came from, so a disputed one can be re-checked. */
-  source: string | null;
-  units: FoodUnitRecord[];
+  originNote: string | null;
+  portions: FoodPortionRecord[];
 }
 
-export interface FoodUnitInput {
-  labelAr: string;
-  grams: number;
+export interface FoodPortionInput {
+  nameAr: string;
+  weightG: number;
   isDefault?: boolean;
 }
 
-export interface NewFood extends FoodMacros {
+export interface NewFood extends FoodMacros, FoodLabelInput {
   nameAr: string;
   nameEn?: string;
   category: FoodCategory;
-  units?: FoodUnitInput[];
+  portions?: FoodPortionInput[];
 }
 
 /** What a coach may change on their own food. `null` clears the English name. */
-export interface FoodChanges extends Partial<FoodMacros> {
+export interface FoodChanges extends Partial<FoodMacros>, FoodLabelInput {
   nameAr?: string;
   nameEn?: string | null;
   category?: FoodCategory;
   isActive?: boolean;
-  units?: FoodUnitInput[];
+  portions?: FoodPortionInput[];
 }
 
 export interface FoodListFilter {
+  state?: FoodState;
+  scope?: 'all' | 'shared' | 'mine';
   /** Part of either name; the characters of a pattern are plain text. */
   search?: string;
   category?: FoodCategory;
   includeInactive?: boolean;
+}
+
+export interface FoodEntryInput {
+  basis: FoodEntryBasis;
+  servingWeightG?: number;
+}
+export interface FoodNutrientInput {
+  code: string;
+  amount: number;
+}
+export interface FoodAliasInput {
+  kind: NutritionAliasKind;
+  alias: string;
+}
+export interface FoodNutrientRecord {
+  code: string;
+  nameAr: string;
+  nameEn: string;
+  measureUnit: NutrientMeasureUnit;
+  amountPer100g: number;
+}
+export interface FoodLabelInput {
+  brand?: string | null;
+  barcode?: string | null;
+  state?: FoodState | null;
+  description?: string | null;
+  origin?: FoodOrigin.PACKAGE_LABEL | FoodOrigin.ESTIMATE;
+  entry?: FoodEntryInput;
+  nutrients?: FoodNutrientInput[];
+  aliases?: FoodAliasInput[];
+  confirmNotDuplicate?: boolean;
 }
