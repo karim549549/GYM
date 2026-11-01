@@ -14,6 +14,7 @@ export * from './muscles.schema';
 export * from './named-forms.schema';
 export * from './packages.schema';
 export * from './payment-channels.schema';
+export * from './payment-requests.schema';
 export * from './reminder-messages.schema';
 export * from './payments.schema';
 export * from './plans.schema';

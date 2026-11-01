@@ -25,6 +25,17 @@ export class PaymentRecordingOrchestrator {
       () => this.paymentsQuery.create(workspaceId, payment),
       { workspaceId },
     );
-    return { ...created, receiptUrl: null };
+    return {
+      id: created.id,
+      subscriptionId: created.subscriptionId,
+      clientId: created.clientId,
+      amountMinor: created.amountMinor,
+      currency: created.currency,
+      method: created.method,
+      paidOn: created.paidOn,
+      note: created.note,
+      createdAt: created.createdAt,
+      receiptUrl: null,
+    };
   }
 }

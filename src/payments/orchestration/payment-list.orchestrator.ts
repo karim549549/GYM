@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import type { PaginatedResponse } from '../../common/handlers/base-query.handler';
 import { TransactionManager } from '../../database/transaction.manager';
+import { PaymentFileHandler } from '../handlers/payment-file.handler';
 import { PaymentsQueryHandler } from '../handlers/payments-query.handler';
 import type {
   PaymentListFilter,
@@ -12,6 +13,7 @@ import type {
 export class PaymentListOrchestrator {
   constructor(
     private readonly paymentsQuery: PaymentsQueryHandler,
+    private readonly files: PaymentFileHandler,
     private readonly transactions: TransactionManager,
   ) {}
 
@@ -25,9 +27,13 @@ export class PaymentListOrchestrator {
       () => this.paymentsQuery.list(filter, page, limit),
       { workspaceId },
     );
-    return {
-      ...result,
-      items: result.items.map((payment) => ({ ...payment, receiptUrl: null })),
-    };
+    // signing is a call to the store, not the database: done once the transaction is closed
+    const items = await Promise.all(
+      result.items.map(async ({ receiptKey, ...payment }) => ({
+        ...payment,
+        receiptUrl: await this.files.receiptUrlOf(receiptKey),
+      })),
+    );
+    return { ...result, items };
   }
 }
