@@ -13,7 +13,7 @@ interface LoggerOptions {
 const SAFE_REQUEST_ID = /^[\w-]{8,64}$/;
 
 // The address of a public link carries its secret in the path, which the logger would otherwise keep.
-const PUBLIC_LINK_PATH = /^(\/api\/v\d+\/(?:intake|checkin|program)\/)[^/]+/;
+const PUBLIC_LINK_PATH = /^(\/api\/v\d+\/(?:intake|checkin|program|pay)\/)[^/]+/;
 
 const SENSITIVE_FIELDS = [
   'password',
