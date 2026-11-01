@@ -24,6 +24,7 @@ import { LoggingModule } from './logging/logging.module';
 import { OnboardingModule } from './onboarding/onboarding.module';
 import { PackagesModule } from './packages/packages.module';
 import { PaymentChannelsModule } from './payment-channels/payment-channels.module';
+import { PaymentRequestsModule } from './payment-requests/payment-requests.module';
 import { ProgramLinksModule } from './program-links/program-links.module';
 import { ReminderMessagesModule } from './reminder-messages/reminder-messages.module';
 import { WorkspacesModule } from './workspaces/workspaces.module';
@@ -44,6 +45,7 @@ import { WorkspacesModule } from './workspaces/workspaces.module';
     IntakeModule,
     SubscriptionsModule,
     PaymentsModule,
+    PaymentRequestsModule,
     HomeModule,
     CheckinsModule,
     ExercisesModule,

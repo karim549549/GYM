@@ -31,8 +31,9 @@
 
 ## Used by the frontend but with no backend yet
 
-- [ ] Payment-request links (`/pay/<token>`): a public page where a client pays outside the app and uploads the screenshot. The frontend keeps the requests in the browser, so they only work on the coach's own device.
-- [ ] Payment receipt upload on `POST /subscriptions/:id/payments`, and a transfer screenshot for platform invoices (private bucket flow).
+- [x] Payment-request links (`/pay/<token>`): `payment-requests` module, `payment_requests` table (migrations `0052`, `0053`), coach `POST|GET /payment-requests`, public `GET /pay/:token` and `POST /pay/:token/report`. The client's report is their word: the coach still records the payment. The client's transfer screenshot is required and stored (migration `0054`). The coach confirms a report with one tap (`POST /payment-requests/:id/confirm`, migration `0055`). Not built: telling the coach a client reported paying.
+- [x] Payment receipt upload: `PUT /payments/:id/receipt`, optional for the coach.
+- [ ] A transfer screenshot for platform invoices (private bucket flow).
 - [ ] An endpoint for the coach to fill the intake form on behalf of a client (`submitted_by = coach`); the frontend hides the action.
 - [ ] A client photo, and a way to list reminders.
 - [ ] `GET /auth/me` answers `WORKSPACE_REQUIRED` for a person with several workspaces who sends no `x-workspace-id`, so the frontend cannot learn the workspaces to choose from; it needs a response that lists them.
