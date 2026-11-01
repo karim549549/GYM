@@ -17,7 +17,9 @@ import {
 } from 'drizzle-orm/pg-core';
 import { MealPlanStatus } from '../../meal-plans/enums/meal-plan-status.enum';
 import { clients } from './clients.schema';
-import { foodUnits, foods } from './foods.schema';
+import { foodPortions, foods } from './foods.schema';
+import { recipes, recipePortions } from './recipes.schema';
+import { MealCategory } from '../../foods/enums/meal-category.enum';
 import { people } from './people.schema';
 import { workspaces } from './workspaces.schema';
 
@@ -43,10 +45,10 @@ export const mealPlans = pgTable(
     clientId: uuid('client_id'),
     isTemplate: boolean('is_template').notNull().default(false),
     name: text('name').notNull(),
-    kcalTarget: integer('kcal_target'),
-    proteinTargetG: integer('protein_target_g'),
-    carbTargetG: integer('carb_target_g'),
-    fatTargetG: integer('fat_target_g'),
+    caloriesKcalTarget: integer('calories_kcal_target'),
+    proteinGTarget: integer('protein_g_target'),
+    carbsGTarget: integer('carbs_g_target'),
+    fatGTarget: integer('fat_g_target'),
     status: text('status')
       .$type<MealPlanStatus>()
       .notNull()
@@ -82,12 +84,12 @@ export const mealPlans = pgTable(
     ),
     check(
       'meal_plans_targets_check',
-      sql`coalesce(${table.kcalTarget}, 0) >= 0 and coalesce(${table.proteinTargetG}, 0) >= 0 and coalesce(${table.carbTargetG}, 0) >= 0 and coalesce(${table.fatTargetG}, 0) >= 0`,
+      sql`coalesce(${table.caloriesKcalTarget}, 0) >= 0 and coalesce(${table.proteinGTarget}, 0) >= 0 and coalesce(${table.carbsGTarget}, 0) >= 0 and coalesce(${table.fatGTarget}, 0) >= 0`,
     ),
   ],
 );
 
-/** One meal. `day_no` 0 means it repeats every day; 1 to 7 pins it to a weekday. */
+/** One meal. `weekday` NULL means it repeats every day; 1 to 7 pins it to a weekday. */
 export const meals = pgTable(
   'meals',
   {
@@ -96,10 +98,11 @@ export const meals = pgTable(
       .notNull()
       .references(() => workspaces.id, { onDelete: 'cascade' }),
     mealPlanId: uuid('meal_plan_id').notNull(),
-    dayNo: integer('day_no').notNull().default(0),
-    position: integer('position').notNull(),
+    weekday: integer('weekday'),
+    sortOrder: integer('sort_order').notNull(),
     name: text('name').notNull(),
-    timeHint: time('time_hint'),
+    suggestedTime: time('suggested_time'),
+    category: text('category').$type<MealCategory>(),
     notes: text('notes'),
   },
   (table) => [
@@ -108,18 +111,24 @@ export const meals = pgTable(
       columns: [table.mealPlanId, table.workspaceId],
       foreignColumns: [mealPlans.id, mealPlans.workspaceId],
     }).onDelete('cascade'),
-    unique('meals_plan_day_position_key').on(
-      table.mealPlanId,
-      table.dayNo,
-      table.position,
-    ),
+    unique('meals_plan_weekday_sort_order_key')
+      .on(table.mealPlanId, table.weekday, table.sortOrder)
+      .nullsNotDistinct(),
     unique('meals_id_workspace_key').on(table.id, table.workspaceId),
-    check('meals_day_no_check', sql`${table.dayNo} between 0 and 7`),
+    check('meals_weekday_check', sql`${table.weekday} between 1 and 7`),
+    check(
+      'meals_category_check',
+      sql`${table.category} in (${sql.raw(
+        Object.values(MealCategory)
+          .map((v) => `'${v}'`)
+          .join(', '),
+      )})`,
+    ),
   ],
 );
 
 /**
- * A food in a meal. It stores both what the coach chose (a quantity of a unit) and what that
+ * A food in a meal. It stores both what the coach chose (a quantity of a portion) and what that
  * resolved to (grams and the four macros), copied from the food at save time. The choice is what
  * the editor shows back; the resolution is what is summed, with no join to foods; and the copy
  * means correcting a food next month does not rewrite a plan a client is following.
@@ -132,28 +141,41 @@ export const mealItems = pgTable(
       .notNull()
       .references(() => workspaces.id, { onDelete: 'cascade' }),
     mealId: uuid('meal_id').notNull(),
-    foodId: uuid('food_id')
-      .notNull()
-      .references(() => foods.id, { onDelete: 'no action' }),
-    position: integer('position').notNull(),
-    quantity: macro('quantity', 7).notNull(),
-    unitId: uuid('unit_id').references(() => foodUnits.id, {
-      onDelete: 'set null',
+    recipeId: uuid('recipe_id').references(() => recipes.id),
+    foodId: uuid('food_id').references(() => foods.id, {
+      onDelete: 'no action',
     }),
-    grams: macro('grams', 7).notNull(),
-    foodName: text('food_name').notNull(),
-    kcal: macro('kcal', 7).notNull(),
+    sortOrder: integer('sort_order').notNull(),
+    quantity: macro('quantity', 7).notNull(),
+    portionId: uuid('portion_id'),
+    weightG: macro('weight_g', 7).notNull(),
+    itemName: text('item_name').notNull(),
+    caloriesKcal: macro('calories_kcal', 7).notNull(),
     proteinG: macro('protein_g').notNull(),
-    carbG: macro('carb_g').notNull(),
+    carbsG: macro('carbs_g').notNull(),
     fatG: macro('fat_g').notNull(),
   },
   (table) => [
+    check(
+      'meal_items_food_or_recipe_check',
+      sql`num_nonnulls(${table.foodId}, ${table.recipeId}) = 1`,
+    ),
+    foreignKey({
+      name: 'meal_items_portion_food_fk',
+      columns: [table.portionId, table.foodId],
+      foreignColumns: [foodPortions.id, foodPortions.foodId],
+    }).onDelete('set null'),
+    foreignKey({
+      name: 'meal_items_portion_recipe_fk',
+      columns: [table.portionId, table.recipeId],
+      foreignColumns: [recipePortions.id, recipePortions.recipeId],
+    }).onDelete('set null'),
     foreignKey({
       name: 'meal_items_meal_workspace_fk',
       columns: [table.mealId, table.workspaceId],
       foreignColumns: [meals.id, meals.workspaceId],
     }).onDelete('cascade'),
-    unique('meal_items_meal_position_key').on(table.mealId, table.position),
+    unique('meal_items_meal_sort_order_key').on(table.mealId, table.sortOrder),
     unique('meal_items_id_workspace_key').on(table.id, table.workspaceId),
     index('meal_items_food_idx').on(table.foodId),
     check('meal_items_quantity_check', sql`${table.quantity} > 0`),
@@ -173,30 +195,43 @@ export const mealItemSubs = pgTable(
       .notNull()
       .references(() => workspaces.id, { onDelete: 'cascade' }),
     mealItemId: uuid('meal_item_id').notNull(),
-    position: integer('position').notNull(),
-    foodId: uuid('food_id')
-      .notNull()
-      .references(() => foods.id, { onDelete: 'no action' }),
-    quantity: macro('quantity', 7).notNull(),
-    unitId: uuid('unit_id').references(() => foodUnits.id, {
-      onDelete: 'set null',
+    sortOrder: integer('sort_order').notNull(),
+    recipeId: uuid('recipe_id').references(() => recipes.id),
+    foodId: uuid('food_id').references(() => foods.id, {
+      onDelete: 'no action',
     }),
-    grams: macro('grams', 7).notNull(),
-    foodName: text('food_name').notNull(),
-    kcal: macro('kcal', 7).notNull(),
+    quantity: macro('quantity', 7).notNull(),
+    portionId: uuid('portion_id'),
+    weightG: macro('weight_g', 7).notNull(),
+    itemName: text('item_name').notNull(),
+    caloriesKcal: macro('calories_kcal', 7).notNull(),
     proteinG: macro('protein_g').notNull(),
-    carbG: macro('carb_g').notNull(),
+    carbsG: macro('carbs_g').notNull(),
     fatG: macro('fat_g').notNull(),
   },
   (table) => [
+    check(
+      'meal_item_subs_food_or_recipe_check',
+      sql`num_nonnulls(${table.foodId}, ${table.recipeId}) = 1`,
+    ),
+    foreignKey({
+      name: 'meal_item_subs_portion_food_fk',
+      columns: [table.portionId, table.foodId],
+      foreignColumns: [foodPortions.id, foodPortions.foodId],
+    }).onDelete('set null'),
+    foreignKey({
+      name: 'meal_item_subs_portion_recipe_fk',
+      columns: [table.portionId, table.recipeId],
+      foreignColumns: [recipePortions.id, recipePortions.recipeId],
+    }).onDelete('set null'),
     foreignKey({
       name: 'meal_item_subs_item_workspace_fk',
       columns: [table.mealItemId, table.workspaceId],
       foreignColumns: [mealItems.id, mealItems.workspaceId],
     }).onDelete('cascade'),
-    unique('meal_item_subs_item_position_key').on(
+    unique('meal_item_subs_item_sort_order_key').on(
       table.mealItemId,
-      table.position,
+      table.sortOrder,
     ),
     index('meal_item_subs_food_idx').on(table.foodId),
   ],

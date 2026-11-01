@@ -27,3 +27,5 @@ export * from './workspace-members.schema';
 export * from './workspace-invitations.schema';
 export * from './people.schema';
 export * from './workspaces.schema';
+export * from './food-details.schema';
+export * from './recipes.schema';
