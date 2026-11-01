@@ -56,7 +56,7 @@ src/
    `common/clients/base.client.ts` (see "Calling other systems"). Feature modules today: `auth`
    (sign-in, sign-up, the principal), `people`, `workspaces`, `members`, `packages`, `clients`,
    `intake`, `measurements`, `subscriptions`, `payments`, `reminders`, `checkins`, `exercises`, `plans`,
-   `foods`, `meal-plans`, `program-links`, `billing`, `forms`, `analytics`, `consents`, `invitations`, `home`,
+   `foods`, `meal-plans`, `program-links`, `payment-requests`, `billing`, `forms`, `analytics`, `consents`, `invitations`, `home`,
    `onboarding` and `client-overview` (`analytics`, `home`, `onboarding` and `client-overview` own no table: they only read or coordinate other modules), `health`.
 4. `config/` holds values only. Code that builds a library's options from those
    values lives with the feature that uses the library (`logging/logger.options.ts`).
@@ -603,8 +603,10 @@ owns nothing and only adds the two together.
   Payment foreign keys are `NO ACTION`, not `RESTRICT`, so deleting a whole workspace still works.
 - `GET /home` is the three numbers of the home screen (active clients, this month's revenue,
   renewals due within 7 days) and nothing more, as the product asks.
-- Not built: payment receipt upload (the column `receipt_key` exists; the response has `receiptUrl:
-  null`), Excel export, renewing ahead of the end date (a running subscription must be cancelled
+- **A payment's transfer screenshot** is optional for the coach: `PUT /payments/:id/receipt` (multipart, field `file`, 6 MB
+  at most, `PAYMENTS_WRITE`) adds or replaces it after the payment is recorded, in the private `gym-files` bucket
+  (`PaymentFileHandler`); the old file is deleted once the new key is saved. `receiptUrl` is a link that lasts an hour.
+- Not built: Excel export, renewing ahead of the end date (a running subscription must be cancelled
   or wait), the coach's own alerts as stored rows (the coach reads them from the list endpoints).
 
 ## Reminders
@@ -722,6 +724,35 @@ sessions; the real WhatsApp sender does not exist yet, so no code is sent).
   lockout is still a launch blocker, as for the intake.
 - Migrations: the table is generated (`npm run db:generate`); the RLS (policy, function `app_program_token()`) is a custom
   migration, as `0018` is for intake.
+
+## Payment requests: the link a client opens to pay
+
+`payment-requests` owns `payment_requests`. A coach asks a client for an amount on a subscription and sends the
+address; the client opens it with no login, sees what is asked, pays outside the app and says so.
+
+- Coach, `POST /payment-requests { subscriptionId, amountMinor, note? }` (`PAYMENTS_WRITE`) and `GET /payment-requests`
+  (`PAYMENTS_READ`, paginated, newest first). The amount cannot exceed what is still owed (`PAYMENT_REQUEST_EXCEEDS_DUE`)
+  and a cancelled subscription cannot be asked for (`PAYMENT_REQUEST_SUBSCRIPTION_CLOSED`). The client's name and the
+  package name are **copied** onto the row. The token is 12 alphanumeric characters; the link is valid 14 days.
+  `state` (`waiting`, `paid` = the client reported, `confirmed`, `expired`) is worked out on every read.
+- Client, all `@Public()`: `GET /pay/:token` (brand, payment channels, client name, package, amount, note, state; never ids or phones) and
+  `POST /pay/:token/report` (multipart: the `method` field and the transfer screenshot as the required `file` field, 6 MB at most).
+  **A report is the client's word, not money received:** it sets `paid_at`, `paid_method` and `receipt_key`
+  (atomically, only while open: `PAYMENT_REQUEST_ALREADY_PAID`, `PAYMENT_REQUEST_EXPIRED`; the loser's file is deleted)
+  and makes no `payments` row. The coach checks the money arrived and **confirms**: `POST /payment-requests/:id/confirm`
+  (`PAYMENTS_WRITE`) records the payment with what the client wrote (the asked amount, their method, the day they
+  reported it in Egypt, the note and the same screenshot file, shared not copied) in one transaction, and sets
+  `payment_id` on the request, whose `state` is then `confirmed`. A report not made yet is `PAYMENT_REQUEST_NOT_REPORTED`,
+  a second tap `PAYMENT_REQUEST_ALREADY_CONFIRMED`. The coach can still record by hand through
+  `POST /subscriptions/:id/payments`. The coach's list carries `receiptUrl`, a link that lasts an hour. The screenshot is stored by
+  `PaymentRequestFileHandler` in the private `gym-files` bucket under `workspaces/<id>/receipts/`.
+- Tenancy: RLS enabled and forced, a tenant policy and a SELECT-only policy `payment_requests_by_token` under the
+  `paymentToken` transaction scope (`app_payment_token()`), as for program links. The write after finding the link
+  runs in the link's workspace.
+- Logging: the path segment after `/pay/` is masked in the request log.
+- Launch blocker, as for the other public links: rate limiting. Not built: telling the coach a client reported paying.
+- Migrations: the table is generated (`npm run db:generate`); the RLS and `app_payment_token()` are a custom migration
+  (`0053_payment_requests_rls.sql`).
 
 ## Shared libraries: exercises and foods
 

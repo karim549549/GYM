@@ -20,6 +20,8 @@ export interface PaymentReceived {
   method: PaymentMethod;
   paidOn?: string;
   note?: string;
+  /** A screenshot already in the files bucket, when the payment comes from a client's report. */
+  receiptKey?: string;
 }
 
 /**
@@ -80,6 +82,7 @@ export class SubscriptionPaymentOrchestrator extends BaseSubscriptionOrchestrato
           method: received.method,
           paidOn: received.paidOn ?? this.dates.today(new Date()),
           note: received.note,
+          receiptKey: received.receiptKey,
           recordedBy,
         });
       },

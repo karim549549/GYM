@@ -24,6 +24,8 @@ export interface NewPayment {
   method: PaymentMethod;
   paidOn: string;
   note?: string;
+  /** A screenshot already in the files bucket. */
+  receiptKey?: string;
   recordedBy: string;
 }
 

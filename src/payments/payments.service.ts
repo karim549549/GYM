@@ -6,6 +6,7 @@ import type {
   PaymentRecord,
   PaymentSummary,
 } from './interfaces/payment.interface';
+import { PaymentReceiptOrchestrator } from './orchestration/payment-receipt.orchestrator';
 import { PaymentRevenueOrchestrator } from './orchestration/payment-revenue.orchestrator';
 import { PaymentListOrchestrator } from './orchestration/payment-list.orchestrator';
 import { PaymentRecordingOrchestrator } from './orchestration/payment-recording.orchestrator';
@@ -21,11 +22,21 @@ export class PaymentsService {
     private readonly paymentSummary: PaymentSummaryOrchestrator,
     private readonly paymentTotals: PaymentTotalsOrchestrator,
     private readonly paymentRevenue: PaymentRevenueOrchestrator,
+    private readonly paymentReceipt: PaymentReceiptOrchestrator,
   ) {}
 
   /** For the subscription flow, which has checked that the payment is allowed. */
   record(workspaceId: string, payment: NewPayment): Promise<PaymentRecord> {
     return this.paymentRecording.execute(workspaceId, payment);
+  }
+
+  /** Adds or replaces the transfer screenshot of a payment. */
+  setReceipt(
+    workspaceId: string,
+    paymentId: string,
+    bytes: Uint8Array,
+  ): Promise<PaymentRecord> {
+    return this.paymentReceipt.execute(workspaceId, paymentId, bytes);
   }
 
   list(

@@ -32,10 +32,14 @@ const RECORD = {
   method: payments.method,
   paidOn: payments.paidOn,
   note: payments.note,
+  receiptKey: payments.receiptKey,
   createdAt: payments.createdAt,
 };
 
-type StoredPayment = Omit<PaymentRecord, 'receiptUrl'>;
+/** A payment as stored: the screenshot is a key here, and becomes a link when it is shown. */
+export type StoredPayment = Omit<PaymentRecord, 'receiptUrl'> & {
+  receiptKey: string | null;
+};
 
 /** Data access for the `payments` table. Row level security keeps it to one workspace. */
 @Injectable()
@@ -49,6 +53,31 @@ export class PaymentsQueryHandler extends BaseQueryHandler {
       .values({ workspaceId, ...payment })
       .returning(RECORD);
     return created;
+  }
+
+  async findById(id: string): Promise<StoredPayment | null> {
+    const rows = await this.db
+      .select(RECORD)
+      .from(payments)
+      .where(eq(payments.id, id))
+      .limit(1);
+    return this.firstOrNull(rows);
+  }
+
+  /** Points the payment at its screenshot. Returns the payment as it was before, so the old file can go. */
+  async setReceiptKey(
+    id: string,
+    receiptKey: string,
+  ): Promise<StoredPayment | null> {
+    const before = await this.findById(id);
+    if (!before) {
+      return null;
+    }
+    await this.db
+      .update(payments)
+      .set({ receiptKey })
+      .where(eq(payments.id, id));
+    return before;
   }
 
   /** Newest first: by the day the money arrived, then by when it was recorded. */
