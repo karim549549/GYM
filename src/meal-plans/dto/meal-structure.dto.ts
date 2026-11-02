@@ -1,5 +1,7 @@
+import { MealItemChoiceValidator } from '../validators/meal-item-choice.validator';
 import { Type } from 'class-transformer';
 import {
+  Validate,
   ArrayMaxSize,
   IsArray,
   IsInt,
@@ -13,14 +15,31 @@ import {
   MaxLength,
   Min,
   ValidateNested,
+  ValidateIf,
 } from 'class-validator';
 import { Trimmed } from '../../common/decorators/trimmed.decorator';
 
 export class MealSubstituteDto {
-  @IsUUID()
-  foodId: string;
+  @ValidateIf(
+    (entry: MealSubstituteDto) =>
+      entry.foodId !== undefined || entry.recipeId === undefined,
+  )
+  @IsUUID('all', {
+    message: 'Exactly one of foodId or recipeId must be supplied (a UUID)',
+  })
+  foodId?: string;
 
-  /** In units when a unit is given, in grams when not. */
+  @ValidateIf(
+    (entry: MealSubstituteDto) =>
+      entry.recipeId !== undefined || entry.foodId === undefined,
+  )
+  @IsUUID('all', {
+    message: 'Exactly one of foodId or recipeId must be supplied (a UUID)',
+  })
+  recipeId?: string;
+
+  /** In portions when a portion is given, in grams when not. */
+  @Validate(MealItemChoiceValidator)
   @IsNumber({ maxDecimalPlaces: 2 })
   @Min(0.01)
   @Max(10_000)
@@ -28,7 +47,7 @@ export class MealSubstituteDto {
 
   @IsOptional()
   @IsUUID()
-  unitId?: string;
+  portionId?: string;
 }
 
 export class MealItemDto extends MealSubstituteDto {
@@ -42,11 +61,12 @@ export class MealItemDto extends MealSubstituteDto {
 }
 
 export class MealDto {
-  /** 0 repeats the meal every day; 1 to 7 pins it to a weekday. */
+  /** Null repeats the meal every day; 1 to 7 pins it to a weekday. */
+  @ValidateIf((_, value) => value !== null)
   @IsInt()
-  @Min(0)
+  @Min(1)
   @Max(7)
-  dayNo: number;
+  weekday: number | null;
 
   /** For example breakfast, lunch, snack. */
   @Trimmed()
@@ -58,7 +78,7 @@ export class MealDto {
   /** `HH:MM`, roughly when it is eaten. */
   @IsOptional()
   @IsMilitaryTime()
-  timeHint?: string;
+  suggestedTime?: string;
 
   @Trimmed()
   @IsOptional()

@@ -2,18 +2,19 @@ import type { MealPlanStatus } from '../enums/meal-plan-status.enum';
 
 /** What a meal item or substitute is worth, resolved from the food when the plan is saved. */
 export interface ResolvedMacros {
-  grams: number;
-  kcal: number;
+  weightG: number;
+  caloriesKcal: number;
   proteinG: number;
-  carbG: number;
+  carbsG: number;
   fatG: number;
 }
 
 export interface MealSubstituteInput {
-  foodId: string;
-  /** In units when `unitId` is given, in grams when it is not. */
+  foodId?: string;
+  recipeId?: string;
+  /** In portions when `portionId` is given, in grams when it is not. */
   quantity: number;
-  unitId?: string;
+  portionId?: string;
 }
 
 export interface MealItemInput extends MealSubstituteInput {
@@ -22,24 +23,26 @@ export interface MealItemInput extends MealSubstituteInput {
 }
 
 export interface MealInput {
-  /** 0 repeats every day; 1 to 7 pins the meal to a weekday. */
-  dayNo: number;
+  /** Null repeats every day; 1 to 7 pins the meal to a weekday. */
+  weekday: number | null;
   name: string;
   /** `HH:MM`, roughly when it is eaten. */
-  timeHint?: string;
+  suggestedTime?: string;
   notes?: string;
-  /** Their order is their position in the meal. */
+  /** Their order is their order in the meal. */
   items: MealItemInput[];
 }
 
 export interface MealSubstituteRecord extends ResolvedMacros {
-  position: number;
-  foodId: string;
+  kind: 'food' | 'recipe';
+  sortOrder: number;
+  foodId: string | null;
+  recipeId: string | null;
   /** Copied from the food when the plan was saved. */
-  foodName: string;
+  itemName: string;
   quantity: number;
-  unitId: string | null;
-  unitLabelAr: string | null;
+  portionId: string | null;
+  portionNameAr: string | null;
 }
 
 export interface MealItemRecord extends MealSubstituteRecord {
@@ -47,17 +50,17 @@ export interface MealItemRecord extends MealSubstituteRecord {
 }
 
 export interface MacroTotals {
-  kcal: number;
+  caloriesKcal: number;
   proteinG: number;
-  carbG: number;
+  carbsG: number;
   fatG: number;
 }
 
 export interface MealRecord {
-  dayNo: number;
-  position: number;
+  weekday: number | null;
+  sortOrder: number;
   name: string;
-  timeHint: string | null;
+  suggestedTime: string | null;
   notes: string | null;
   totals: MacroTotals;
   items: MealItemRecord[];
@@ -67,23 +70,23 @@ export interface MealRecord {
 export type StoredMealRecord = Omit<MealRecord, 'totals'>;
 
 export interface MealPlanTargets {
-  kcalTarget: number | null;
-  proteinTargetG: number | null;
-  carbTargetG: number | null;
-  fatTargetG: number | null;
+  caloriesKcalTarget: number | null;
+  proteinGTarget: number | null;
+  carbsGTarget: number | null;
+  fatGTarget: number | null;
 }
 
 /** What one day of the plan adds up to, and how far it is from the targets. */
 export interface DayTotals extends MacroTotals {
-  /** 0 when the plan is the same every day, otherwise 1 to 7. */
-  dayNo: number;
+  /** Null when the plan is the same every day, otherwise 1 to 7. */
+  weekday: number | null;
   /** The share of the day's calories each macro brings, in percent. */
   split: { proteinPct: number; carbPct: number; fatPct: number };
   /** Target minus total: positive means short of it. Null when there is no target. */
   gap: {
-    kcal: number | null;
+    caloriesKcal: number | null;
     proteinG: number | null;
-    carbG: number | null;
+    carbsG: number | null;
     fatG: number | null;
   };
 }
@@ -117,10 +120,10 @@ export interface NewMealPlan extends Partial<MealPlanTargets> {
 
 export interface MealPlanChanges {
   name?: string;
-  kcalTarget?: number | null;
-  proteinTargetG?: number | null;
-  carbTargetG?: number | null;
-  fatTargetG?: number | null;
+  caloriesKcalTarget?: number | null;
+  proteinGTarget?: number | null;
+  carbsGTarget?: number | null;
+  fatGTarget?: number | null;
   notes?: string | null;
 }
 
@@ -132,18 +135,19 @@ export interface MealPlanListFilter {
 
 /** A meal with its items resolved: the structure to be stored. */
 export interface StoredMeal {
-  dayNo: number;
+  weekday: number | null;
   name: string;
-  timeHint: string | null;
+  suggestedTime: string | null;
   notes: string | null;
   items: StoredMealItem[];
 }
 
 export interface StoredMealSubstitute extends ResolvedMacros {
-  foodId: string;
-  foodName: string;
+  foodId: string | null;
+  recipeId?: string | null;
+  itemName: string;
   quantity: number;
-  unitId: string | null;
+  portionId: string | null;
 }
 
 export interface StoredMealItem extends StoredMealSubstitute {

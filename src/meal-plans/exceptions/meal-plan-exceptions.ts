@@ -105,7 +105,7 @@ export class FoodNotAvailableException extends UnprocessableEntityException {
     super({
       code: 'FOOD_NOT_AVAILABLE',
       message:
-        'Some foods are not in your database, are no longer used, or the unit is not one of theirs',
+        'Some foods are not in your database, are no longer used, or the portion is not one of theirs',
       details: problems,
     });
   }

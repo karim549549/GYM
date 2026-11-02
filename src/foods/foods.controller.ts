@@ -47,6 +47,15 @@ export class FoodsController {
   }
 
   @RequireAction(WorkspaceAction.COACHING_WRITE)
+  @Post(':id/publication-requests')
+  requestPublication(
+    @CurrentWorkspaceId() workspaceId: string,
+    @Param() params: FoodParamsDto,
+  ) {
+    return this.foods.requestPublication(workspaceId, params.id);
+  }
+
+  @RequireAction(WorkspaceAction.COACHING_WRITE)
   @Post()
   create(
     @CurrentWorkspaceId() workspaceId: string,

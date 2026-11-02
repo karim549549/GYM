@@ -50,7 +50,7 @@ export class MealPlanActivationOrchestrator extends BaseMealPlanOrchestrator {
             MealPlanStatus.ACTIVE,
             startsOn ?? this.dates.today(new Date()),
           );
-          return this.withMeals(await this.mustFind(planId));
+          return this.withMeals(await this.mustFind(planId), workspaceId);
         },
         { workspaceId },
       );

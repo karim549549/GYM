@@ -44,6 +44,10 @@ export class PaymentRequestsController {
     @CurrentPrincipal() principal: Principal,
     @Param() params: PaymentRequestParamsDto,
   ): Promise<PaymentRequestConfirmed> {
-    return this.paymentRequests.confirm(workspaceId, principal.personId, params.id);
+    return this.paymentRequests.confirm(
+      workspaceId,
+      principal.personId,
+      params.id,
+    );
   }
 }

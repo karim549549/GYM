@@ -1,0 +1,872 @@
+[
+  {
+    "slug": "fesikh",
+    "name_ar": "فسيخ",
+    "name_en": "Fesikh, salted fermented mullet",
+    "aliases_ar": [
+      "فسيخ بوري",
+      "سمك بوري مملح مخمر"
+    ],
+    "aliases_en": [
+      "fesikh",
+      "feseekh",
+      "fermented salted mullet"
+    ],
+    "category": "protein",
+    "state": "ready_to_eat",
+    "calories_kcal_per_100g": null,
+    "protein_g_per_100g": null,
+    "carbs_g_per_100g": null,
+    "fat_g_per_100g": null,
+    "fiber_g_per_100g": null,
+    "nutrients": {
+      "sugars_g": null,
+      "saturated_fat_g": null,
+      "sodium_mg": null,
+      "calcium_mg": null,
+      "iron_mg": null,
+      "potassium_mg": null,
+      "vitamin_c_mg": null
+    },
+    "portions": [
+      {
+        "name_ar": "قطعة",
+        "weight_g": 100,
+        "is_default": true,
+        "basis": "Assumed edible planning portion; nutrition and local portion need sourcing."
+      }
+    ],
+    "origin": "seed",
+    "origin_note": "No complete, suitable nutrition source selected; values remain null, not inferred from unrelated cheese or unsalted raw fish. Portion is an unverified planning mass. Identity reference only, not a nutrition source: https://www.openveterinaryjournal.com/fulltext/100-1703101871.pdf. Salt-fermented mullet; raw mullet cannot represent its water and salt content.",
+    "usda_fdc_id": null,
+    "confidence": "none",
+    "review_flags": [
+      "no_source",
+      "portion_assumed"
+    ],
+    "source_file": "foods-a-protein-dairy.json",
+    "search_hints": [
+      "بروتين",
+      "مصادر بروتين"
+    ]
+  },
+  {
+    "slug": "mish-cheese",
+    "name_ar": "جبنة مش",
+    "name_en": "Mish cheese",
+    "aliases_ar": [
+      "مش",
+      "جبنة قديمة مش"
+    ],
+    "aliases_en": [
+      "mish",
+      "mesh cheese",
+      "Egyptian fermented cheese"
+    ],
+    "category": "dairy",
+    "state": "ready_to_eat",
+    "calories_kcal_per_100g": null,
+    "protein_g_per_100g": null,
+    "carbs_g_per_100g": null,
+    "fat_g_per_100g": null,
+    "fiber_g_per_100g": null,
+    "nutrients": {
+      "sugars_g": null,
+      "saturated_fat_g": null,
+      "sodium_mg": null,
+      "calcium_mg": null,
+      "iron_mg": null,
+      "potassium_mg": null,
+      "vitamin_c_mg": null
+    },
+    "portions": [
+      {
+        "name_ar": "قطعة",
+        "weight_g": 30,
+        "is_default": true,
+        "basis": "Assumed edible planning portion; nutrition and local portion need sourcing."
+      }
+    ],
+    "origin": "seed",
+    "origin_note": "No complete, suitable nutrition source selected; values remain null, not inferred from unrelated cheese or unsalted raw fish. Portion is an unverified planning mass. Egyptian cheese study reports partial composition but not a complete comparable macro/fibre record: https://ejchem.journals.ekb.eg/article_198178_dddaa3b14d734481a79208ee39ea327b.pdf. Fermented kareish composition is variable; local analytical sourcing required.",
+    "usda_fdc_id": null,
+    "confidence": "none",
+    "review_flags": [
+      "no_source",
+      "portion_assumed"
+    ],
+    "source_file": "foods-a-protein-dairy.json",
+    "search_hints": [
+      "منتجات البان"
+    ]
+  },
+  {
+    "slug": "doum-drink",
+    "name_ar": "عصير دوم",
+    "name_en": "Doum drink",
+    "aliases_ar": [
+      "مشروب دوم",
+      "شراب دوم"
+    ],
+    "aliases_en": [
+      "doum palm drink",
+      "doum juice"
+    ],
+    "category": "drink",
+    "state": "ready_to_eat",
+    "origin": "seed",
+    "review_flags": [
+      "egyptian_proxy",
+      "recipe_varies",
+      "no_source",
+      "portion_assumed"
+    ],
+    "usda_fdc_id": null,
+    "calories_kcal_per_100g": null,
+    "protein_g_per_100g": null,
+    "carbs_g_per_100g": null,
+    "fat_g_per_100g": null,
+    "fiber_g_per_100g": null,
+    "nutrients": {
+      "sugars_g": null,
+      "saturated_fat_g": null,
+      "sodium_mg": null,
+      "calcium_mg": null,
+      "iron_mg": null,
+      "potassium_mg": null,
+      "vitamin_c_mg": null
+    },
+    "portions": [
+      {
+        "name_ar": "كوب",
+        "weight_g": 240,
+        "is_default": true,
+        "basis": "240 ml cup x assumed density 1.00 g/ml = 240 g; actual liquid density varies."
+      }
+    ],
+    "origin_note": "No complete defensible generic per-100 g profile located. Unknown nutrition stays null. Household mass is an assumption, not a measured Egyptian portion. No defensible finished-beverage composition located; dry fruit values would misrepresent a strained, variably sweetened infusion.",
+    "confidence": "none",
+    "source_file": "foods-c2-fats-drinks-supplements.json",
+    "search_hints": [
+      "مشروبات"
+    ]
+  },
+  {
+    "slug": "multivitamin",
+    "name_ar": "مالتي فيتامين",
+    "name_en": "Multivitamin tablet",
+    "aliases_ar": [
+      "مولتي فيتامين",
+      "قرص فيتامينات متعددة"
+    ],
+    "aliases_en": [
+      "multiple vitamin supplement",
+      "multi vitamin pill"
+    ],
+    "category": "supplement",
+    "state": "ready_to_eat",
+    "origin": "seed",
+    "review_flags": [
+      "brand_varies",
+      "no_source",
+      "portion_assumed"
+    ],
+    "usda_fdc_id": null,
+    "calories_kcal_per_100g": null,
+    "protein_g_per_100g": null,
+    "carbs_g_per_100g": null,
+    "fat_g_per_100g": null,
+    "fiber_g_per_100g": null,
+    "nutrients": {
+      "sugars_g": null,
+      "saturated_fat_g": null,
+      "sodium_mg": null,
+      "calcium_mg": null,
+      "iron_mg": null,
+      "potassium_mg": null,
+      "vitamin_c_mg": null
+    },
+    "portions": [
+      {
+        "name_ar": "قرص",
+        "weight_g": 1,
+        "is_default": true,
+        "basis": "Placeholder assumed 1 g tablet; actual tablet mass requires review."
+      }
+    ],
+    "origin_note": "No complete defensible generic per-100 g profile located. Unknown nutrition stays null. Household mass is an assumption, not a measured Egyptian portion. Binders, coatings and gummies differ; no explicit complete generic zero-kcal source located. Vitamin/mineral quantities also unknown.",
+    "confidence": "none",
+    "source_file": "foods-c2-fats-drinks-supplements.json",
+    "search_hints": [
+      "مكملات"
+    ]
+  },
+  {
+    "slug": "koshari",
+    "name_ar": "كشري",
+    "name_en": "Koshari, restaurant plate",
+    "aliases_ar": [
+      "كشري مصري",
+      "طبق كشري"
+    ],
+    "aliases_en": [
+      "koshary",
+      "kushari",
+      "Egyptian koshari"
+    ],
+    "category": "composite",
+    "state": "ready_to_eat",
+    "origin": "seed",
+    "calories_kcal_per_100g": null,
+    "protein_g_per_100g": null,
+    "carbs_g_per_100g": null,
+    "fat_g_per_100g": null,
+    "fiber_g_per_100g": null,
+    "nutrients": {
+      "sugars_g": null,
+      "saturated_fat_g": null,
+      "sodium_mg": null,
+      "calcium_mg": null,
+      "iron_mg": null,
+      "potassium_mg": null,
+      "vitamin_c_mg": null
+    },
+    "portions": [
+      {
+        "name_ar": "طبق متوسط",
+        "weight_g": 450,
+        "is_default": true,
+        "basis": "Collector assumption for one ordered serving: 450 g edible prepared food; illustrative size, not a measured Egyptian restaurant average."
+      },
+      {
+        "name_ar": "طبق صغير",
+        "weight_g": 300,
+        "is_default": false,
+        "basis": "Collector assumption: 300 g small ordered plate; not a measured vendor serving."
+      }
+    ],
+    "origin_note": "No verified complete numeric profile retained. NNI 2006 market koshari exists in an uploaded primary-table scan (https://www.studocu.com/row/document/october-university-for-modern-sciences-and-arts/clinical-nutrition/food-composition-tables-for-egypt-2nd-edition-2006/164386608), but the accessible OCR loses decimal precision and columns; do not transcribe it as measured data. Egyptian fat analysis alone does not supply full macros. No sufficiently close whole-food USDA match; lentil rice omits pasta and fried onions. Dakka and shatta are optional sides, not separately modelled and no fixed allowance is assumed. Serving weight is an explicit collector assumption unless a portion basis states otherwise.",
+    "usda_fdc_id": null,
+    "confidence": "none",
+    "review_flags": [
+      "no_source",
+      "recipe_varies",
+      "source_unreadable",
+      "dakka_varies",
+      "shatta_varies",
+      "sauce_not_quantified",
+      "portion_assumed"
+    ],
+    "replaces_existing": true,
+    "source_file": "foods-p-prepared.json",
+    "search_hints": [
+      "اكل جاهز",
+      "وجبة",
+      "مطاعم"
+    ]
+  },
+  {
+    "slug": "ful-sandwich",
+    "name_ar": "ساندوتش فول",
+    "name_en": "Ful medames sandwich",
+    "aliases_ar": [
+      "سندوتش فول",
+      "عيش بالفول",
+      "ساندويتش فول"
+    ],
+    "aliases_en": [
+      "ful sandwich",
+      "foul medames sandwich"
+    ],
+    "category": "composite",
+    "state": "ready_to_eat",
+    "origin": "seed",
+    "calories_kcal_per_100g": null,
+    "protein_g_per_100g": null,
+    "carbs_g_per_100g": null,
+    "fat_g_per_100g": null,
+    "fiber_g_per_100g": null,
+    "nutrients": {
+      "sugars_g": null,
+      "saturated_fat_g": null,
+      "sodium_mg": null,
+      "calcium_mg": null,
+      "iron_mg": null,
+      "potassium_mg": null,
+      "vitamin_c_mg": null
+    },
+    "portions": [
+      {
+        "name_ar": "ساندوتش",
+        "weight_g": 180,
+        "is_default": true,
+        "basis": "Collector assumption for one ordered serving: 180 g edible prepared food; illustrative size, not a measured Egyptian restaurant average."
+      }
+    ],
+    "origin_note": "No verified complete whole-sandwich source. Ful-plate or boiled-bean values exclude bread, oil and toppings; not used for this street sandwich. Serving weight is an explicit collector assumption unless a portion basis states otherwise.",
+    "usda_fdc_id": null,
+    "confidence": "none",
+    "review_flags": [
+      "no_source",
+      "recipe_varies",
+      "portion_assumed"
+    ],
+    "source_file": "foods-p-prepared.json",
+    "search_hints": [
+      "اكل جاهز",
+      "وجبة",
+      "مطاعم"
+    ]
+  },
+  {
+    "slug": "eggs-pastirma",
+    "name_ar": "بيض بالبسطرمة",
+    "name_en": "Eggs with pastirma, served plate",
+    "aliases_ar": [
+      "بيض ببسطرمة",
+      "بيض بالبسترمة",
+      "بيض بسطرمة"
+    ],
+    "aliases_en": [
+      "eggs with basturma",
+      "beid bel basterma"
+    ],
+    "category": "composite",
+    "state": "ready_to_eat",
+    "origin": "seed",
+    "calories_kcal_per_100g": null,
+    "protein_g_per_100g": null,
+    "carbs_g_per_100g": null,
+    "fat_g_per_100g": null,
+    "fiber_g_per_100g": null,
+    "nutrients": {
+      "sugars_g": null,
+      "saturated_fat_g": null,
+      "sodium_mg": null,
+      "calcium_mg": null,
+      "iron_mg": null,
+      "potassium_mg": null,
+      "vitamin_c_mg": null
+    },
+    "portions": [
+      {
+        "name_ar": "طبق",
+        "weight_g": 150,
+        "is_default": true,
+        "basis": "Collector assumption for one ordered serving: 150 g edible prepared food; illustrative size, not a measured Egyptian restaurant average."
+      }
+    ],
+    "origin_note": "No verified whole-dish profile. Plain scrambled egg omits cured beef and its fat/salt; no ingredient quantities inferred. Serving weight is an explicit collector assumption unless a portion basis states otherwise.",
+    "usda_fdc_id": null,
+    "confidence": "none",
+    "review_flags": [
+      "no_source",
+      "recipe_varies",
+      "portion_assumed"
+    ],
+    "source_file": "foods-p-prepared.json",
+    "search_hints": [
+      "اكل جاهز",
+      "وجبة",
+      "مطاعم"
+    ]
+  },
+  {
+    "slug": "shakshuka",
+    "name_ar": "شكشوكة",
+    "name_en": "Shakshuka, served egg and tomato plate",
+    "aliases_ar": [
+      "بيض شكشوكة",
+      "بيض بالطماطم شكشوكة"
+    ],
+    "aliases_en": [
+      "shakshouka",
+      "shakshuka eggs"
+    ],
+    "category": "composite",
+    "state": "ready_to_eat",
+    "origin": "seed",
+    "calories_kcal_per_100g": null,
+    "protein_g_per_100g": null,
+    "carbs_g_per_100g": null,
+    "fat_g_per_100g": null,
+    "fiber_g_per_100g": null,
+    "nutrients": {
+      "sugars_g": null,
+      "saturated_fat_g": null,
+      "sodium_mg": null,
+      "calcium_mg": null,
+      "iron_mg": null,
+      "potassium_mg": null,
+      "vitamin_c_mg": null
+    },
+    "portions": [
+      {
+        "name_ar": "طبق",
+        "weight_g": 250,
+        "is_default": true,
+        "basis": "Collector assumption for one ordered serving: 250 g edible prepared food; illustrative size, not a measured Egyptian restaurant average."
+      }
+    ],
+    "origin_note": "No complete numeric profile retained. Bahrain 2025 Table 6.9 EGG WITH TAMATO reports total fat ND (https://www.health.gov.bh/Content/Upload/File/638916394660950229-FCT-book-final-2025_en.pdf); did not derive a fat value from energy or use plain egg values as the dish. Serving weight is an explicit collector assumption unless a portion basis states otherwise.",
+    "usda_fdc_id": null,
+    "confidence": "none",
+    "review_flags": [
+      "no_source",
+      "recipe_varies",
+      "source_incomplete",
+      "portion_assumed"
+    ],
+    "source_file": "foods-p-prepared.json",
+    "search_hints": [
+      "اكل جاهز",
+      "وجبة",
+      "مطاعم"
+    ]
+  },
+  {
+    "slug": "molokhia",
+    "name_ar": "ملوخية",
+    "name_en": "Molokhia stew, served without rice or chicken pieces",
+    "aliases_ar": [
+      "ملوخية مطبوخة",
+      "شوربة ملوخية",
+      "ملوخية بالطشة"
+    ],
+    "aliases_en": [
+      "molokhia stew",
+      "mulukhiyah soup",
+      "molokheya cooked"
+    ],
+    "category": "composite",
+    "state": "ready_to_eat",
+    "origin": "seed",
+    "calories_kcal_per_100g": null,
+    "protein_g_per_100g": null,
+    "carbs_g_per_100g": null,
+    "fat_g_per_100g": null,
+    "fiber_g_per_100g": null,
+    "nutrients": {
+      "sugars_g": null,
+      "saturated_fat_g": null,
+      "sodium_mg": null,
+      "calcium_mg": null,
+      "iron_mg": null,
+      "potassium_mg": null,
+      "vitamin_c_mg": null
+    },
+    "portions": [
+      {
+        "name_ar": "طبق",
+        "weight_g": 200,
+        "is_default": true,
+        "basis": "Collector assumption for one ordered serving: 200 g edible prepared food; illustrative size, not a measured Egyptian restaurant average."
+      }
+    ],
+    "origin_note": "Preserves the old slug meaning: molokhia stew alone. No verified profile for the prepared Egyptian stew. The Hoteit Yakhnet Mouloukhia entry includes chicken, rice and bread (https://pmc.ncbi.nlm.nih.gov/articles/PMC7931253/, Table 1), so its 112 kcal/100 g is not assigned to plain molokhia. Frozen leaves are also not the cooked stew. Serving weight is an explicit collector assumption unless a portion basis states otherwise.",
+    "usda_fdc_id": null,
+    "confidence": "none",
+    "review_flags": [
+      "no_source",
+      "recipe_varies",
+      "source_scope_mismatch",
+      "portion_assumed"
+    ],
+    "replaces_existing": true,
+    "source_file": "foods-p-prepared.json",
+    "search_hints": [
+      "اكل جاهز",
+      "وجبة",
+      "مطاعم",
+      "مطبوخ",
+      "طبيخ"
+    ]
+  },
+  {
+    "slug": "mahshi",
+    "name_ar": "محشي مشكل",
+    "name_en": "Mixed mahshi, served portion",
+    "aliases_ar": [
+      "محاشي مشكلة",
+      "طبق محشي",
+      "محشي"
+    ],
+    "aliases_en": [
+      "mixed stuffed vegetables",
+      "mahshi mix",
+      "mahshy"
+    ],
+    "category": "composite",
+    "state": "ready_to_eat",
+    "origin": "seed",
+    "calories_kcal_per_100g": null,
+    "protein_g_per_100g": null,
+    "carbs_g_per_100g": null,
+    "fat_g_per_100g": null,
+    "fiber_g_per_100g": null,
+    "nutrients": {
+      "sugars_g": null,
+      "saturated_fat_g": null,
+      "sodium_mg": null,
+      "calcium_mg": null,
+      "iron_mg": null,
+      "potassium_mg": null,
+      "vitamin_c_mg": null
+    },
+    "portions": [
+      {
+        "name_ar": "طبق 5 قطع",
+        "weight_g": 200,
+        "is_default": true,
+        "basis": "Collector assumption for one ordered serving: 200 g edible prepared food; illustrative size, not a measured Egyptian restaurant average."
+      },
+      {
+        "name_ar": "قطعة متوسطة",
+        "weight_g": 40,
+        "is_default": false,
+        "basis": "Collector assumption inherited from the old generic seed: 40 g edible piece; actual variety must be specified."
+      }
+    ],
+    "origin_note": "Preserves the existing generic mixed-mahshi slug. No fixed mixture of leaf rolls, zucchini and peppers is known; do not average unrelated varieties. Use a variety-specific entry when known. Serving weight is an explicit collector assumption unless a portion basis states otherwise.",
+    "usda_fdc_id": null,
+    "confidence": "none",
+    "review_flags": [
+      "no_source",
+      "recipe_varies",
+      "portion_assumed"
+    ],
+    "replaces_existing": true,
+    "source_file": "foods-p-prepared.json",
+    "search_hints": [
+      "اكل جاهز",
+      "وجبة",
+      "مطاعم"
+    ]
+  },
+  {
+    "slug": "mahshi-pepper",
+    "name_ar": "محشي فلفل",
+    "name_en": "Mahshi pepper, served piece",
+    "aliases_ar": [
+      "فلفل محشي",
+      "فلفل محشي رز"
+    ],
+    "aliases_en": [
+      "stuffed peppers",
+      "mahshi felfel"
+    ],
+    "category": "composite",
+    "state": "ready_to_eat",
+    "origin": "seed",
+    "calories_kcal_per_100g": null,
+    "protein_g_per_100g": null,
+    "carbs_g_per_100g": null,
+    "fat_g_per_100g": null,
+    "fiber_g_per_100g": null,
+    "nutrients": {
+      "sugars_g": null,
+      "saturated_fat_g": null,
+      "sodium_mg": null,
+      "calcium_mg": null,
+      "iron_mg": null,
+      "potassium_mg": null,
+      "vitamin_c_mg": null
+    },
+    "portions": [
+      {
+        "name_ar": "واحدة",
+        "weight_g": 80,
+        "is_default": true,
+        "basis": "Collector assumption for one ordered serving: 80 g edible prepared food; illustrative size, not a measured Egyptian restaurant average."
+      }
+    ],
+    "origin_note": "No verified complete composition for Egyptian rice-and-herb stuffed pepper. Zucchini or raw pepper data do not identify the filling-to-vegetable ratio. Serving weight is an explicit collector assumption unless a portion basis states otherwise.",
+    "usda_fdc_id": null,
+    "confidence": "none",
+    "review_flags": [
+      "no_source",
+      "recipe_varies",
+      "portion_assumed"
+    ],
+    "source_file": "foods-p-prepared.json",
+    "search_hints": [
+      "اكل جاهز",
+      "وجبة",
+      "مطاعم"
+    ]
+  },
+  {
+    "slug": "liver-sandwich",
+    "name_ar": "ساندوتش كبدة",
+    "name_en": "Kibda street sandwich",
+    "aliases_ar": [
+      "سندوتش كبدة",
+      "عيش بالكبدة"
+    ],
+    "aliases_en": [
+      "liver sandwich",
+      "kibda sandwich",
+      "kebda sandwich"
+    ],
+    "category": "composite",
+    "state": "ready_to_eat",
+    "origin": "seed",
+    "calories_kcal_per_100g": null,
+    "protein_g_per_100g": null,
+    "carbs_g_per_100g": null,
+    "fat_g_per_100g": null,
+    "fiber_g_per_100g": null,
+    "nutrients": {
+      "sugars_g": null,
+      "saturated_fat_g": null,
+      "sodium_mg": null,
+      "calcium_mg": null,
+      "iron_mg": null,
+      "potassium_mg": null,
+      "vitamin_c_mg": null
+    },
+    "portions": [
+      {
+        "name_ar": "ساندوتش",
+        "weight_g": 180,
+        "is_default": true,
+        "basis": "Collector assumption for one ordered serving: 180 g edible prepared food; illustrative size, not a measured Egyptian restaurant average."
+      }
+    ],
+    "origin_note": "No verified full sandwich profile including fino/baladi bread, fried liver, oil and peppers. Pan-fried liver alone is not a sandwich proxy. Serving weight is an explicit collector assumption unless a portion basis states otherwise.",
+    "usda_fdc_id": null,
+    "confidence": "none",
+    "review_flags": [
+      "no_source",
+      "recipe_varies",
+      "portion_assumed"
+    ],
+    "source_file": "foods-p-prepared.json",
+    "search_hints": [
+      "اكل جاهز",
+      "وجبة",
+      "مطاعم"
+    ]
+  },
+  {
+    "slug": "sausage-sandwich",
+    "name_ar": "ساندوتش سجق",
+    "name_en": "Egyptian sausage sandwich",
+    "aliases_ar": [
+      "سندوتش سجق",
+      "ساندويتش سجق بلدي"
+    ],
+    "aliases_en": [
+      "sogoq sandwich",
+      "baladi sausage sandwich"
+    ],
+    "category": "composite",
+    "state": "ready_to_eat",
+    "origin": "seed",
+    "calories_kcal_per_100g": null,
+    "protein_g_per_100g": null,
+    "carbs_g_per_100g": null,
+    "fat_g_per_100g": null,
+    "fiber_g_per_100g": null,
+    "nutrients": {
+      "sugars_g": null,
+      "saturated_fat_g": null,
+      "sodium_mg": null,
+      "calcium_mg": null,
+      "iron_mg": null,
+      "potassium_mg": null,
+      "vitamin_c_mg": null
+    },
+    "portions": [
+      {
+        "name_ar": "ساندوتش",
+        "weight_g": 200,
+        "is_default": true,
+        "basis": "Collector assumption for one ordered serving: 200 g edible prepared food; illustrative size, not a measured Egyptian restaurant average."
+      }
+    ],
+    "origin_note": "No dependable complete local sandwich profile. Bahrain 2025 Table 7.10 sausage sandwich (https://www.health.gov.bh/Content/Upload/File/638916394660950229-FCT-book-final-2025_en.pdf) has internally inconsistent mass composition: listed water plus macros exceed 100 g, so its figures were rejected. Sausage alone omits bread and cooking additions. Serving weight is an explicit collector assumption unless a portion basis states otherwise.",
+    "usda_fdc_id": null,
+    "confidence": "none",
+    "review_flags": [
+      "no_source",
+      "recipe_varies",
+      "source_inconsistent",
+      "portion_assumed"
+    ],
+    "source_file": "foods-p-prepared.json",
+    "search_hints": [
+      "اكل جاهز",
+      "وجبة",
+      "مطاعم"
+    ]
+  },
+  {
+    "slug": "tagen-generic",
+    "name_ar": "طاجن مطعم مشكل",
+    "name_en": "Generic restaurant tagen, unspecified contents",
+    "aliases_ar": [
+      "طاجن مشكل من مطعم",
+      "طاجن مطعم مكوناته غير محددة"
+    ],
+    "aliases_en": [
+      "mixed restaurant tagen",
+      "unspecified restaurant casserole"
+    ],
+    "category": "composite",
+    "state": "ready_to_eat",
+    "origin": "seed",
+    "calories_kcal_per_100g": null,
+    "protein_g_per_100g": null,
+    "carbs_g_per_100g": null,
+    "fat_g_per_100g": null,
+    "fiber_g_per_100g": null,
+    "nutrients": {
+      "sugars_g": null,
+      "saturated_fat_g": null,
+      "sodium_mg": null,
+      "calcium_mg": null,
+      "iron_mg": null,
+      "potassium_mg": null,
+      "vitamin_c_mg": null
+    },
+    "portions": [
+      {
+        "name_ar": "طاجن صغير",
+        "weight_g": 350,
+        "is_default": true,
+        "basis": "Collector assumption for one ordered serving: 350 g edible prepared food; illustrative size, not a measured Egyptian restaurant average."
+      }
+    ],
+    "origin_note": "Tagen identifies a serving vessel/cooking method, not one composition: meat, pasta, vegetables and fat vary. No meaningful single whole-dish source or proxy can be assigned before specifying the contents. Serving weight is an explicit collector assumption unless a portion basis states otherwise.",
+    "usda_fdc_id": null,
+    "confidence": "none",
+    "review_flags": [
+      "no_source",
+      "recipe_varies",
+      "dish_unspecified",
+      "portion_assumed",
+      "needs_native_review"
+    ],
+    "source_file": "foods-p-prepared.json",
+    "search_hints": [
+      "اكل جاهز",
+      "وجبة",
+      "مطاعم"
+    ]
+  },
+  {
+    "slug": "hamam-mahshi",
+    "name_ar": "حمام محشي",
+    "name_en": "Hamam mahshi, whole stuffed pigeon",
+    "aliases_ar": [
+      "حمامة محشية",
+      "حمام محشي رز",
+      "حمام محشي فريك"
+    ],
+    "aliases_en": [
+      "stuffed pigeon",
+      "hamam mahshy"
+    ],
+    "category": "composite",
+    "state": "ready_to_eat",
+    "origin": "seed",
+    "calories_kcal_per_100g": null,
+    "protein_g_per_100g": null,
+    "carbs_g_per_100g": null,
+    "fat_g_per_100g": null,
+    "fiber_g_per_100g": null,
+    "nutrients": {
+      "sugars_g": null,
+      "saturated_fat_g": null,
+      "sodium_mg": null,
+      "calcium_mg": null,
+      "iron_mg": null,
+      "potassium_mg": null,
+      "vitamin_c_mg": null
+    },
+    "portions": [
+      {
+        "name_ar": "حمامة",
+        "weight_g": 200,
+        "is_default": true,
+        "basis": "Collector assumption for one ordered serving: 200 g edible prepared food; illustrative size, not a measured Egyptian restaurant average."
+      }
+    ],
+    "origin_note": "No verified prepared stuffed-pigeon profile. Pigeon meat alone omits rice/freekeh and fat; roast chicken with rice cannot identify the edible stuffing ratio. Portion is edible meat plus stuffing, excluding bones. Serving weight is an explicit collector assumption unless a portion basis states otherwise.",
+    "usda_fdc_id": null,
+    "confidence": "none",
+    "review_flags": [
+      "no_source",
+      "recipe_varies",
+      "edible_weight_only",
+      "stuffing_varies",
+      "portion_assumed",
+      "needs_native_review"
+    ],
+    "source_file": "foods-p-prepared.json",
+    "search_hints": [
+      "اكل جاهز",
+      "وجبة",
+      "مطاعم"
+    ]
+  },
+  {
+    "slug": "mixed-grill-portion",
+    "name_ar": "مشويات مشكلة",
+    "name_en": "Mixed grill, served meat portion",
+    "aliases_ar": [
+      "ميكس جريل",
+      "طبق مشويات مشكل",
+      "طبق مشكل مشاوي"
+    ],
+    "aliases_en": [
+      "mixed grill",
+      "assorted grilled meats"
+    ],
+    "category": "composite",
+    "state": "ready_to_eat",
+    "origin": "seed",
+    "calories_kcal_per_100g": null,
+    "protein_g_per_100g": null,
+    "carbs_g_per_100g": null,
+    "fat_g_per_100g": null,
+    "fiber_g_per_100g": null,
+    "nutrients": {
+      "sugars_g": null,
+      "saturated_fat_g": null,
+      "sodium_mg": null,
+      "calcium_mg": null,
+      "iron_mg": null,
+      "potassium_mg": null,
+      "vitamin_c_mg": null
+    },
+    "portions": [
+      {
+        "name_ar": "طبق مشويات",
+        "weight_g": 300,
+        "is_default": true,
+        "basis": "Collector assumption for one ordered serving: 300 g edible prepared food; illustrative size, not a measured Egyptian restaurant average."
+      }
+    ],
+    "origin_note": "No fixed mix of kofta, kebab, chicken, sausage and fat is known. No generic nutrient average is supportable. Portion means edible cooked meats without bones, bread, rice or sauces. Serving weight is an explicit collector assumption unless a portion basis states otherwise.",
+    "usda_fdc_id": null,
+    "confidence": "none",
+    "review_flags": [
+      "no_source",
+      "recipe_varies",
+      "dish_unspecified",
+      "sides_excluded",
+      "edible_weight_only",
+      "portion_assumed"
+    ],
+    "source_file": "foods-p-prepared.json",
+    "search_hints": [
+      "اكل جاهز",
+      "وجبة",
+      "مطاعم",
+      "مشوي",
+      "مشويات"
+    ]
+  }
+]

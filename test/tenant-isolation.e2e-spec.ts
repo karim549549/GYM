@@ -1,3 +1,6 @@
+import { NutritionAliasKind } from '../src/foods/enums/nutrition-alias-kind.enum';
+import { RecipeOrigin } from '../src/foods/enums/recipe-origin.enum';
+import { FoodPublicationStatus } from '../src/foods/enums/food-publication-status.enum';
 import { CheckinFrequency } from '../src/checkins/enums/checkin-frequency.enum';
 import { ReminderAudience } from '../src/reminders/enums/reminder-audience.enum';
 import { ReminderKind } from '../src/reminders/enums/reminder-kind.enum';
@@ -27,7 +30,16 @@ import {
   clients,
   exerciseMuscles,
   exercises,
-  foodUnits,
+  nutrients,
+  foodNutrients,
+  foodAliases,
+  foodPublicationRequests,
+  recipes,
+  recipeIngredients,
+  recipeSteps,
+  recipePortions,
+  recipeAliases,
+  foodPortions,
   foods,
   formQuestions,
   formTemplates,
@@ -654,10 +666,10 @@ describe('Tenant isolation against the database', () => {
                 workspaceId,
                 nameAr: name,
                 category: FoodCategory.PROTEIN,
-                kcal100g: 100,
-                protein100g: 20,
-                carb100g: 5,
-                fat100g: 0,
+                caloriesKcalPer100g: 100,
+                proteinGPer100g: 20,
+                carbsGPer100g: 5,
+                fatGPer100g: 0,
               })
               .returning({ id: foods.id })
           )[0].id,
@@ -673,7 +685,7 @@ describe('Tenant isolation against the database', () => {
             tx.db
               .select({ id: foods.id })
               .from(foods)
-              .where(eq(foods.slug, 'koshari')),
+              .where(eq(foods.slug, 'chicken-breast-grilled')),
           scopeA(),
         )
       )[0].id;
@@ -698,14 +710,172 @@ describe('Tenant isolation against the database', () => {
       expect(seen).not.toContain(ownB);
     });
 
+    it('lets the system read private foods and insert shared copies but grants no tenant inserts, updates or deletes', async () => {
+      const rollback = new Error('rollback publication fixtures');
+      await tx.run(async () => {
+        const [nutrient] = await tx.db
+          .select({ id: nutrients.id })
+          .from(nutrients)
+          .limit(1);
+        await tx.db.insert(foodPortions).values({
+          foodId: ownB,
+          workspaceId: workspaceB,
+          nameAr: 'Private serving',
+          weightG: 50,
+        });
+        await tx.db.insert(foodNutrients).values({
+          foodId: ownB,
+          workspaceId: workspaceB,
+          nutrientId: nutrient.id,
+          amountPer100g: 0,
+        });
+        await tx.db.insert(foodAliases).values({
+          foodId: ownB,
+          workspaceId: workspaceB,
+          kind: NutritionAliasKind.ALIAS_EN,
+          alias: 'Private alias',
+        });
+      }, scopeB());
+      await expect(
+        tx.run(
+          async () => {
+            const visible = await tx.db
+              .select({ id: foods.id })
+              .from(foods)
+              .where(inArray(foods.id, [ownA, ownB]));
+            expect(visible.map((food) => food.id).sort()).toEqual(
+              [ownA, ownB].sort(),
+            );
+            expect(
+              await tx.db
+                .select()
+                .from(foodPortions)
+                .where(eq(foodPortions.foodId, ownB)),
+            ).toHaveLength(1);
+            expect(
+              await tx.db
+                .select()
+                .from(foodNutrients)
+                .where(eq(foodNutrients.foodId, ownB)),
+            ).toHaveLength(1);
+            expect(
+              await tx.db
+                .select()
+                .from(foodAliases)
+                .where(eq(foodAliases.foodId, ownB)),
+            ).toHaveLength(1);
+            const values = {
+              nameAr: 'Publication isolation fixture',
+              category: FoodCategory.PROTEIN,
+              caloriesKcalPer100g: 100,
+              proteinGPer100g: 20,
+              carbsGPer100g: 5,
+              fatGPer100g: 0,
+            };
+            const [shared] = await tx.db
+              .insert(foods)
+              .values(values)
+              .returning({ id: foods.id });
+            await expect(
+              tx.attempt(() =>
+                tx.db
+                  .insert(foods)
+                  .values({ ...values, workspaceId: workspaceA }),
+              ),
+            ).rejects.toMatchObject({ cause: { code: '42501' } });
+            expect(
+              await tx.db
+                .update(foods)
+                .set({ nameAr: 'tampered' })
+                .where(inArray(foods.id, [ownA, ownB, shared.id]))
+                .returning(),
+            ).toEqual([]);
+            expect(
+              await tx.db
+                .delete(foods)
+                .where(inArray(foods.id, [ownA, ownB, shared.id]))
+                .returning(),
+            ).toEqual([]);
+            const [nutrient] = await tx.db
+              .select({ id: nutrients.id })
+              .from(nutrients)
+              .limit(1);
+            await tx.db
+              .insert(foodPortions)
+              .values({ foodId: shared.id, nameAr: 'حصة', weightG: 50 });
+            await tx.db.insert(foodNutrients).values({
+              foodId: shared.id,
+              nutrientId: nutrient.id,
+              amountPer100g: 0,
+            });
+            await tx.db.insert(foodAliases).values({
+              foodId: shared.id,
+              kind: NutritionAliasKind.ALIAS_AR,
+              alias: 'اسم مشترك',
+            });
+            expect(
+              await tx.db
+                .select()
+                .from(foodPortions)
+                .where(eq(foodPortions.foodId, shared.id)),
+            ).toHaveLength(1);
+            expect(
+              await tx.db
+                .select()
+                .from(foodNutrients)
+                .where(eq(foodNutrients.foodId, shared.id)),
+            ).toHaveLength(1);
+            expect(
+              await tx.db
+                .select()
+                .from(foodAliases)
+                .where(eq(foodAliases.foodId, shared.id)),
+            ).toHaveLength(1);
+            await expect(
+              tx.attempt(() =>
+                tx.db.insert(foodPortions).values({
+                  foodId: ownA,
+                  workspaceId: workspaceA,
+                  nameAr: 'No',
+                  weightG: 50,
+                }),
+              ),
+            ).rejects.toMatchObject({ cause: { code: '42501' } });
+            await expect(
+              tx.attempt(() =>
+                tx.db.insert(foodNutrients).values({
+                  foodId: ownA,
+                  workspaceId: workspaceA,
+                  nutrientId: nutrient.id,
+                  amountPer100g: 0,
+                }),
+              ),
+            ).rejects.toMatchObject({ cause: { code: '42501' } });
+            await expect(
+              tx.attempt(() =>
+                tx.db.insert(foodAliases).values({
+                  foodId: ownA,
+                  workspaceId: workspaceA,
+                  kind: NutritionAliasKind.ALIAS_EN,
+                  alias: 'No',
+                }),
+              ),
+            ).rejects.toMatchObject({ cause: { code: '42501' } });
+            throw rollback;
+          },
+          { system: true },
+        ),
+      ).rejects.toBe(rollback);
+    });
+
     it('cannot add to another workspace, nor add one to the library', async () => {
       const values = {
         nameAr: 'x',
         category: FoodCategory.PROTEIN,
-        kcal100g: 1,
-        protein100g: 0,
-        carb100g: 0,
-        fat100g: 0,
+        caloriesKcalPer100g: 1,
+        proteinGPer100g: 0,
+        carbsGPer100g: 0,
+        fatGPer100g: 0,
       };
       await expect(
         tx.run(
@@ -750,14 +920,14 @@ describe('Tenant isolation against the database', () => {
       expect(await visible(scopeB())).toContainEqual({ id: ownB });
     });
 
-    it('keeps a workspace’s units to itself, and the library’s units readable by everyone', async () => {
+    it('keeps a workspace’s portions to itself, and the library’s portions readable by everyone', async () => {
       await tx.run(
         () =>
-          tx.db.insert(foodUnits).values({
+          tx.db.insert(foodPortions).values({
             foodId: ownA,
             workspaceId: workspaceA,
-            labelAr: 'كوب',
-            grams: 100,
+            nameAr: 'كوب',
+            weightG: 100,
           }),
         scopeA(),
       );
@@ -765,22 +935,22 @@ describe('Tenant isolation against the database', () => {
       const seenByB = await tx.run(
         () =>
           tx.db
-            .select({ id: foodUnits.id })
-            .from(foodUnits)
-            .where(eq(foodUnits.foodId, ownA)),
+            .select({ id: foodPortions.id })
+            .from(foodPortions)
+            .where(eq(foodPortions.foodId, ownA)),
         scopeB(),
       );
-      const libraryUnits = await tx.run(
+      const libraryPortions = await tx.run(
         () =>
           tx.db
-            .select({ id: foodUnits.id })
-            .from(foodUnits)
-            .where(eq(foodUnits.foodId, library)),
+            .select({ id: foodPortions.id })
+            .from(foodPortions)
+            .where(eq(foodPortions.foodId, library)),
         scopeB(),
       );
 
       expect(seenByB).toEqual([]);
-      expect(libraryUnits.length).toBeGreaterThan(0);
+      expect(libraryPortions.length).toBeGreaterThan(0);
     });
   });
 
@@ -911,20 +1081,20 @@ describe('Tenant isolation against the database', () => {
     };
 
     const mealMacros = {
-      grams: 100,
-      kcal: 100,
+      weightG: 100,
+      caloriesKcal: 100,
       proteinG: 10,
-      carbG: 10,
+      carbsG: 10,
       fatG: 1,
     };
 
-    /** The library's koshari, which every workspace can see. */
+    /** A seeded shared food, which every workspace can see. */
     const libraryFood = async () =>
       (
         await tx.db
           .select({ id: foods.id })
           .from(foods)
-          .where(eq(foods.slug, 'koshari'))
+          .where(eq(foods.slug, 'chicken-breast-grilled'))
       )[0].id;
 
     const parentMealPlan = async (workspaceId: string, clientId: string) =>
@@ -944,15 +1114,15 @@ describe('Tenant isolation against the database', () => {
           .values({
             workspaceId,
             mealPlanId: await parentMealPlan(workspaceId, clientId),
-            position: 1,
+            sortOrder: 1,
             name: 'Parent meal',
           })
           .returning({ id: meals.id })
       )[0].id,
       foodId: await libraryFood(),
-      position: 1,
+      sortOrder: 1,
       quantity: 1,
-      foodName: 'Koshari',
+      itemName: 'Koshari',
     });
 
     /** A finished subscription, which a client may have any number of beside the live one. */
@@ -1477,7 +1647,7 @@ describe('Tenant isolation against the database', () => {
               .values({
                 workspaceId,
                 mealPlanId: await parentMealPlan(workspaceId, clientId),
-                position: 1,
+                sortOrder: 1,
                 name: 'Lunch',
               })
               .returning({ id: meals.id })
@@ -1500,7 +1670,7 @@ describe('Tenant isolation against the database', () => {
           tx.db.insert(meals).values({
             workspaceId,
             mealPlanId: crypto.randomUUID(),
-            position: 1,
+            sortOrder: 1,
             name: 'x',
           }),
       },
@@ -1522,7 +1692,7 @@ describe('Tenant isolation against the database', () => {
         change: (id) =>
           tx.db
             .update(mealItems)
-            .set({ foodName: 'tampered' })
+            .set({ itemName: 'tampered' })
             .where(eq(mealItems.id, id))
             .returning({ id: mealItems.id }),
         remove: (id) =>
@@ -1536,9 +1706,9 @@ describe('Tenant isolation against the database', () => {
             workspaceId,
             mealId: crypto.randomUUID(),
             foodId: await libraryFood(),
-            position: 1,
+            sortOrder: 1,
             quantity: 1,
-            foodName: 'x',
+            itemName: 'x',
           }),
       },
       {
@@ -1556,10 +1726,10 @@ describe('Tenant isolation against the database', () => {
                     .values(await newMealItem(workspaceId, clientId))
                     .returning({ id: mealItems.id })
                 )[0].id,
-                position: 1,
+                sortOrder: 1,
                 foodId: await libraryFood(),
                 quantity: 1,
-                foodName: 'Sub',
+                itemName: 'Sub',
               })
               .returning({ id: mealItemSubs.id })
           )[0].id,
@@ -1572,7 +1742,7 @@ describe('Tenant isolation against the database', () => {
         change: (id) =>
           tx.db
             .update(mealItemSubs)
-            .set({ foodName: 'tampered' })
+            .set({ itemName: 'tampered' })
             .where(eq(mealItemSubs.id, id))
             .returning({ id: mealItemSubs.id }),
         remove: (id) =>
@@ -1585,10 +1755,10 @@ describe('Tenant isolation against the database', () => {
             ...mealMacros,
             workspaceId,
             mealItemId: crypto.randomUUID(),
-            position: 1,
+            sortOrder: 1,
             foodId: await libraryFood(),
             quantity: 1,
-            foodName: 'x',
+            itemName: 'x',
           }),
       },
       {
@@ -2645,6 +2815,678 @@ describe('Tenant isolation against the database', () => {
           { workspaceId: workspaceB, role: 'assistant', isOwner: false },
         ]),
       );
+    });
+  });
+  describe('nutrition v2 tables', () => {
+    type Fixture = {
+      workspaceId: string;
+      foodId: string;
+      recipeId: string;
+      nutrientId: string;
+    };
+    let a: Fixture;
+    let b: Fixture;
+    const fixture = async (workspaceId: string): Promise<Fixture> => {
+      const [food] = await tx.db
+        .insert(foods)
+        .values({
+          workspaceId,
+          nameAr: 'Nutrition isolation',
+          category: FoodCategory.PROTEIN,
+          caloriesKcalPer100g: 100,
+          proteinGPer100g: 20,
+          carbsGPer100g: 5,
+          fatGPer100g: 0,
+        })
+        .returning({ id: foods.id });
+      const [recipe] = await tx.db
+        .insert(recipes)
+        .values({
+          workspaceId,
+          nameAr: 'Recipe isolation',
+          finishedWeightG: 100,
+          origin: RecipeOrigin.USER,
+          caloriesKcalPer100g: 100,
+          proteinGPer100g: 20,
+          carbsGPer100g: 5,
+          fatGPer100g: 0,
+          fiberGPer100g: 0,
+        })
+        .returning({ id: recipes.id });
+      const [nutrient] = await tx.db
+        .select({ id: nutrients.id })
+        .from(nutrients)
+        .where(eq(nutrients.code, 'sodium'));
+      return {
+        workspaceId,
+        foodId: food.id,
+        recipeId: recipe.id,
+        nutrientId: nutrient.id,
+      };
+    };
+    beforeAll(async () => {
+      a = await tx.run(() => fixture(workspaceA), scopeA());
+      b = await tx.run(() => fixture(workspaceB), scopeB());
+    });
+    it('enables and forces RLS on every new table', async () => {
+      const names = [
+        'nutrients',
+        'food_nutrients',
+        'food_aliases',
+        'food_publication_requests',
+        'recipes',
+        'recipe_ingredients',
+        'recipe_steps',
+        'recipe_portions',
+        'recipe_aliases',
+      ];
+      const result = await tx.db.execute<{
+        relname: string;
+        relrowsecurity: boolean;
+        relforcerowsecurity: boolean;
+      }>(
+        sql`select relname, relrowsecurity, relforcerowsecurity from pg_class where relnamespace = 'public'::regnamespace and relname in (${sql.join(
+          names.map((name) => sql`${name}`),
+          sql`, `,
+        )})`,
+      );
+      expect(result.rows).toHaveLength(names.length);
+      expect(
+        result.rows.every(
+          (row) => row.relrowsecurity && row.relforcerowsecurity,
+        ),
+      ).toBe(true);
+    });
+    it('reads the seven immutable nutrients without a workspace', async () => {
+      const rows = await tx.db.select().from(nutrients);
+      expect(rows.map((row) => row.code).sort()).toEqual(
+        [
+          'sugars',
+          'saturated_fat',
+          'sodium',
+          'calcium',
+          'iron',
+          'potassium',
+          'vitamin_c',
+        ].sort(),
+      );
+      expect(
+        await tx.run(
+          () => tx.db.update(nutrients).set({ sortOrder: 999 }).returning(),
+          scopeA(),
+        ),
+      ).toEqual([]);
+      expect(
+        await tx.run(() => tx.db.delete(nutrients).returning(), scopeA()),
+      ).toEqual([]);
+      await expect(
+        tx.run(
+          () =>
+            tx.db.insert(nutrients).values({
+              code: 'test_nutrient',
+              nameAr: 'x',
+              nameEn: 'x',
+              measureUnit: rows[0].measureUnit,
+            }),
+          scopeA(),
+        ),
+      ).rejects.toMatchObject({ cause: { code: '42501' } });
+    });
+    const cases = [
+      {
+        name: 'food_nutrients',
+        add: async (f: Fixture) =>
+          (
+            await tx.db
+              .insert(foodNutrients)
+              .values({
+                foodId: f.foodId,
+                workspaceId: f.workspaceId,
+                nutrientId: f.nutrientId,
+                amountPer100g: 0,
+              })
+              .returning({ id: foodNutrients.foodId })
+          )[0].id,
+        read: (id: string) =>
+          tx.db
+            .select({ id: foodNutrients.foodId })
+            .from(foodNutrients)
+            .where(eq(foodNutrients.foodId, id)),
+        change: (id: string) =>
+          tx.db
+            .update(foodNutrients)
+            .set({ amountPer100g: 3 })
+            .where(eq(foodNutrients.foodId, id))
+            .returning({ id: foodNutrients.foodId }),
+        remove: (id: string) =>
+          tx.db
+            .delete(foodNutrients)
+            .where(eq(foodNutrients.foodId, id))
+            .returning({ id: foodNutrients.foodId }),
+      },
+      {
+        name: 'food_aliases',
+        add: async (f: Fixture) =>
+          (
+            await tx.db
+              .insert(foodAliases)
+              .values({
+                foodId: f.foodId,
+                workspaceId: f.workspaceId,
+                kind: NutritionAliasKind.ALIAS_EN,
+                alias: 'isolation',
+              })
+              .returning({ id: foodAliases.id })
+          )[0].id,
+        read: (id: string) =>
+          tx.db
+            .select({ id: foodAliases.id })
+            .from(foodAliases)
+            .where(eq(foodAliases.id, id)),
+        change: (id: string) =>
+          tx.db
+            .update(foodAliases)
+            .set({ alias: 'tampered' })
+            .where(eq(foodAliases.id, id))
+            .returning({ id: foodAliases.id }),
+        remove: (id: string) =>
+          tx.db
+            .delete(foodAliases)
+            .where(eq(foodAliases.id, id))
+            .returning({ id: foodAliases.id }),
+      },
+      {
+        name: 'food_publication_requests',
+        add: async (f: Fixture) =>
+          (
+            await tx.db
+              .insert(foodPublicationRequests)
+              .values({
+                foodId: f.foodId,
+                workspaceId: f.workspaceId,
+                contentFingerprint: 'test',
+              })
+              .returning({ id: foodPublicationRequests.id })
+          )[0].id,
+        read: (id: string) =>
+          tx.db
+            .select({ id: foodPublicationRequests.id })
+            .from(foodPublicationRequests)
+            .where(eq(foodPublicationRequests.id, id)),
+        change: (id: string) =>
+          tx.db
+            .update(foodPublicationRequests)
+            .set({ reviewerNote: 'tampered' })
+            .where(eq(foodPublicationRequests.id, id))
+            .returning({ id: foodPublicationRequests.id }),
+        remove: (id: string) =>
+          tx.db
+            .delete(foodPublicationRequests)
+            .where(eq(foodPublicationRequests.id, id))
+            .returning({ id: foodPublicationRequests.id }),
+      },
+      {
+        name: 'recipes',
+        add: async (f: Fixture) =>
+          (
+            await tx.db
+              .insert(recipes)
+              .values({
+                workspaceId: f.workspaceId,
+                nameAr: 'Another recipe',
+                finishedWeightG: 100,
+                origin: RecipeOrigin.USER,
+                caloriesKcalPer100g: 100,
+                proteinGPer100g: 20,
+                carbsGPer100g: 5,
+                fatGPer100g: 0,
+                fiberGPer100g: 0,
+              })
+              .returning({ id: recipes.id })
+          )[0].id,
+        read: (id: string) =>
+          tx.db
+            .select({ id: recipes.id })
+            .from(recipes)
+            .where(eq(recipes.id, id)),
+        change: (id: string) =>
+          tx.db
+            .update(recipes)
+            .set({ nameAr: 'tampered' })
+            .where(eq(recipes.id, id))
+            .returning({ id: recipes.id }),
+        remove: (id: string) =>
+          tx.db
+            .delete(recipes)
+            .where(eq(recipes.id, id))
+            .returning({ id: recipes.id }),
+      },
+      {
+        name: 'recipe_ingredients',
+        add: async (f: Fixture) =>
+          (
+            await tx.db
+              .insert(recipeIngredients)
+              .values({
+                recipeId: f.recipeId,
+                workspaceId: f.workspaceId,
+                sortOrder: 1,
+                foodId: f.foodId,
+                weightG: 100,
+              })
+              .returning({ id: recipeIngredients.id })
+          )[0].id,
+        read: (id: string) =>
+          tx.db
+            .select({ id: recipeIngredients.id })
+            .from(recipeIngredients)
+            .where(eq(recipeIngredients.id, id)),
+        change: (id: string) =>
+          tx.db
+            .update(recipeIngredients)
+            .set({ noteAr: 'tampered' })
+            .where(eq(recipeIngredients.id, id))
+            .returning({ id: recipeIngredients.id }),
+        remove: (id: string) =>
+          tx.db
+            .delete(recipeIngredients)
+            .where(eq(recipeIngredients.id, id))
+            .returning({ id: recipeIngredients.id }),
+      },
+      {
+        name: 'recipe_steps',
+        add: async (f: Fixture) =>
+          (
+            await tx.db
+              .insert(recipeSteps)
+              .values({
+                recipeId: f.recipeId,
+                workspaceId: f.workspaceId,
+                sortOrder: 1,
+                instruction: 'Mix',
+              })
+              .returning({ id: recipeSteps.id })
+          )[0].id,
+        read: (id: string) =>
+          tx.db
+            .select({ id: recipeSteps.id })
+            .from(recipeSteps)
+            .where(eq(recipeSteps.id, id)),
+        change: (id: string) =>
+          tx.db
+            .update(recipeSteps)
+            .set({ instruction: 'tampered' })
+            .where(eq(recipeSteps.id, id))
+            .returning({ id: recipeSteps.id }),
+        remove: (id: string) =>
+          tx.db
+            .delete(recipeSteps)
+            .where(eq(recipeSteps.id, id))
+            .returning({ id: recipeSteps.id }),
+      },
+      {
+        name: 'recipe_portions',
+        add: async (f: Fixture) =>
+          (
+            await tx.db
+              .insert(recipePortions)
+              .values({
+                recipeId: f.recipeId,
+                workspaceId: f.workspaceId,
+                sortOrder: 1,
+                nameAr: 'Plate',
+                weightG: 100,
+                isDefault: true,
+              })
+              .returning({ id: recipePortions.id })
+          )[0].id,
+        read: (id: string) =>
+          tx.db
+            .select({ id: recipePortions.id })
+            .from(recipePortions)
+            .where(eq(recipePortions.id, id)),
+        change: (id: string) =>
+          tx.db
+            .update(recipePortions)
+            .set({ nameAr: 'tampered' })
+            .where(eq(recipePortions.id, id))
+            .returning({ id: recipePortions.id }),
+        remove: (id: string) =>
+          tx.db
+            .delete(recipePortions)
+            .where(eq(recipePortions.id, id))
+            .returning({ id: recipePortions.id }),
+      },
+      {
+        name: 'recipe_aliases',
+        add: async (f: Fixture) =>
+          (
+            await tx.db
+              .insert(recipeAliases)
+              .values({
+                recipeId: f.recipeId,
+                workspaceId: f.workspaceId,
+                kind: NutritionAliasKind.ALIAS_EN,
+                alias: 'recipe isolation',
+              })
+              .returning({ id: recipeAliases.id })
+          )[0].id,
+        read: (id: string) =>
+          tx.db
+            .select({ id: recipeAliases.id })
+            .from(recipeAliases)
+            .where(eq(recipeAliases.id, id)),
+        change: (id: string) =>
+          tx.db
+            .update(recipeAliases)
+            .set({ alias: 'tampered' })
+            .where(eq(recipeAliases.id, id))
+            .returning({ id: recipeAliases.id }),
+        remove: (id: string) =>
+          tx.db
+            .delete(recipeAliases)
+            .where(eq(recipeAliases.id, id))
+            .returning({ id: recipeAliases.id }),
+      },
+    ];
+    describe.each(cases)('$name isolation', (entry) => {
+      let idA: string;
+      let idB: string;
+      beforeAll(async () => {
+        idA = await tx.run(() => entry.add(a), scopeA());
+        idB = await tx.run(() => entry.add(b), scopeB());
+      });
+      it('reads its own rows and hides them from unscoped and other workspace queries', async () => {
+        expect(await tx.run(() => entry.read(idA), scopeA())).toEqual([
+          { id: idA },
+        ]);
+        expect(await tx.run(() => entry.read(idB), scopeB())).toEqual([
+          { id: idB },
+        ]);
+        expect(await entry.read(idA)).toEqual([]);
+        expect(await tx.run(() => entry.read(idA), scopeB())).toEqual([]);
+      });
+      it('refuses writing into another workspace', async () => {
+        await expect(
+          tx.run(() => entry.add(b), scopeA()),
+        ).rejects.toMatchObject({ cause: { code: '42501' } });
+      });
+      it('cannot update or delete another workspace rows', async () => {
+        expect(await tx.run(() => entry.change(idA), scopeB())).toEqual([]);
+        expect(await tx.run(() => entry.remove(idA), scopeB())).toEqual([]);
+        expect(await tx.run(() => entry.read(idA), scopeA())).toEqual([
+          { id: idA },
+        ]);
+      });
+    });
+    it('uses triggers for names and aliases, even when a caller supplies the search fields', async () => {
+      await tx.run(async () => {
+        const [food] = await tx.db
+          .update(foods)
+          .set({
+            nameAr: 'WHEY',
+            nameEn: 'Protein',
+            brand: 'BRAND',
+            searchName: 'wrong',
+          })
+          .where(eq(foods.id, a.foodId))
+          .returning();
+        expect(food.searchName).toBe('whey protein brand');
+        const [recipe] = await tx.db
+          .update(recipes)
+          .set({ nameAr: 'WHEY', nameEn: 'Shake', searchName: 'wrong' })
+          .where(eq(recipes.id, a.recipeId))
+          .returning();
+        expect(recipe.searchName).toBe('whey shake');
+        const [alias] = await tx.db
+          .update(foodAliases)
+          .set({ alias: '  WHEY  ', searchAlias: 'wrong' })
+          .where(eq(foodAliases.foodId, a.foodId))
+          .returning();
+        expect(alias.searchAlias).toBe('whey');
+        const [recipeAlias] = await tx.db
+          .update(recipeAliases)
+          .set({ alias: '  SHAKE  ', searchAlias: 'wrong' })
+          .where(eq(recipeAliases.recipeId, a.recipeId))
+          .returning();
+        expect(recipeAlias.searchAlias).toBe('shake');
+      }, scopeA());
+    });
+    it('allows shared and own ingredients and refuses another workspace food', async () => {
+      const [shared] = await tx.db
+        .select({ id: foods.id })
+        .from(foods)
+        .where(sql`${foods.workspaceId} is null`)
+        .limit(1);
+      await tx.run(async () => {
+        await tx.db.insert(recipeIngredients).values([
+          {
+            workspaceId: workspaceA,
+            recipeId: a.recipeId,
+            foodId: shared.id,
+            sortOrder: 10,
+            weightG: 100,
+          },
+          {
+            workspaceId: workspaceA,
+            recipeId: a.recipeId,
+            foodId: a.foodId,
+            sortOrder: 11,
+            weightG: 100,
+          },
+        ]);
+      }, scopeA());
+      await expect(
+        tx.run(
+          () =>
+            tx.db.insert(recipeIngredients).values({
+              workspaceId: workspaceA,
+              recipeId: a.recipeId,
+              foodId: b.foodId,
+              sortOrder: 12,
+              weightG: 100,
+            }),
+          scopeA(),
+        ),
+      ).rejects.toMatchObject({ cause: { code: '42501' } });
+    });
+    it('enforces the chosen food or recipe and its portion for items and substitutes', async () => {
+      const parents = await tx.run(async () => {
+        const [plan] = await tx.db
+          .insert(mealPlans)
+          .values({
+            workspaceId: workspaceA,
+            isTemplate: true,
+            name: 'Nutrition constraints',
+          })
+          .returning();
+        const [meal] = await tx.db
+          .insert(meals)
+          .values({
+            workspaceId: workspaceA,
+            mealPlanId: plan.id,
+            weekday: null,
+            sortOrder: 1,
+            name: 'Lunch',
+          })
+          .returning();
+        const [foodPortion] = await tx.db
+          .insert(foodPortions)
+          .values({
+            workspaceId: workspaceA,
+            foodId: a.foodId,
+            nameAr: 'Piece',
+            weightG: 50,
+          })
+          .returning();
+        const [recipePortion] = await tx.db
+          .insert(recipePortions)
+          .values({
+            workspaceId: workspaceA,
+            recipeId: a.recipeId,
+            nameAr: 'Serving',
+            weightG: 100,
+          })
+          .returning();
+        const [item] = await tx.db
+          .insert(mealItems)
+          .values({
+            workspaceId: workspaceA,
+            mealId: meal.id,
+            recipeId: a.recipeId,
+            portionId: recipePortion.id,
+            sortOrder: 1,
+            quantity: 1,
+            itemName: 'Recipe',
+            weightG: 100,
+            caloriesKcal: 100,
+            proteinG: 20,
+            carbsG: 5,
+            fatG: 0,
+          })
+          .returning();
+        return { meal, foodPortion, recipePortion, item };
+      }, scopeA());
+      const nutrition = {
+        workspaceId: workspaceA,
+        quantity: 1,
+        itemName: 'Snapshot',
+        weightG: 100,
+        caloriesKcal: 100,
+        proteinG: 20,
+        carbsG: 5,
+        fatG: 0,
+      };
+      const addItem = (choice: {
+        foodId?: string;
+        recipeId?: string;
+        portionId?: string;
+      }) =>
+        tx.run(
+          () =>
+            tx.db.insert(mealItems).values({
+              ...nutrition,
+              mealId: parents.meal.id,
+              sortOrder: 2,
+              ...choice,
+            }),
+          scopeA(),
+        );
+      const addSub = (choice: {
+        foodId?: string;
+        recipeId?: string;
+        portionId?: string;
+      }) =>
+        tx.run(
+          () =>
+            tx.db.insert(mealItemSubs).values({
+              ...nutrition,
+              mealItemId: parents.item.id,
+              sortOrder: 1,
+              ...choice,
+            }),
+          scopeA(),
+        );
+      await Promise.all(
+        [addItem, addSub].map(async (add) => {
+          await expect(add({})).rejects.toMatchObject({
+            cause: { code: '23514' },
+          });
+          await expect(
+            add({ foodId: a.foodId, recipeId: a.recipeId }),
+          ).rejects.toMatchObject({ cause: { code: '23514' } });
+          await expect(
+            add({ foodId: a.foodId, portionId: parents.recipePortion.id }),
+          ).rejects.toMatchObject({ cause: { code: '23503' } });
+          await expect(
+            add({ recipeId: a.recipeId, portionId: parents.foodPortion.id }),
+          ).rejects.toMatchObject({ cause: { code: '23503' } });
+          await add({ foodId: a.foodId, portionId: parents.foodPortion.id });
+        }),
+      );
+      await tx.run(
+        () =>
+          tx.db
+            .delete(foodPortions)
+            .where(eq(foodPortions.id, parents.foodPortion.id)),
+        scopeA(),
+      );
+      const [saved] = await tx.run(
+        () =>
+          tx.db
+            .select()
+            .from(mealItems)
+            .where(eq(mealItems.mealId, parents.meal.id))
+            .orderBy(mealItems.sortOrder),
+        scopeA(),
+      );
+      expect(saved.recipeId).toBe(a.recipeId);
+      const [foodItem] = await tx.run(
+        () =>
+          tx.db
+            .select()
+            .from(mealItems)
+            .where(
+              and(
+                eq(mealItems.mealId, parents.meal.id),
+                eq(mealItems.sortOrder, 2),
+              ),
+            ),
+        scopeA(),
+      );
+      expect(foodItem).toMatchObject({
+        foodId: a.foodId,
+        portionId: null,
+        caloriesKcal: 100,
+      });
+      await expect(
+        tx.run(
+          () =>
+            tx.db.insert(meals).values({
+              workspaceId: workspaceA,
+              mealPlanId: parents.meal.mealPlanId,
+              weekday: null,
+              sortOrder: 1,
+              name: 'Duplicate everyday',
+            }),
+          scopeA(),
+        ),
+      ).rejects.toMatchObject({ cause: { code: '23505' } });
+    });
+    it('lets only the system review publication requests across workspaces', async () => {
+      const [request] = await tx.run(
+        () =>
+          tx.db
+            .select()
+            .from(foodPublicationRequests)
+            .where(eq(foodPublicationRequests.foodId, a.foodId)),
+        scopeA(),
+      );
+      expect(
+        await tx.run(
+          () =>
+            tx.db
+              .update(foodPublicationRequests)
+              .set({ status: FoodPublicationStatus.APPROVED })
+              .where(eq(foodPublicationRequests.id, request.id))
+              .returning(),
+          scopeA(),
+        ),
+      ).toEqual([]);
+      const reviewed = await tx.run(
+        () =>
+          tx.db
+            .update(foodPublicationRequests)
+            .set({
+              status: FoodPublicationStatus.APPROVED,
+              reviewedBy: personA,
+              reviewedAt: new Date(),
+            })
+            .where(eq(foodPublicationRequests.id, request.id))
+            .returning(),
+        { system: true },
+      );
+      expect(reviewed[0].status).toBe(FoodPublicationStatus.APPROVED);
     });
   });
 });

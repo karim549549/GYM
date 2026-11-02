@@ -1,3 +1,8 @@
+import { FoodPublicationStatus } from './enums/food-publication-status.enum';
+import type { ListFoodPublicationsQueryDto } from './dto/food-publication.dto';
+import { FoodPublicationRequestOrchestrator } from './orchestration/food-publication-request.orchestrator';
+import { FoodPublicationListOrchestrator } from './orchestration/food-publication-list.orchestrator';
+import { FoodPublicationReviewOrchestrator } from './orchestration/food-publication-review.orchestrator';
 import { Injectable } from '@nestjs/common';
 import type { PaginatedResponse } from '../common/handlers/base-query.handler';
 import type {
@@ -16,12 +21,52 @@ import { FoodUpdateOrchestrator } from './orchestration/food-update.orchestrator
 @Injectable()
 export class FoodsService {
   constructor(
+    private readonly publicationRequest: FoodPublicationRequestOrchestrator,
+    private readonly publicationList: FoodPublicationListOrchestrator,
+    private readonly publicationReview: FoodPublicationReviewOrchestrator,
     private readonly foodList: FoodListOrchestrator,
     private readonly foodDetails: FoodDetailsOrchestrator,
     private readonly foodCreation: FoodCreationOrchestrator,
     private readonly foodUpdate: FoodUpdateOrchestrator,
     private readonly foodLookup: FoodLookupOrchestrator,
   ) {}
+
+  requestPublication(workspaceId: string, foodId: string) {
+    return this.publicationRequest.execute(workspaceId, foodId);
+  }
+  listPublications(query: ListFoodPublicationsQueryDto, workspaceId?: string) {
+    return this.publicationList.execute(query, workspaceId);
+  }
+  approvePublication(id: string, personId: string, note?: string) {
+    return this.publicationReview.execute(
+      id,
+      personId,
+      FoodPublicationStatus.APPROVED,
+      note,
+    );
+  }
+  rejectPublication(id: string, personId: string, note: string) {
+    return this.publicationReview.execute(
+      id,
+      personId,
+      FoodPublicationStatus.REJECTED,
+      note,
+    );
+  }
+  duplicatePublication(
+    id: string,
+    personId: string,
+    duplicateOfFoodId: string,
+    note?: string,
+  ) {
+    return this.publicationReview.execute(
+      id,
+      personId,
+      FoodPublicationStatus.DUPLICATE,
+      note,
+      duplicateOfFoodId,
+    );
+  }
 
   list(
     workspaceId: string,
@@ -48,7 +93,7 @@ export class FoodsService {
     return this.foodUpdate.execute(workspaceId, foodId, changes);
   }
 
-  /** For nutrition plans: which of these the workspace can use, with their units. */
+  /** For nutrition plans: which of these the workspace can use, with their portions. */
   findVisible(workspaceId: string, foodIds: string[]): Promise<FoodRecord[]> {
     return this.foodLookup.visible(workspaceId, foodIds);
   }

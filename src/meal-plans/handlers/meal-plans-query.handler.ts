@@ -1,11 +1,11 @@
 import { Injectable } from '@nestjs/common';
-import { and, asc, count, desc, eq, inArray, ne } from 'drizzle-orm';
+import { and, asc, count, desc, eq, inArray, ne, sql } from 'drizzle-orm';
 import {
   BaseQueryHandler,
   type PaginatedResponse,
 } from '../../common/handlers/base-query.handler';
 import {
-  foodUnits,
+  foodPortions,
   mealItemSubs,
   mealItems,
   mealPlans,
@@ -28,10 +28,10 @@ const SUMMARY = {
   clientId: mealPlans.clientId,
   isTemplate: mealPlans.isTemplate,
   name: mealPlans.name,
-  kcalTarget: mealPlans.kcalTarget,
-  proteinTargetG: mealPlans.proteinTargetG,
-  carbTargetG: mealPlans.carbTargetG,
-  fatTargetG: mealPlans.fatTargetG,
+  caloriesKcalTarget: mealPlans.caloriesKcalTarget,
+  proteinGTarget: mealPlans.proteinGTarget,
+  carbsGTarget: mealPlans.carbsGTarget,
+  fatGTarget: mealPlans.fatGTarget,
   status: mealPlans.status,
   startsOn: mealPlans.startsOn,
   notes: mealPlans.notes,
@@ -48,10 +48,10 @@ export class MealPlansQueryHandler extends BaseQueryHandler {
     workspaceId: string,
     createdBy: string | null,
     plan: Pick<NewMealPlan, 'name' | 'notes' | 'clientId'> & {
-      kcalTarget?: number | null;
-      proteinTargetG?: number | null;
-      carbTargetG?: number | null;
-      fatTargetG?: number | null;
+      caloriesKcalTarget?: number | null;
+      proteinGTarget?: number | null;
+      carbsGTarget?: number | null;
+      fatGTarget?: number | null;
     },
   ): Promise<MealPlanSummary> {
     const [created] = await this.db
@@ -62,10 +62,10 @@ export class MealPlansQueryHandler extends BaseQueryHandler {
         clientId: plan.clientId ?? null,
         isTemplate: plan.clientId === undefined,
         name: plan.name,
-        kcalTarget: plan.kcalTarget ?? null,
-        proteinTargetG: plan.proteinTargetG ?? null,
-        carbTargetG: plan.carbTargetG ?? null,
-        fatTargetG: plan.fatTargetG ?? null,
+        caloriesKcalTarget: plan.caloriesKcalTarget ?? null,
+        proteinGTarget: plan.proteinGTarget ?? null,
+        carbsGTarget: plan.carbsGTarget ?? null,
+        fatGTarget: plan.fatGTarget ?? null,
         notes: plan.notes ?? null,
       })
       .returning(SUMMARY);
@@ -77,10 +77,10 @@ export class MealPlansQueryHandler extends BaseQueryHandler {
     workspaceId: string,
     templates: {
       name: string;
-      kcalTarget: number;
-      proteinTargetG: number;
-      carbTargetG: number;
-      fatTargetG: number;
+      caloriesKcalTarget: number;
+      proteinGTarget: number;
+      carbsGTarget: number;
+      fatGTarget: number;
     }[],
   ): Promise<MealPlanSummary[]> {
     return this.db
@@ -145,17 +145,17 @@ export class MealPlansQueryHandler extends BaseQueryHandler {
   ): Promise<MealPlanSummary | null> {
     const set = {
       ...(changes.name !== undefined && { name: changes.name }),
-      ...(changes.kcalTarget !== undefined && {
-        kcalTarget: changes.kcalTarget,
+      ...(changes.caloriesKcalTarget !== undefined && {
+        caloriesKcalTarget: changes.caloriesKcalTarget,
       }),
-      ...(changes.proteinTargetG !== undefined && {
-        proteinTargetG: changes.proteinTargetG,
+      ...(changes.proteinGTarget !== undefined && {
+        proteinGTarget: changes.proteinGTarget,
       }),
-      ...(changes.carbTargetG !== undefined && {
-        carbTargetG: changes.carbTargetG,
+      ...(changes.carbsGTarget !== undefined && {
+        carbsGTarget: changes.carbsGTarget,
       }),
-      ...(changes.fatTargetG !== undefined && {
-        fatTargetG: changes.fatTargetG,
+      ...(changes.fatGTarget !== undefined && {
+        fatGTarget: changes.fatGTarget,
       }),
       ...(changes.notes !== undefined && { notes: changes.notes }),
     };
@@ -212,73 +212,85 @@ export class MealPlansQueryHandler extends BaseQueryHandler {
       .innerJoin(mealItems, eq(mealItems.id, mealItemSubs.mealItemId))
       .innerJoin(meals, eq(meals.id, mealItems.mealId))
       .where(eq(meals.mealPlanId, planId));
-    return [...new Set([...items, ...subs].map((row) => row.id))];
+    return [
+      ...new Set(
+        [...items, ...subs]
+          .map((row) => row.id)
+          .filter((id): id is string => id !== null),
+      ),
+    ];
   }
 
-  /** The whole structure, in reading order: by day, then position. */
+  /** The whole structure, in reading order: by day, then order. */
   async loadMeals(planId: string): Promise<StoredMealRecord[]> {
     const mealRows = await this.db
       .select()
       .from(meals)
       .where(eq(meals.mealPlanId, planId))
-      .orderBy(asc(meals.dayNo), asc(meals.position));
+      .orderBy(sql`${meals.weekday} asc nulls first`, asc(meals.sortOrder));
     if (mealRows.length === 0) {
       return [];
     }
     const itemRows = await this.db
-      .select({ item: mealItems, unitLabelAr: foodUnits.labelAr })
+      .select({ item: mealItems, portionNameAr: foodPortions.nameAr })
       .from(mealItems)
-      .leftJoin(foodUnits, eq(foodUnits.id, mealItems.unitId))
+      .leftJoin(foodPortions, eq(foodPortions.id, mealItems.portionId))
       .where(
         inArray(
           mealItems.mealId,
           mealRows.map((meal) => meal.id),
         ),
       )
-      .orderBy(asc(mealItems.position));
+      .orderBy(asc(mealItems.sortOrder));
     const subRows =
       itemRows.length === 0
         ? []
         : await this.db
-            .select({ sub: mealItemSubs, unitLabelAr: foodUnits.labelAr })
+            .select({ sub: mealItemSubs, portionNameAr: foodPortions.nameAr })
             .from(mealItemSubs)
-            .leftJoin(foodUnits, eq(foodUnits.id, mealItemSubs.unitId))
+            .leftJoin(foodPortions, eq(foodPortions.id, mealItemSubs.portionId))
             .where(
               inArray(
                 mealItemSubs.mealItemId,
                 itemRows.map((row) => row.item.id),
               ),
             )
-            .orderBy(asc(mealItemSubs.position));
+            .orderBy(asc(mealItemSubs.sortOrder));
 
     return mealRows.map((meal) => {
       const items: MealItemRecord[] = itemRows
         .filter((row) => row.item.mealId === meal.id)
-        .map(({ item, unitLabelAr }) => ({
+        .map(({ item, portionNameAr }) => ({
           ...this.macrosOf(item),
-          position: item.position,
+          sortOrder: item.sortOrder,
           foodId: item.foodId,
-          foodName: item.foodName,
+          recipeId: item.recipeId,
+          kind: item.recipeId ? 'recipe' : 'food',
+          itemName: item.itemName,
           quantity: item.quantity,
-          unitId: item.unitId,
-          unitLabelAr,
+          portionId: item.portionId,
+          portionNameAr,
           substitutes: subRows
             .filter((row) => row.sub.mealItemId === item.id)
-            .map(({ sub, unitLabelAr: label }): MealSubstituteRecord => ({
+            .map(({ sub, portionNameAr: label }): MealSubstituteRecord => ({
               ...this.macrosOf(sub),
-              position: sub.position,
+              sortOrder: sub.sortOrder,
               foodId: sub.foodId,
-              foodName: sub.foodName,
+              recipeId: sub.recipeId,
+              kind: sub.recipeId ? 'recipe' : 'food',
+              itemName: sub.itemName,
               quantity: sub.quantity,
-              unitId: sub.unitId,
-              unitLabelAr: label,
+              portionId: sub.portionId,
+              portionNameAr: label,
             })),
         }));
       return {
-        dayNo: meal.dayNo,
-        position: meal.position,
+        weekday: meal.weekday,
+        sortOrder: meal.sortOrder,
         name: meal.name,
-        timeHint: meal.timeHint ? meal.timeHint.slice(0, 5) : null,
+        suggestedTime: meal.suggestedTime
+          ? meal.suggestedTime.slice(0, 5)
+          : null,
         notes: meal.notes,
         items,
       };
@@ -304,14 +316,14 @@ export class MealPlansQueryHandler extends BaseQueryHandler {
     workspaceId: string,
     plansToFill: { planId: string; meals: StoredMeal[] }[],
   ): Promise<void> {
-    // a meal's position is its place among that day's meals of its plan
+    // a meal's order is its place among that day's meals of its plan
     const placed = new Map<string, number>();
     const all = plansToFill.flatMap(({ planId, meals: own }) =>
       own.map((meal) => {
-        const key = `${planId}:${meal.dayNo}`;
-        const position = (placed.get(key) ?? 0) + 1;
-        placed.set(key, position);
-        return { planId, meal, position };
+        const key = `${planId}:${meal.weekday}`;
+        const sortOrder = (placed.get(key) ?? 0) + 1;
+        placed.set(key, sortOrder);
+        return { planId, meal, sortOrder };
       }),
     );
     if (all.length === 0) {
@@ -322,36 +334,36 @@ export class MealPlansQueryHandler extends BaseQueryHandler {
       this.db
         .insert(meals)
         .values(
-          chunk.map(({ planId, meal, position }) => ({
+          chunk.map(({ planId, meal, sortOrder }) => ({
             workspaceId,
             mealPlanId: planId,
-            dayNo: meal.dayNo,
-            position,
+            weekday: meal.weekday,
+            sortOrder,
             name: meal.name,
-            timeHint: meal.timeHint,
+            suggestedTime: meal.suggestedTime,
             notes: meal.notes,
           })),
         )
         .returning({
           id: meals.id,
           mealPlanId: meals.mealPlanId,
-          dayNo: meals.dayNo,
-          position: meals.position,
+          weekday: meals.weekday,
+          sortOrder: meals.sortOrder,
         }),
     );
     const mealId = new Map(
       mealRows.map((row) => [
-        `${row.mealPlanId}:${row.dayNo}:${row.position}`,
+        `${row.mealPlanId}:${row.weekday}:${row.sortOrder}`,
         row.id,
       ]),
     );
 
-    const wanted = all.flatMap(({ planId, meal, position }) => {
-      const id = mealId.get(`${planId}:${meal.dayNo}:${position}`) as string;
+    const wanted = all.flatMap(({ planId, meal, sortOrder }) => {
+      const id = mealId.get(`${planId}:${meal.weekday}:${sortOrder}`) as string;
       return meal.items.map((item, index) => ({
         mealId: id,
         item,
-        position: index + 1,
+        sortOrder: index + 1,
       }));
     });
     if (wanted.length === 0) {
@@ -361,44 +373,46 @@ export class MealPlansQueryHandler extends BaseQueryHandler {
       this.db
         .insert(mealItems)
         .values(
-          chunk.map(({ mealId: id, item, position }) => ({
+          chunk.map(({ mealId: id, item, sortOrder }) => ({
             workspaceId,
             mealId: id,
-            position,
+            sortOrder,
             foodId: item.foodId,
+            recipeId: item.recipeId,
             quantity: item.quantity,
-            unitId: item.unitId,
-            grams: item.grams,
-            foodName: item.foodName,
-            kcal: item.kcal,
+            portionId: item.portionId,
+            weightG: item.weightG,
+            itemName: item.itemName,
+            caloriesKcal: item.caloriesKcal,
             proteinG: item.proteinG,
-            carbG: item.carbG,
+            carbsG: item.carbsG,
             fatG: item.fatG,
           })),
         )
         .returning({
           id: mealItems.id,
           mealId: mealItems.mealId,
-          position: mealItems.position,
+          sortOrder: mealItems.sortOrder,
         }),
     );
     const itemId = new Map(
-      itemRows.map((row) => [`${row.mealId}:${row.position}`, row.id]),
+      itemRows.map((row) => [`${row.mealId}:${row.sortOrder}`, row.id]),
     );
 
-    const subs = wanted.flatMap(({ mealId: id, item, position }) =>
+    const subs = wanted.flatMap(({ mealId: id, item, sortOrder }) =>
       item.substitutes.map((sub, index) => ({
         workspaceId,
-        mealItemId: itemId.get(`${id}:${position}`) as string,
-        position: index + 1,
+        mealItemId: itemId.get(`${id}:${sortOrder}`) as string,
+        sortOrder: index + 1,
         foodId: sub.foodId,
+        recipeId: sub.recipeId,
         quantity: sub.quantity,
-        unitId: sub.unitId,
-        grams: sub.grams,
-        foodName: sub.foodName,
-        kcal: sub.kcal,
+        portionId: sub.portionId,
+        weightG: sub.weightG,
+        itemName: sub.itemName,
+        caloriesKcal: sub.caloriesKcal,
         proteinG: sub.proteinG,
-        carbG: sub.carbG,
+        carbsG: sub.carbsG,
         fatG: sub.fatG,
       })),
     );
@@ -411,17 +425,17 @@ export class MealPlansQueryHandler extends BaseQueryHandler {
   }
 
   private macrosOf(row: {
-    grams: number;
-    kcal: number;
+    weightG: number;
+    caloriesKcal: number;
     proteinG: number;
-    carbG: number;
+    carbsG: number;
     fatG: number;
   }) {
     return {
-      grams: row.grams,
-      kcal: row.kcal,
+      weightG: row.weightG,
+      caloriesKcal: row.caloriesKcal,
       proteinG: row.proteinG,
-      carbG: row.carbG,
+      carbsG: row.carbsG,
       fatG: row.fatG,
     };
   }

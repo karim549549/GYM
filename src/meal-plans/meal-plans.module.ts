@@ -1,3 +1,4 @@
+import { RecipesModule } from '../recipes/recipes.module';
 import { Module } from '@nestjs/common';
 import { ClientsModule } from '../clients/clients.module';
 import { FoodsModule } from '../foods/foods.module';
@@ -21,7 +22,7 @@ import { MealPlanTotalsPolicy } from './policies/meal-plan-totals.policy';
 import { StarterMealPlansPolicy } from './policies/starter-meal-plans.policy';
 
 @Module({
-  imports: [ClientsModule, FoodsModule],
+  imports: [ClientsModule, FoodsModule, RecipesModule],
   controllers: [MealPlansController],
   providers: [
     MealPlansService,

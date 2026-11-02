@@ -68,7 +68,9 @@ export class PaymentRequestConfirmationOrchestrator extends BasePaymentRequestOr
             receiptKey: found.receiptKey ?? undefined,
           },
         );
-        if (!(await this.paymentRequests.markConfirmed(found.id, recorded.id))) {
+        if (
+          !(await this.paymentRequests.markConfirmed(found.id, recorded.id))
+        ) {
           throw new PaymentRequestAlreadyConfirmedException();
         }
         return {
