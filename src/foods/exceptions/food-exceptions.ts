@@ -49,6 +49,16 @@ export class FoodPublicationAlreadyRequestedException extends ConflictException 
   }
 }
 
+export class FoodPublicationChangedException extends ConflictException {
+  constructor() {
+    super({
+      code: 'FOOD_PUBLICATION_CHANGED',
+      message:
+        'The food was edited after it was suggested: reject this request and let the coach ask again',
+    });
+  }
+}
+
 export class FoodPublicationNotPendingException extends ConflictException {
   constructor() {
     super({

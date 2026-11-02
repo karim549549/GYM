@@ -120,6 +120,7 @@ export const foodPublicationRequests = pgTable(
       .notNull()
       .default(FoodPublicationStatus.PENDING),
     duplicateOfFoodId: uuid('duplicate_of_food_id').references(() => foods.id),
+    contentFingerprint: text('content_fingerprint').notNull(),
     reviewerNote: text('reviewer_note'),
     requestedAt: timestamp('requested_at', { withTimezone: true })
       .notNull()

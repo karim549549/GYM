@@ -353,6 +353,23 @@ describe('Food publication review over HTTP', () => {
     ).toMatchObject({ status: 'duplicate', duplicateOfFoodId: shared.id });
   });
 
+  it('refuses to approve a food edited after it was suggested, and still lets the admin reject it', async () => {
+    const coach = await newCoach();
+    const food = await addFood(coach);
+    const pending = await request(coach, food.id).expect(201);
+    await harness
+      .as(coach)
+      .patch(`/foods/${food.id}`)
+      .send({ nameAr: `${food.nameAr} edited`, confirmNotDuplicate: true })
+      .expect(200);
+
+    await review(pending.body.id, 'approve')
+      .expect(409)
+      .expect((r) => expect(r.body.code).toBe('FOOD_PUBLICATION_CHANGED'));
+
+    await review(pending.body.id, 'reject', { note: 'changed' }).expect(201);
+  });
+
   it('lets only one simultaneous decision win and creates only one shared copy', async () => {
     const coach = await newCoach();
     const food = await addFood(coach);

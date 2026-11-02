@@ -15,10 +15,21 @@ export class FoodPublicationQueryHandler extends BaseQueryHandler {
     return this.firstOrNull(
       await this.db
         .insert(foodPublicationRequests)
-        .values({ workspaceId, foodId })
+        .values({
+          workspaceId,
+          foodId,
+          contentFingerprint: sql`food_content_fingerprint(${foodId}::uuid)`,
+        })
         .onConflictDoNothing()
         .returning(),
     );
+  }
+
+  async currentFingerprint(foodId: string): Promise<string | null> {
+    const result = await this.db.execute<{ fingerprint: string | null }>(
+      sql`select food_content_fingerprint(${foodId}::uuid) as fingerprint`,
+    );
+    return result.rows[0]?.fingerprint ?? null;
   }
 
   async find(id: string): Promise<FoodPublicationRecord | null> {
