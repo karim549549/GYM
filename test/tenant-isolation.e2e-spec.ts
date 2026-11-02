@@ -3001,7 +3001,11 @@ describe('Tenant isolation against the database', () => {
           (
             await tx.db
               .insert(foodPublicationRequests)
-              .values({ foodId: f.foodId, workspaceId: f.workspaceId })
+              .values({
+                foodId: f.foodId,
+                workspaceId: f.workspaceId,
+                contentFingerprint: 'test',
+              })
               .returning({ id: foodPublicationRequests.id })
           )[0].id,
         read: (id: string) =>

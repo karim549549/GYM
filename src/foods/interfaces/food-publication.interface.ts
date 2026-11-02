@@ -7,6 +7,7 @@ export interface FoodPublicationRecord {
   foodId: string;
   status: FoodPublicationStatus;
   duplicateOfFoodId: string | null;
+  contentFingerprint: string;
   reviewerNote: string | null;
   requestedAt: Date;
   reviewedBy: string | null;

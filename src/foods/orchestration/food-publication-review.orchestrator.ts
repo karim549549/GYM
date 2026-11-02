@@ -4,6 +4,7 @@ import { FoodPublicationStatus } from '../enums/food-publication-status.enum';
 import { NutritionConfidence } from '../enums/nutrition-confidence.enum';
 import {
   FoodBarcodeExistsException,
+  FoodPublicationChangedException,
   FoodPublicationNotFoundException,
   FoodPublicationNotPendingException,
   InvalidFoodException,
@@ -44,6 +45,12 @@ export class FoodPublicationReviewOrchestrator {
               'duplicateOfFoodId: must be a shared food',
             ]);
         }
+        if (
+          status === FoodPublicationStatus.APPROVED &&
+          (await this.requests.currentFingerprint(request.foodId)) !==
+            request.contentFingerprint
+        )
+          throw new FoodPublicationChangedException();
         const decided = await this.requests.decide(
           id,
           status,

@@ -449,6 +449,13 @@
       "when": 1793519673890,
       "tag": "0063_food_publication_system_scope",
       "breakpoints": true
+    },
+    {
+      "idx": 64,
+      "version": "7",
+      "when": 1793600438691,
+      "tag": "0064_food_publication_fingerprint",
+      "breakpoints": true
     }
   ]
 }
